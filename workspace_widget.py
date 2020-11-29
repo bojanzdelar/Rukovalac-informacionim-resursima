@@ -19,8 +19,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.show_tabs()
         
     def show_tabs(self):
-        self.tab_widget.addTab(QtWidgets.QTableWidget(), "Podtabela 1") 
-        self.tab_widget.addTab(QtWidgets.QTableWidget(), "Podtabela 2")
+        self.tab_widget.addTab(QtWidgets.QTableWidget(), "Podtabela 1") # FIXME: privremeno
+        self.tab_widget.addTab(QtWidgets.QTableWidget(), "Podtabela 2") # FIXME: privremeno
         
     def delete_tab(self, index):
         self.tab_widget.removeTab(index)
