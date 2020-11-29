@@ -1,1 +1,1 @@
-# Rukovalac-informacionim-resursima
+# Rukovalac informacionim resursima
