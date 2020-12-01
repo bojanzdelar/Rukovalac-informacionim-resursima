@@ -48,3 +48,4 @@ class VisokoskolskaUstanovaModel(QtCore.QAbstractTableModel):
 
     def flags(self, index):
         return super().flags(index) | QtCore.Qt.ItemIsEditable
+        
