@@ -9,7 +9,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.resize(640, 480)
         self.setWindowTitle("Rukovalac informacionim resursima")
-        self.setWindowIcon(QtGui.QIcon("logo.png"))
+        self.setWindowIcon(QtGui.QIcon("data/logo-64.png"))
 
         self.setMenuBar(MenuBar(self))
         self.setStatusBar(QtWidgets.QStatusBar())
