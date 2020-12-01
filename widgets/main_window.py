@@ -9,11 +9,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.resize(640, 480)
         self.setWindowTitle("Rukovalac informacionim resursima")
-        self.setWindowIcon(QtGui.QIcon("data/logo-64.png"))
+        self.setWindowIcon(QtGui.QIcon("image/logo-64.png"))
 
         self.setMenuBar(MenuBar(self))
         self.setStatusBar(QtWidgets.QStatusBar())
         self.statusBar().showMessage("Status bar")
         self.setCentralWidget(CentralWidget(self))
         self.addToolBar(QtWidgets.QToolBar())
-        self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, DockWidget("File Explorer", self))
+
+        dock_widget = DockWidget("File Exporer", self)
+        dock_widget.clicked.connect(self.centralWidget().add_tab)
+        self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)

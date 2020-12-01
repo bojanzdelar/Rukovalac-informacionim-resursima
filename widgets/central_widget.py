@@ -6,14 +6,14 @@ class CentralWidget(QtWidgets.QTabWidget):
         super().__init__(parent)
 
         self.create_tab_widget()
-        self.add_tab("Podaci") # FIXME: privremeno
 
     def create_tab_widget(self):
         self.setTabsClosable(True)
         self.tabCloseRequested.connect(self.delete_tab)
 
-    def add_tab(self, title = "Naslov"):
-        self.addTab(WorkspaceWidget(self), title)
-    
+    def add_tab(self, path):
+        file_name = path.split("/")[-1]
+        self.addTab(WorkspaceWidget(file_name, self), file_name)
+
     def delete_tab(self, index):
         self.removeTab(index)
