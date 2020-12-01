@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
-from menu_bar import MenuBar
-from dock_widget import DockWidget
-from central_widget import CentralWidget
+from .menu_bar import MenuBar
+from .dock_widget import DockWidget
+from .central_widget import CentralWidget
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):

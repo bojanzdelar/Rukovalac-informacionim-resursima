@@ -1,5 +1,5 @@
 from PySide2 import QtWidgets
-from workspace_widget import WorkspaceWidget
+from .workspace_widget import WorkspaceWidget
 
 class CentralWidget(QtWidgets.QTabWidget):
     def __init__(self, parent):
