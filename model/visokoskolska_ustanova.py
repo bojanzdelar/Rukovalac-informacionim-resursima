@@ -2,15 +2,15 @@ from model.student import Student
 
 class VisokoskolskaUstanova:
     def __init__(self, oznaka, naziv, adresa):
-        self.oznaka = oznaka
-        self.naziv = naziv
-        self.adresa = adresa
-        # Kada sam u konstruktor stavio default parametar studenti=[], sve instance ove
-        # klase su imale zajednicku adresu za atribut studenti
-        self.studenti = [] # FIXME: privremeno 
+        self.data = {
+            "Oznaka": oznaka,
+            "Naziv": naziv,
+            "Adresa": adresa
+        }
+        self.list = [] # FIXME: privremeno 
 
     def serialize(self):
-        return self.oznaka + ";" + self.naziv + ";" + self.adresa
+        return self.data["oznaka"] + ";" + self.data["naziv"] + ";" + self.data["adresa"]
 
     @staticmethod
     def deserialize(line):
@@ -23,10 +23,10 @@ class VisokoskolskaUstanova:
         with open("data/visokoskolske_ustanove.csv") as file:
             for line in file:
                 ustanove.append(VisokoskolskaUstanova.deserialize(line.strip()))
-        studenti = Student.load()
-        for student in studenti:
+        list = Student.load()
+        for student in list:
             for ustanova in ustanove:
-                if student.ustanova == ustanova.oznaka:
-                    ustanova.studenti.append(student)
+                if student.data["Ustanova"] == ustanova.data["Oznaka"]:
+                    ustanova.list.append(student)
                     break
         return ustanove

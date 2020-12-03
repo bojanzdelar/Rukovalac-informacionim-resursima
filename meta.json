@@ -1,0 +1,21 @@
+{
+    "visokoskolske_ustanove.csv" : {
+        "subtables" : [
+            "studenti.csv"
+        ],
+        "attributes" : [
+            "Oznaka",
+            "Naziv",
+            "Adresa"
+        ]
+    },
+    "studenti.csv" : {
+        "subtables" : [],
+        "attributes" : [
+            "Ustanova",
+            "Broj indeksa",
+            "Prezime",
+            "Ime"
+        ]
+    }
+}

@@ -1,8 +1,5 @@
 from PySide2 import QtWidgets, QtGui
-from model.visokoskolska_ustanova_model import VisokoskolskaUstanovaModel # TODO: obrisi me 
-from model.visokoskolska_ustanova import VisokoskolskaUstanova
-from model.student_model import StudentModel
-from model.student import Student
+from model.model import Model
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, file_name, parent):
@@ -23,31 +20,22 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return table
 
     def create_main_table(self):
-        if self.file_name == "visokoskolske_ustanove.csv":
-            model = VisokoskolskaUstanovaModel()
-            model.ustanove = VisokoskolskaUstanova.load()       
-        elif self.file_name == "student.csv":
-            model = StudentModel()
-            model.students = Student.load()      
-        
+        model = Model(self.file_name)
         main_table = self.create_table()
         main_table.setModel(model)
         main_table.clicked.connect(self.selected)
         return main_table
 
     def selected(self, index):
-        if self.file_name == "visokoskolske_ustanove.csv":
-            selected_ustanova = self.main_table.model().get_element(index)
-            student_model = StudentModel()
-            student_model.students = selected_ustanova.studenti
-            studenti = self.create_table(self.tab_widget)
-            studenti.setModel(student_model)
-
-            self.tab_widget.clear()
-            self.tab_widget.addTab(studenti, "Studenti")
-
-        # elif self.file_name == "student.csv":
-        #     ...
+        subtables = self.main_table.model().get_subtables()
+        self.tab_widget.clear()
+        for subtable in subtables:
+            selected_element = self.main_table.model().get_element(index)
+            submodel = Model(subtable)
+            submodel.list = selected_element.list
+            tab = self.create_table(self.tab_widget)
+            tab.setModel(submodel)
+            self.tab_widget.addTab(tab, subtable)
 
     def create_tab_widget(self):
         tab_widget = QtWidgets.QTabWidget(self)
