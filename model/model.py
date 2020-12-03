@@ -8,8 +8,7 @@ class Model(QtCore.QAbstractTableModel):
         super().__init__(parent)
         self.file_name = file_name
         self.info = self.read_meta()
-        self.list = []
-        self.load()
+        self.list = self.load()
 
     def attributes(self):
         return len(self.get_attributes())
@@ -60,6 +59,7 @@ class Model(QtCore.QAbstractTableModel):
 
     def load(self):
         if self.file_name == "visokoskolske_ustanove.csv":
-            self.list = VisokoskolskaUstanova.load()
+            return VisokoskolskaUstanova.load()
         elif self.file_name == "studenti.csv":
-            self.list = Student.load()
+            return Student.load()
+        return []
