@@ -1,4 +1,4 @@
-from model.student import Student
+from .student import Student
 
 class VisokoskolskaUstanova:
     def __init__(self, oznaka, naziv, adresa):

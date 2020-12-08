@@ -1,6 +1,6 @@
 from PySide2 import QtCore
-from model.visokoskolska_ustanova import VisokoskolskaUstanova
-from model.student import Student
+from .visokoskolska_ustanova import VisokoskolskaUstanova
+from .student import Student
 import json
 
 class Model(QtCore.QAbstractTableModel):
