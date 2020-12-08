@@ -1,14 +1,12 @@
 class Student:
     def __init__(self, ustanova, broj_indeksa, prezime, ime):
-        self.data = {
-            "Ustanova" : ustanova,
-            "Broj indeksa" : broj_indeksa,
-            "Prezime" : prezime,
-            "Ime" : ime
-        }
+        self.ustanova = ustanova 
+        self.broj_indeksa = broj_indeksa
+        self.prezime = prezime
+        self.ime = ime
 
     def serialize(self):
-        return self.data["Ustanova"] + ";" + self.data["Broj indeksa"] + ";" + self.data["Prezime"] + ";" + self.data["Ime"]
+        return self.ustanova + ";" + self.broj_indeksa + ";" + self.prezime + ";" + self.ime
 
     @staticmethod
     def deserialize(line):

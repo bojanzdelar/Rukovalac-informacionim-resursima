@@ -2,15 +2,13 @@ from model.student import Student
 
 class VisokoskolskaUstanova:
     def __init__(self, oznaka, naziv, adresa):
-        self.data = {
-            "Oznaka": oznaka,
-            "Naziv": naziv,
-            "Adresa": adresa
-        }
+        self.oznaka = oznaka
+        self.naziv = naziv
+        self.adresa = adresa
         self.list = [] # FIXME: privremeno 
 
     def serialize(self):
-        return self.data["oznaka"] + ";" + self.data["naziv"] + ";" + self.data["adresa"]
+        return self.oznaka + ";" + self.naziv + ";" + self.adresa
 
     @staticmethod
     def deserialize(line):
