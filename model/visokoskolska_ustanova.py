@@ -24,7 +24,7 @@ class VisokoskolskaUstanova:
         list = Student.load()
         for student in list:
             for ustanova in ustanove:
-                if student.data["Ustanova"] == ustanova.data["Oznaka"]:
+                if getattr(student, "ustanova") == getattr(ustanova, "oznaka"):
                     ustanova.list.append(student)
                     break
         return ustanove

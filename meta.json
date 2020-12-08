@@ -4,18 +4,18 @@
             "studenti.csv"
         ],
         "attributes" : [
-            "Oznaka",
-            "Naziv",
-            "Adresa"
+            "oznaka",
+            "naziv",
+            "adresa"
         ]
     },
     "studenti.csv" : {
         "subtables" : [],
         "attributes" : [
-            "Ustanova",
-            "Broj indeksa",
-            "Prezime",
-            "Ime"
+            "ustanova",
+            "broj_indeksa",
+            "prezime",
+            "ime"
         ]
     }
 }

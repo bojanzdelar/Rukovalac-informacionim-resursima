@@ -32,7 +32,7 @@ class Model(QtCore.QAbstractTableModel):
         element = self.get_element(index)
         for i in range(self.attributes()):
             if index.column() == i and role == QtCore.Qt.DisplayRole:
-                return element.data[self.get_attributes()[i]]
+                return getattr(element, self.get_attributes()[i])
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         for i in range(self.attributes()):
@@ -45,7 +45,7 @@ class Model(QtCore.QAbstractTableModel):
             return False
         for i in range(self.attributes()):
             if index.column() == i and role == QtCore.Qt.EditRole:
-                element.data[self.get_attributes()[i]] = value
+                setattr(element, self.get_attributes()[i], value)
                 return True
         return False
 
