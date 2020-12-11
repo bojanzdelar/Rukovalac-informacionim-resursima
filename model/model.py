@@ -1,65 +1,35 @@
 from PySide2 import QtCore
-from .visokoskolska_ustanova import VisokoskolskaUstanova
-from .student import Student
-import json
+from .informacioni_resurs import InformacioniResurs
 
 class Model(QtCore.QAbstractTableModel):
     def __init__(self, file_name, parent=None):
         super().__init__(parent)
-        self.file_name = file_name
-        self.info = self.read_meta()
-        self.list = self.load()
+        self.informacioni_resurs = InformacioniResurs(file_name)
+  
+    def rowCount(self, index=None):
+        return len(self.informacioni_resurs.data)
 
-    def attributes(self):
-        return len(self.get_attributes())
-
-    def get_element(self, index):
-        return self.list[index.row()]
-
-    def get_attributes(self):
-        return self.info["attributes"]
-
-    def get_subtables(self):
-        return self.info["subtables"]
-
-    def rowCount(self, index):
-        return len(self.list)
-
-    def columnCount(self, index):
-        return len(self.get_attributes())
+    def columnCount(self, index=None):
+        return len(self.informacioni_resurs.get_attributes())
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
-        element = self.get_element(index)
-        for i in range(self.attributes()):
+        for i in range(self.columnCount()):
             if index.column() == i and role == QtCore.Qt.DisplayRole:
-                return getattr(element, self.get_attributes()[i])
+                return self.informacioni_resurs.data[index.row()][i]
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
-        for i in range(self.attributes()):
+        for i in range(self.columnCount()):
             if section == i and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-                return self.get_attributes()[i]
+                return self.informacioni_resurs.get_attribute(i)
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
-        element = self.get_element(index)
         if value == "":
             return False
-        for i in range(self.attributes()):
+        for i in range(self.columnCount()):
             if index.column() == i and role == QtCore.Qt.EditRole:
-                setattr(element, self.get_attributes()[i], value)
+                self.informacioni_resurs.data[index.row()][i] = value
                 return True
         return False
 
     def flags(self, index):
         return super().flags(index) | QtCore.Qt.ItemIsEditable
-
-    def read_meta(self):
-        with open("meta.json") as file:
-            data = json.load(file)
-        return data[self.file_name]
-
-    def load(self):
-        if self.file_name == "visokoskolske_ustanove.csv":
-            return VisokoskolskaUstanova.load()
-        elif self.file_name == "studenti.csv":
-            return Student.load()
-        return []

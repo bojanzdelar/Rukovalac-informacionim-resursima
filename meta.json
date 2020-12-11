@@ -1,6 +1,5 @@
 {
-    "Visokoskolska ustanova" : {
-        "path" : "data/visokoskolska_ustanova.csv",
+    "visokoskolska_ustanova.csv" : {
         "subtables" : [
             "studenti.csv"
         ],
@@ -10,8 +9,7 @@
             "Adresa"
         ]
     },
-    "Studenti" : {
-        "path" : "data/studenti.csv",
+    "studenti.csv" : {
         "subtables" : [],
         "attributes" : [
             "Ustanova",
@@ -20,16 +18,14 @@
             "Ime"
         ]
     },
-    "Nivo studija" : {
-        "path" : "data/nivo_studija.csv",
+    "nivo_studija.csv" : {
         "subtables" : [],
         "attributes" : [
             "Oznaka",
             "Naziv"
         ]
     },
-    "Nastavni predmet" : {
-        "path" : "data/nastavni_predmet.csv",
+    "nastavni_predmet.csv" : {
         "subtables" : [],
         "attributes" : [
             "Ustanova",
@@ -38,8 +34,7 @@
             "ESPB"
         ]
     },
-    "Studijski programi" : {
-        "path" : "data/studijski_programi.csv",
+    "studijski_programi.csv" : {
         "subtables" : [],
         "attributes" : [
             "Ustanova",
@@ -48,8 +43,7 @@
             "Naziv programa"
         ]
     },
-    "Plan studijske grupe" : {
-        "path" : "data/plan_studijske_grupe.csv",
+    "plan_studijske_grupe.csv" : {
         "subtables" : [],
         "attributes" : [
             "Program ustanove",
@@ -60,8 +54,7 @@
             "Oznaka predmeta"
         ]
     },
-    "Tok studija" : {
-        "path" : "data/tok_studija.csv",
+    "tok_studija.csv" : {
         "subtables" : [],
         "attributes" : [
             "Ustanova",

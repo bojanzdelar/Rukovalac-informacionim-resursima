@@ -1,9 +1,7 @@
-from abc import ABC
-
 import csv
 import json
 
-class InformacioniResurs(ABC):
+class InformacioniResurs:
     def __init__(self, file_name):
         self.file_name = file_name
         self.meta = self.read_meta(file_name)
