@@ -131,8 +131,7 @@ dmypy.json
 # Visual Studio Code
 .vscode/
 
-# New
+# Other
 new/
-
-# PDF documents
 *.pdf
+bak.json

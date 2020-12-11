@@ -5,6 +5,9 @@ class Model(QtCore.QAbstractTableModel):
     def __init__(self, file_name, parent=None):
         super().__init__(parent)
         self.informacioni_resurs = InformacioniResurs(file_name)
+
+    def get_element(self, index):
+        return self.informacioni_resurs.data[index.row()]
   
     def rowCount(self, index=None):
         return len(self.informacioni_resurs.data)
@@ -15,7 +18,7 @@ class Model(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):
             if index.column() == i and role == QtCore.Qt.DisplayRole:
-                return self.informacioni_resurs.data[index.row()][i]
+                return self.get_element(index)[i]
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):
@@ -27,7 +30,7 @@ class Model(QtCore.QAbstractTableModel):
             return False
         for i in range(self.columnCount()):
             if index.column() == i and role == QtCore.Qt.EditRole:
-                self.informacioni_resurs.data[index.row()][i] = value
+                self.get_element(index)[i] = value
                 return True
         return False
 

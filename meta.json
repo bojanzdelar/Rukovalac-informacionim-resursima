@@ -1,62 +1,98 @@
 {
     "visokoskolska_ustanova.csv" : {
-        "subtables" : [
-            "studenti.csv"
+        "primary key" : [
+            "Oznaka"
         ],
         "attributes" : [
-            "Oznaka",
             "Naziv",
             "Adresa"
+        ],
+        "relations" : [
+            "studenti.csv",
+            "studijski_programi.csv",
+            "nastavni_predmet.csv"
         ]
     },
     "studenti.csv" : {
-        "subtables" : [],
-        "attributes" : [
+        "primary key" : [
             "Ustanova",
-            "Broj indeksa",
+            "Struka",
+            "Broj indeksa"
+        ],
+        "attributes" : [
             "Prezime",
-            "Ime"
+            "Ime roditelja",
+            "Ime",
+            "Pol",
+            "Adresa stanovanja",
+            "Telefon",
+            "JMBG",
+            "Datum rodjenja"
+        ],
+        "relations" : [
+            "visokoskolska_ustanova.csv",
+            "tok_studija.csv"
         ]
     },
     "nivo_studija.csv" : {
-        "subtables" : [],
+        "primary key" : [
+            "Oznaka"
+        ],
         "attributes" : [
-            "Oznaka",
             "Naziv"
+        ],
+        "relations" : [
+            "studijski_programi.csv"
         ]
     },
     "nastavni_predmet.csv" : {
-        "subtables" : [],
-        "attributes" : [
+        "primary key" : [
             "Ustanova",
-            "Oznaka",
+            "Oznaka"
+        ],
+        "attributes" : [
             "Naziv",
             "ESPB"
+        ],
+        "relations" : [
+            "visokoskolska_ustanova.csv",
+            "plan_studijske_grupe.csv"
         ]
     },
     "studijski_programi.csv" : {
-        "subtables" : [],
-        "attributes" : [
+        "primary key": [
             "Ustanova",
             "Nivo",
-            "Oznaka programa",
+            "Oznaka programa"
+        ],
+        "attributes" : [
             "Naziv programa"
+        ],
+        "relations" : [
+            "visokoskolska_ustanova.csv",
+            "nastavni_predmet.csv",
+            "plan_studijske_grupe.csv",
+            "tok_studija.csv"
         ]
     },
     "plan_studijske_grupe.csv" : {
-        "subtables" : [],
-        "attributes" : [
+        "primary_key" : [
             "Program ustanove",
             "Oznaka programa",
             "Blok",
-            "Pozicija",
+            "Pozicija"
+        ],
+        "attributes" : [
             "Ustanova predmet",
             "Oznaka predmeta"
+        ],
+        "relations" : [
+            "studijski_programi.csv",
+            "nastavni_predmet.csv"
         ]
     },
     "tok_studija.csv" : {
-        "subtables" : [],
-        "attributes" : [
+        "primary key" : [
             "Ustanova",
             "Oznaka programa",
             "Student iz ustanove",
@@ -65,11 +101,17 @@
             "Skolska godina",
             "Godina studija",
             "Blok",
-            "Redni broj upisa",
+            "Redni broj upisa"
+        ],    
+        "attributes" : [
             "Datum upisa",
             "Datum overe",
             "ESPB pocetni",
             "ESPB krajnji"
+        ],
+        "relations" : [
+            "studenti.csv",
+            "studijski_programi.csv"
         ]
     }
 }

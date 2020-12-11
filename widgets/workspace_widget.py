@@ -27,12 +27,12 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return main_table
 
     def selected(self, index):
-        subtables = self.main_table.model().get_subtables()
+        subtables = self.main_table.model().informacioni_resurs.get_subtables()
         self.tab_widget.clear()
         for subtable in subtables:
-            selected_element = self.main_table.model().get_element(index)
+            # selected_element = self.main_table.model().get_element(index) FIXME: implementirati filtriranje na drugi nacin
             submodel = Model(subtable)
-            submodel.list = selected_element.list
+            # submodel.list = selected_element.list # FIXME: implementirati filtriranje na drugi nacin
             tab = self.create_table(self.tab_widget)
             tab.setModel(submodel)
             self.tab_widget.addTab(tab, subtable)

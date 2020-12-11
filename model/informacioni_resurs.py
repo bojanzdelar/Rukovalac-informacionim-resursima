@@ -22,4 +22,4 @@ class InformacioniResurs:
         return self.get_attributes()[index]
 
     def get_attributes(self):
-        return self.meta["attributes"]
+        return self.meta["primary key"] + self.meta["attributes"]
