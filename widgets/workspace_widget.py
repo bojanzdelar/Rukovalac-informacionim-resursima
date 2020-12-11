@@ -27,15 +27,16 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return main_table
 
     def selected(self, index):
-        subtables = self.main_table.model().informacioni_resurs.get_subtables()
+        relations = self.main_table.model().informacioni_resurs.get_relations()
         self.tab_widget.clear()
-        for subtable in subtables:
-            # selected_element = self.main_table.model().get_element(index) FIXME: implementirati filtriranje na drugi nacin
-            submodel = Model(subtable)
-            # submodel.list = selected_element.list # FIXME: implementirati filtriranje na drugi nacin
+        for relation, link in relations.items():
+            model = Model(relation)
+            attribute_index = self.main_table.model().informacioni_resurs.get_attribute_index(link[0])
+            value = self.main_table.model().get_element(index)[attribute_index]
+            model.informacioni_resurs.filter(link[1], value)
             tab = self.create_table(self.tab_widget)
-            tab.setModel(submodel)
-            self.tab_widget.addTab(tab, subtable)
+            tab.setModel(model)
+            self.tab_widget.addTab(tab, relation)
 
     def create_tab_widget(self):
         tab_widget = QtWidgets.QTabWidget(self)

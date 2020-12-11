@@ -15,11 +15,20 @@ class InformacioniResurs:
         with open("data/" + file_name) as file:
             return [row for row in csv.reader(file, delimiter=";")]
 
-    def get_subtables(self):
-        return self.meta["subtables"]
+    def get_attributes(self):
+        return self.meta["primary key"] + self.meta["attributes"]
 
     def get_attribute(self, index):
         return self.get_attributes()[index]
+    
+    def get_attribute_index(self, attribute):
+        return self.get_attributes().index(attribute)
 
-    def get_attributes(self):
-        return self.meta["primary key"] + self.meta["attributes"]
+    def get_relations(self):
+        return self.meta["relations"]
+
+    def filter(self, attribute, value):
+        index = self.get_attribute_index(attribute)
+        for element in reversed(self.data):
+            if element[index] != value:
+                self.data.remove(element)
