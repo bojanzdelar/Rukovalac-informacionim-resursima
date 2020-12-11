@@ -1,21 +1,82 @@
 {
-    "visokoskolske_ustanove.csv" : {
+    "Visokoskolska ustanova" : {
+        "path" : "data/visokoskolska_ustanova.csv",
         "subtables" : [
             "studenti.csv"
         ],
         "attributes" : [
-            "oznaka",
-            "naziv",
-            "adresa"
+            "Oznaka",
+            "Naziv",
+            "Adresa"
         ]
     },
-    "studenti.csv" : {
+    "Studenti" : {
+        "path" : "data/studenti.csv",
         "subtables" : [],
         "attributes" : [
-            "ustanova",
-            "broj_indeksa",
-            "prezime",
-            "ime"
+            "Ustanova",
+            "Broj indeksa",
+            "Prezime",
+            "Ime"
+        ]
+    },
+    "Nivo studija" : {
+        "path" : "data/nivo_studija.csv",
+        "subtables" : [],
+        "attributes" : [
+            "Oznaka",
+            "Naziv"
+        ]
+    },
+    "Nastavni predmet" : {
+        "path" : "data/nastavni_predmet.csv",
+        "subtables" : [],
+        "attributes" : [
+            "Ustanova",
+            "Oznaka",
+            "Naziv",
+            "ESPB"
+        ]
+    },
+    "Studijski programi" : {
+        "path" : "data/studijski_programi.csv",
+        "subtables" : [],
+        "attributes" : [
+            "Ustanova",
+            "Nivo",
+            "Oznaka programa",
+            "Naziv programa"
+        ]
+    },
+    "Plan studijske grupe" : {
+        "path" : "data/plan_studijske_grupe.csv",
+        "subtables" : [],
+        "attributes" : [
+            "Program ustanove",
+            "Oznaka programa",
+            "Blok",
+            "Pozicija",
+            "Ustanova predmet",
+            "Oznaka predmeta"
+        ]
+    },
+    "Tok studija" : {
+        "path" : "data/tok_studija.csv",
+        "subtables" : [],
+        "attributes" : [
+            "Ustanova",
+            "Oznaka programa",
+            "Student iz ustanove",
+            "Struka",
+            "Broj indeksa",
+            "Skolska godina",
+            "Godina studija",
+            "Blok",
+            "Redni broj upisa",
+            "Datum upisa",
+            "Datum overe",
+            "ESPB pocetni",
+            "ESPB krajnji"
         ]
     }
 }
