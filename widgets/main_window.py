@@ -15,8 +15,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setStatusBar(QtWidgets.QStatusBar())
         self.statusBar().showMessage("Status bar")
         self.setCentralWidget(CentralWidget(self))
-        self.addToolBar(QtWidgets.QToolBar())
+        # self.addToolBar(QtWidgets.QToolBar())
 
-        dock_widget = DockWidget("File Exporer", self)
+        dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
