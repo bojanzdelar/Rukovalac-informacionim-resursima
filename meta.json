@@ -100,7 +100,7 @@
     },
     "plan_studijske_grupe.csv" : {
         "primary key" : [
-            "Program ustanove",
+            "Program Ustanove",
             "Oznaka programa",
             "Blok",
             "Pozicija"
