@@ -27,13 +27,13 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return main_table
 
     def selected(self, index):
-        relations = self.main_table.model().informacioni_resurs.get_relations()
+        relations = self.main_table.model().information_resource.get_relations()
         self.tab_widget.clear()
         for relation, link in relations.items():
             model = Model(relation)
-            attribute_index = self.main_table.model().informacioni_resurs.get_attribute_index(link[0])
+            attribute_index = self.main_table.model().information_resource.get_attribute_index(link[0])
             value = self.main_table.model().get_element(index)[attribute_index]
-            model.informacioni_resurs.filter(link[1], value)
+            model.information_resource.filter(link[1], value)
             tab = self.create_table(self.tab_widget)
             tab.setModel(model)
             self.tab_widget.addTab(tab, relation)
