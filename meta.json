@@ -3,15 +3,22 @@
         "primary key" : [
             "Oznaka"
         ],
+        "foreign key" : [],
         "attributes" : [
             "Naziv",
             "Adresa"
         ],
-        "relations" : [
-            "studenti.csv",
-            "studijski_programi.csv",
-            "nastavni_predmet.csv"
-        ]
+        "relations" : {
+            "studenti.csv" : [
+                "Ustanova"
+            ],
+            "studijski_programi.csv" : [
+                "Ustanova"
+            ],
+            "nastavni_predmet.csv" : [
+                "Ustanova"
+            ]
+        }
     },
     "studenti.csv" : {
         "primary key" : [
@@ -19,6 +26,7 @@
             "Struka",
             "Broj indeksa"
         ],
+        "foreign key" : [],
         "attributes" : [
             "Prezime",
             "Ime roditelja",
@@ -29,67 +37,79 @@
             "JMBG",
             "Datum rodjenja"
         ],
-        "relations" : [
-            "visokoskolska_ustanova.csv",
-            "tok_studija.csv"
-        ]
+        "relations" : {
+            "tok_studija.csv" : [
+                "Ustanova", 
+                "Struka", 
+                "Broj indeksa"
+            ]
+        }
     },
     "nivo_studija.csv" : {
         "primary key" : [
             "Oznaka"
         ],
+        "foreign key" : [],
         "attributes" : [
             "Naziv"
         ],
-        "relations" : [
-            "studijski_programi.csv"
-        ]
+        "relations" : {
+            "studijski_programi.csv" : [
+                "Nivo"
+            ]
+        }
     },
     "nastavni_predmet.csv" : {
         "primary key" : [
             "Ustanova",
             "Oznaka"
         ],
+        "foreign key" : [],
         "attributes" : [
             "Naziv",
             "ESPB"
         ],
-        "relations" : [
-            "visokoskolska_ustanova.csv",
-            "plan_studijske_grupe.csv"
-        ]
+        "relations" : {
+            "plan_studijske_grupe.csv" : [
+                "Ustanova predmet",
+                "Oznaka predmeta"
+            ]
+        }
     },
     "studijski_programi.csv" : {
-        "primary key": [
+        "primary key" : [
             "Ustanova",
-            "Nivo",
             "Oznaka programa"
+        ],
+        "foreign key" : [
+            "Nivo"
         ],
         "attributes" : [
             "Naziv programa"
         ],
-        "relations" : [
-            "visokoskolska_ustanova.csv",
-            "nastavni_predmet.csv",
-            "plan_studijske_grupe.csv",
-            "tok_studija.csv"
-        ]
+        "relations" : {
+            "tok_studija.csv" : [
+                "Ustanova",
+                "Oznaka programa"
+            ],
+            "plan_studijske_grupe.csv" : [
+                "Program Ustanove",
+                "Oznaka programa"
+            ]
+        }
     },
     "plan_studijske_grupe.csv" : {
-        "primary_key" : [
+        "primary key" : [
             "Program ustanove",
             "Oznaka programa",
             "Blok",
             "Pozicija"
         ],
-        "attributes" : [
+        "foreign key" : [
             "Ustanova predmet",
             "Oznaka predmeta"
         ],
-        "relations" : [
-            "studijski_programi.csv",
-            "nastavni_predmet.csv"
-        ]
+        "attributes" : []
     },
     "tok_studija.csv" : {
         "primary key" : [
@@ -102,16 +122,13 @@
             "Godina studija",
             "Blok",
             "Redni broj upisa"
-        ],    
+        ],
+        "foreign key" : [],    
         "attributes" : [
             "Datum upisa",
             "Datum overe",
             "ESPB pocetni",
             "ESPB krajnji"
-        ],
-        "relations" : [
-            "studenti.csv",
-            "studijski_programi.csv"
         ]
     }
 }

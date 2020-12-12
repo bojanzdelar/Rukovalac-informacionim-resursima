@@ -13,7 +13,7 @@ class Model(QtCore.QAbstractTableModel):
         return len(self.information_resource.data)
 
     def columnCount(self, index=None):
-        return len(self.information_resource.get_attributes())
+        return len(self.information_resource.get_attribute())
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):
