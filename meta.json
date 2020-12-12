@@ -109,7 +109,8 @@
             "Ustanova predmet",
             "Oznaka predmeta"
         ],
-        "attributes" : []
+        "attributes" : [],
+        "relations" : {}
     },
     "tok_studija.csv" : {
         "primary key" : [
@@ -129,6 +130,7 @@
             "Datum overe",
             "ESPB pocetni",
             "ESPB krajnji"
-        ]
+        ],
+        "relations" : {}
     }
 }
