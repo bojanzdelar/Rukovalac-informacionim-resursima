@@ -13,7 +13,7 @@ class InformationResource:
     
     def read_data(self, file_name):
         with open("data/" + file_name) as file:
-            return [row for row in csv.reader(file, delimiter=";")]
+            return [row for row in csv.reader(file)]
 
     def get_attribute(self, index=None):
         list = self.meta["primary key"] + self.meta["foreign key"] + self.meta["attributes"]
