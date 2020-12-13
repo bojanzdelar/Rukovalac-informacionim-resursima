@@ -7,7 +7,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.resize(640, 480)
+        self.resize(1280, 960)
         self.setWindowTitle("Rukovalac informacionim resursima")
         self.setWindowIcon(QtGui.QIcon("image/logo-64.png"))
 
@@ -39,7 +39,10 @@ class MainWindow(QtWidgets.QMainWindow):
         elif command == "Create":
             ...
         elif command == "Delete":
-            ...
+            workspace_widget = self.centralWidget().currentWidget()
+            if not workspace_widget:
+                return
+            workspace_widget.delete_row()
         elif command == "Manual":
             ...
         elif command == "About":

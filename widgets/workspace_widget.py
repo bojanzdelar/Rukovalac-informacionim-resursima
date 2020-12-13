@@ -50,3 +50,13 @@ class WorkspaceWidget(QtWidgets.QWidget):
         
     def delete_tab(self, index):
         self.tab_widget.removeTab(index)
+
+    def delete_row(self):
+        indexes = self.main_table.selectionModel().selectedIndexes()
+        if not len(indexes):
+            return
+        self.model.layoutAboutToBeChanged.emit()
+        self.information_resource.delete_element(indexes[0].row())
+        self.model.layoutChanged.emit()
+        self.main_table.clearSelection()
+        self.tab_widget.clear()
