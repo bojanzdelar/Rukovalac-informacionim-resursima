@@ -35,6 +35,9 @@ class InformationResource:
     def get_relations(self):
         return self.meta["relations"]
 
+    def delete_element(self, index):
+        self.data.pop(index)
+
     def filter(self, attributes, values):
         indexes = self.get_attributes_indexes(attributes)
         for element in reversed(self.data):
