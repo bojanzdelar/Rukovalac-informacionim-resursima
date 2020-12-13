@@ -1,5 +1,6 @@
 {
     "visokoskolska_ustanova.csv" : {
+        "type" : "sequential",
         "primary key" : [
             "Oznaka"
         ],
@@ -21,6 +22,7 @@
         }
     },
     "studenti.csv" : {
+        "type" : "sequential",
         "primary key" : [
             "Ustanova",
             "Struka",
@@ -46,6 +48,7 @@
         }
     },
     "nivo_studija.csv" : {
+        "type" : "serial",
         "primary key" : [
             "Oznaka"
         ],
@@ -60,6 +63,7 @@
         }
     },
     "nastavni_predmet.csv" : {
+        "type" : "sequential",
         "primary key" : [
             "Ustanova",
             "Oznaka"
@@ -77,6 +81,7 @@
         }
     },
     "studijski_programi.csv" : {
+        "type" : "serial",
         "primary key" : [
             "Ustanova",
             "Oznaka programa"
@@ -99,6 +104,7 @@
         }
     },
     "plan_studijske_grupe.csv" : {
+        "type" : "serial",
         "primary key" : [
             "Program Ustanove",
             "Oznaka programa",
@@ -113,6 +119,7 @@
         "relations" : {}
     },
     "tok_studija.csv" : {
+        "type" : "serial",
         "primary key" : [
             "Ustanova",
             "Oznaka programa",

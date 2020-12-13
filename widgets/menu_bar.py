@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide2 import QtCore, QtWidgets
 
 class MenuBar(QtWidgets.QMenuBar):
     def __init__(self, parent):
@@ -7,7 +7,7 @@ class MenuBar(QtWidgets.QMenuBar):
         self.file_menu = self.generate_file_menu()
         self.edit_menu = self.generate_edit_menu()
         self.help_menu = self.generate_help_menu()
-    
+
     def generate_file_menu(self):
         file_menu = self.addMenu("File")
 
@@ -19,8 +19,10 @@ class MenuBar(QtWidgets.QMenuBar):
 
         file_menu.addAction(save_action)
         file_menu.addAction(save_all_action)
+        file_menu.addSeparator()
         file_menu.addAction(close_action)
         file_menu.addAction(close_all_action)
+        file_menu.addSeparator()
         file_menu.addAction(exit_action)
 
         return file_menu

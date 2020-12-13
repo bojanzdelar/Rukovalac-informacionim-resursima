@@ -4,16 +4,20 @@ import json
 class InformationResource:
     def __init__(self, file_name):
         self.file_name = file_name
-        self.meta = self.read_meta(file_name)
-        self.data = self.read_data(file_name)
+        self.meta = self.read_meta()
+        self.data = self.read_data()
 
-    def read_meta(self, file_name):
-        with open("meta.json") as file:
+    def read_meta(self):
+        with open("meta.json", "r", encoding="utf-8") as file:
             return json.load(file)[self.file_name]
     
-    def read_data(self, file_name):
-        with open("data/" + file_name) as file:
+    def read_data(self):
+        with open("data/" + self.file_name, "r", encoding="utf-8") as file:
             return [row for row in csv.reader(file)]
+
+    def save_data(self):
+        with open("data/" + self.file_name, "w", encoding="utf-8", newline='') as file:
+            csv.writer(file).writerows(self.data)
 
     def get_attribute(self, index=None):
         list = self.meta["primary key"] + self.meta["foreign key"] + self.meta["attributes"]

@@ -12,6 +12,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon("image/logo-64.png"))
 
         self.setMenuBar(MenuBar(self))
+        self.menuBar().triggered.connect(self.menu_actions)
+
         self.setStatusBar(QtWidgets.QStatusBar())
         self.statusBar().showMessage("Status bar")
         self.setCentralWidget(CentralWidget(self))
@@ -20,3 +22,25 @@ class MainWindow(QtWidgets.QMainWindow):
         dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
+
+    def menu_actions(self, action):
+        command = action.text()
+        if command == "Close":
+            self.centralWidget().delete_active_tab()
+        elif command == "Close all":
+            self.centralWidget().clear()
+        elif command == "Save":
+            self.centralWidget().currentWidget().information_resource.save_data()
+        elif command == "Save all":
+            for i in range(self.centralWidget().count()):
+                self.centralWidget().widget(i).information_resource.save_data()
+        elif command == "Exit":
+            self.close()
+        elif command == "Create":
+            ...
+        elif command == "Delete":
+            ...
+        elif command == "Manual":
+            ...
+        elif command == "About":
+            ...

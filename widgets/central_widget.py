@@ -17,3 +17,6 @@ class CentralWidget(QtWidgets.QTabWidget):
 
     def delete_tab(self, index):
         self.removeTab(index)
+
+    def delete_active_tab(self):
+        self.removeTab(self.currentIndex())
