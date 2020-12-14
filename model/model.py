@@ -7,7 +7,7 @@ class Model(QtCore.QAbstractTableModel):
         self.information_resource = InformationResource(file_name)
 
     def get_element(self, index):
-        return self.information_resource.data[index.row()]
+        return self.information_resource.read_element(index.row())
   
     def rowCount(self, index=None):
         return len(self.information_resource.data)
@@ -33,6 +33,3 @@ class Model(QtCore.QAbstractTableModel):
                 self.get_element(index)[i] = value
                 return True
         return False
-
-    def flags(self, index):
-        return super().flags(index) | QtCore.Qt.ItemIsEditable

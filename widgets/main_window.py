@@ -24,25 +24,31 @@ class MainWindow(QtWidgets.QMainWindow):
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
 
     def menu_actions(self, action):
+        central_widget = self.centralWidget()
         command = action.text()
         if command == "Close":
-            self.centralWidget().delete_active_tab()
+            central_widget.delete_active_tab()
         elif command == "Close all":
-            self.centralWidget().clear()
+            central_widget.clear()
         elif command == "Save":
-            self.centralWidget().currentWidget().information_resource.save_data()
+            central_widget.currentWidget().information_resource.save_data()
         elif command == "Save all":
-            for i in range(self.centralWidget().count()):
-                self.centralWidget().widget(i).information_resource.save_data()
+            for i in range(central_widget.count()):
+                central_widget.widget(i).information_resource.save_data()
         elif command == "Exit":
             self.close()
         elif command == "Create":
-            workspace_widget = self.centralWidget().currentWidget()
+            workspace_widget = central_widget.currentWidget()
             if not workspace_widget:
                 return
             workspace_widget.create_row()
+        elif command == "Update":
+            workspace_widget = central_widget.currentWidget()
+            if not workspace_widget:
+                return
+            workspace_widget.update_row()
         elif command == "Delete":
-            workspace_widget = self.centralWidget().currentWidget()
+            workspace_widget = central_widget.currentWidget()
             if not workspace_widget:
                 return
             workspace_widget.delete_row()

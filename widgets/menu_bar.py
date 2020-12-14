@@ -31,9 +31,11 @@ class MenuBar(QtWidgets.QMenuBar):
         edit_menu = self.addMenu("Edit")
 
         create_action = QtWidgets.QAction("Create", self)
+        update_action = QtWidgets.QAction("Update", self)
         delete_action = QtWidgets.QAction("Delete", self)
 
         edit_menu.addAction(create_action)
+        edit_menu.addAction(update_action)
         edit_menu.addAction(delete_action)
 
         return edit_menu

@@ -1,6 +1,7 @@
 from PySide2 import QtWidgets, QtGui
 from model.model import Model
 from widgets.create_dialog import CreateDialog
+from widgets.update_dialog import UpdateDialog
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, file_name, parent):
@@ -53,6 +54,15 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.model.layoutAboutToBeChanged.emit()
         dialog = CreateDialog(self.information_resource)
         dialog.exec_()
+        self.model.layoutChanged.emit()
+
+    def update_row(self):
+        indexes = self.main_table.selectionModel().selectedIndexes()
+        if not len(indexes):
+            return
+        self.model.layoutAboutToBeChanged.emit()
+        dialog = UpdateDialog(self.information_resource, indexes[0].row())
+        dialog.exec_() 
         self.model.layoutChanged.emit()
 
     def delete_tab(self, index):

@@ -35,6 +35,15 @@ class InformationResource:
     def get_relations(self):
         return self.meta["relations"]
 
+    def create_element(self, element):
+        self.data.append(element)
+
+    def read_element(self, index):
+        return self.data[index]
+
+    def update_element(self, index, element):
+        self.data[index] = element
+
     def delete_element(self, index):
         self.data.pop(index)
 
