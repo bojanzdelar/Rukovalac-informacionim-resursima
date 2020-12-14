@@ -1,6 +1,6 @@
 {
     "visokoskolska_ustanova.csv" : {
-        "type" : "sequential",
+        "type" : "serial",
         "primary key" : [
             "Oznaka"
         ],
@@ -22,7 +22,7 @@
         }
     },
     "studenti.csv" : {
-        "type" : "sequential",
+        "type" : "serial",
         "primary key" : [
             "Ustanova",
             "Struka",
@@ -63,7 +63,7 @@
         }
     },
     "nastavni_predmet.csv" : {
-        "type" : "sequential",
+        "type" : "serial",
         "primary key" : [
             "Ustanova",
             "Oznaka"
