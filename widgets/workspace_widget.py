@@ -1,5 +1,6 @@
 from PySide2 import QtWidgets, QtGui
 from model.model import Model
+from widgets.create_dialog import CreateDialog
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, file_name, parent):
@@ -47,7 +48,13 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tab_widget.setTabsClosable(True)
         tab_widget.tabCloseRequested.connect(self.delete_tab)
         return tab_widget
-        
+
+    def create_row(self):
+        self.model.layoutAboutToBeChanged.emit()
+        dialog = CreateDialog(self.information_resource)
+        dialog.exec_()
+        self.model.layoutChanged.emit()
+
     def delete_tab(self, index):
         self.tab_widget.removeTab(index)
 

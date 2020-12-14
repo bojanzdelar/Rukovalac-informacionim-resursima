@@ -37,7 +37,10 @@ class MainWindow(QtWidgets.QMainWindow):
         elif command == "Exit":
             self.close()
         elif command == "Create":
-            ...
+            workspace_widget = self.centralWidget().currentWidget()
+            if not workspace_widget:
+                return
+            workspace_widget.create_row()
         elif command == "Delete":
             workspace_widget = self.centralWidget().currentWidget()
             if not workspace_widget:
