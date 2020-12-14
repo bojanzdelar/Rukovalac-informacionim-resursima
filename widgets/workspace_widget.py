@@ -2,6 +2,7 @@ from PySide2 import QtWidgets, QtGui
 from model.model import Model
 from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
+from widgets.tool_bar import ToolBar
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, file_name, parent):
@@ -9,11 +10,21 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
         self.file_name = file_name
         self.main_layout = QtWidgets.QVBoxLayout()
+        self.tool_bar = self.create_tool_bar()
         self.main_table = self.create_main_table()
         self.tab_widget = self.create_tab_widget()
+        self.main_layout.addWidget(self.tool_bar)
         self.main_layout.addWidget(self.main_table)
         self.main_layout.addWidget(self.tab_widget)
         self.setLayout(self.main_layout)
+
+    def create_tool_bar(self):
+        tool_bar = ToolBar(self)
+        tool_bar.create_action.triggered.connect(self.create_row)
+        tool_bar.update_action.triggered.connect(self.update_row)
+        tool_bar.delete_action.triggered.connect(self.delete_row)
+        tool_bar.save_action.triggered.connect(lambda: self.information_resource.save_data())
+        return tool_bar
 
     def create_table(self, parent = None):
         table = QtWidgets.QTableView(parent)
