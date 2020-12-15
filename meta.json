@@ -18,15 +18,14 @@
             }
         ],
         "relations" : {
-            "studenti.csv" : [
-                "Ustanova"
-            ],
-            "studijski_programi.csv" : [
-                "Ustanova"
-            ],
-            "nastavni_predmet.csv" : [
-                "Ustanova"
-            ]
+            "studenti.csv" : {
+                "type" : "child",
+                "attribute" : "Ustanova"
+            },
+            "studijski_programi.csv" : {
+                "type" : "child",
+                "attribute" : "Ustanova"
+            }
         }
     },
     "studenti.csv" : {
@@ -88,11 +87,14 @@
             }
         ],
         "relations" : {
-            "tok_studija.csv" : [
-                "Ustanova", 
-                "Struka", 
-                "Broj indeksa"
-            ]
+            "visokoskolska_ustanova.csv" : {
+                "type" : "parent",
+                "attribute" : "Oznaka"
+            },
+            "tok_studija.csv" : {
+                "type" : "child",
+                "attribute" : ["Ustanova", "Struka", "Broj indeksa"]
+            }
         }
     },
     "nivo_studija.csv" : {
@@ -109,9 +111,10 @@
             }
         ],
         "relations" : {
-            "studijski_programi.csv" : [
-                "Nivo"
-            ]
+            "studijski_programi.csv" : {
+                "type" : "child",
+                "attribute" : "Nivo"
+            }
         }
     },
     "nastavni_predmet.csv" : {
@@ -138,10 +141,14 @@
             }
         ],
         "relations" : {
-            "plan_studijske_grupe.csv" : [
-                "Ustanova predmet",
-                "Oznaka predmeta"
-            ]
+            "visokoskolska_ustanova.csv" : {
+                "type" : "parent",
+                "attribute" : "Ustanova"
+            },
+            "plan_studijske_grupe.csv" : {
+                "type" : "child",
+                "attribute" : ["Ustanova predmet", "Oznaka predmeta"]
+            }
         }
     },
     "studijski_programi.csv" : {
@@ -168,14 +175,22 @@
             }
         ],
         "relations" : {
-            "tok_studija.csv" : [
-                "Ustanova",
-                "Oznaka programa"
-            ],
-            "plan_studijske_grupe.csv" : [
-                "Program Ustanove",
-                "Oznaka programa"
-            ]
+            "visokoskolska_ustanova.csv" : {
+                "type" : "parent",
+                "attribute" : "Oznaka"
+            },
+            "nivo_studija.csv" : {
+                "type" : "parent",
+                "attribute" : "Oznaka"
+            },
+            "tok_studija.csv" : {
+                "type" : "child",
+                "attribute" : ["Ustanova", "Oznaka programa"]
+            },
+            "plan_studijske_grupe.csv" : {
+                "type" : "child",
+                "attribute" : ["Program Ustanove", "Oznaka programa"]
+            }
         }
     },
     "plan_studijske_grupe.csv" : {
@@ -211,7 +226,16 @@
                 "length" : 6
             }
         ],
-        "relations" : {}
+        "relations" : {
+            "studijski_programi.csv" : {
+                "type" : "parent",
+                "attribute" : ["Ustanova", "Oznaka programa"]
+            },
+            "nastavni_predmet.csv" : {
+                "type" : "parent",
+                "attribute" : ["Ustanova", "Oznaka"]
+            }
+        }
     },
     "tok_studija.csv" : {
         "attributes" : [
@@ -281,6 +305,15 @@
                 "length" : 3
             }
         ],
-        "relations" : {}
+        "relations" : {
+            "studenti.csv" : {
+                "type" : "parent",
+                "attribute" : ["Ustanova", "Struka", "Broj indeksa"]
+            },
+            "studijski_programi.csv" : {
+                "type" : "parent",
+                "attribute" : ["Ustanova", "Oznaka programa"]
+            }
+        }
     }
 }

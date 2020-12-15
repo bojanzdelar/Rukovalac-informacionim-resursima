@@ -32,6 +32,8 @@ class InformationResource:
 
     def get_attributes_indexes(self, attributes):
         indexes = []
+        if type(attributes) != list:
+            attributes = [attributes]
         for attribute in attributes:
             indexes.append(self.get_attribute_index(attribute))
         return indexes
@@ -45,6 +47,14 @@ class InformationResource:
 
     def get_relations(self):
         return self.meta["relations"]
+
+    def get_children(self):
+        children = {}
+        relations = self.get_relations()
+        for key, value in relations.items():
+            if value["type"] == "child":
+                children[key] = value
+        return children
 
     def create_element(self, element):
         self.data.append(element)

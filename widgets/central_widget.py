@@ -19,12 +19,9 @@ class CentralWidget(QtWidgets.QTabWidget):
             self.addTab(WorkspaceWidget(file_name, self), file_name)
 
     def delete_tab(self, index):
-        self.open_files.remove(self.currentWidget().file_name)
+        self.open_files.remove(self.tabText(index))
         self.removeTab(index)
-
-    def delete_active_tab(self):
-        self.removeTab(self.currentIndex())
-
+        
     def delete_all(self):
         self.clear()
         self.open_files = []
