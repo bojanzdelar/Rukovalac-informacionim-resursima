@@ -1,10 +1,10 @@
-TF,SII,10,Softversko i informaciono inzenjerstvo
-IR,IR,10,Informatika i racunarstvo
-IR,IT,10,Informacione tehnologije
-FK,FVS,10,Fizicko vaspitanje i sport
-FK,MS,10,Menadzment u sportu
-TH,TUR,10,Turizam
-TH,HOT,10,Hotelijerstvo
-TH,EH,10,Ekonomija hrane
-PF,PE,10,Poslovna Ekonomija
-PF,ANG,10,Anglistika
+TF,10,SII,Softversko i informaciono inzenjerstvo
+IR,10,IR,Informatika i racunarstvo
+IR,10,IT,Informacione tehnologije
+FK,10,FVS,Fizicko vaspitanje i sport
+FK,10,MS,Menadzment u sportu
+TH,10,TUR,Turizam
+TH,10,HOT,Hotelijerstvo
+TH,10,EH,Ekonomija hrane
+PF,10,PE,Poslovna Ekonomija
+PF,10,ANG,Anglistika

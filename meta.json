@@ -1,13 +1,21 @@
 {
     "visokoskolska_ustanova.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Oznaka"
-        ],
-        "foreign key" : [],
         "attributes" : [
-            "Naziv",
-            "Adresa"
+            {   "name" : "Oznaka",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Naziv",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 80
+            },
+            {   "name" : "Adresa",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 80
+            }
         ],
         "relations" : {
             "studenti.csv" : [
@@ -22,22 +30,62 @@
         }
     },
     "studenti.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Ustanova",
-            "Struka",
-            "Broj indeksa"
-        ],
-        "foreign key" : [],
         "attributes" : [
-            "Prezime",
-            "Ime roditelja",
-            "Ime",
-            "Pol",
-            "Adresa stanovanja",
-            "Telefon",
-            "JMBG",
-            "Datum rodjenja"
+            {   "name" : "Ustanova",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Struka",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Broj indeksa",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 6
+            },
+            {   "name" : "Prezime",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 20
+            },
+            {   "name" : "Ime roditelja",
+                "type" : "optional",
+                "input" : "characters",
+                "length" : 20
+            },
+            {   "name" : "Ime",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 20
+            },
+            {   "name" : "Pol",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 1
+            },
+            {   "name" : "Oznaka",
+                "type" : "optional",
+                "input" : "characters",
+                "length" : 80
+            },
+            {   "name" : "Telefon",
+                "type" : "optional",
+                "input" : "characters",
+                "length" : 20
+            },
+            {   "name" : "JMBG",
+                "type" : "optional",
+                "input" : "characters",
+                "length" : 13
+            },
+            {   "name" : "Datum rodjenja",
+                "type" : "optional",
+                "input" : "date",
+                "length" : 0
+            }
         ],
         "relations" : {
             "tok_studija.csv" : [
@@ -48,13 +96,17 @@
         }
     },
     "nivo_studija.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Oznaka"
-        ],
-        "foreign key" : [],
         "attributes" : [
-            "Naziv"
+            {   "name" : "Oznaka",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Naziv",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 80
+            }
         ],
         "relations" : {
             "studijski_programi.csv" : [
@@ -63,15 +115,27 @@
         }
     },
     "nastavni_predmet.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Ustanova",
-            "Oznaka"
-        ],
-        "foreign key" : [],
         "attributes" : [
-            "Naziv",
-            "ESPB"
+            {   "name" : "Ustanova",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Oznaka",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 6
+            },
+            {   "name" : "Naziv",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 120
+            },
+            {   "name" : "ESPB",
+                "type" : "required",
+                "input" : "number",
+                "length" : 2
+            }
         ],
         "relations" : {
             "plan_studijske_grupe.csv" : [
@@ -81,16 +145,27 @@
         }
     },
     "studijski_programi.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Ustanova",
-            "Oznaka programa"
-        ],
-        "foreign key" : [
-            "Nivo"
-        ],
         "attributes" : [
-            "Naziv programa"
+            {   "name" : "Ustanova",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2  
+            },
+            {   "name" : "Nivo",
+                "type" : "foreign key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Oznaka programa",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 3
+            },
+            {   "name" : "Naziv programa",
+                "type" : "required",
+                "input" : "characters",
+                "length" : 120
+            }
         ],
         "relations" : {
             "tok_studija.csv" : [
@@ -104,39 +179,107 @@
         }
     },
     "plan_studijske_grupe.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Program Ustanove",
-            "Oznaka programa",
-            "Blok",
-            "Pozicija"
+        "attributes" : [
+            {   "name" : "Program Ustanove",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Oznaka programa",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 3
+            },
+            {   "name" : "Blok",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Pozicija",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Ustanova predmet",
+                "type" : "foreign key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Oznaka predmeta",
+                "type" : "foreign key",
+                "input" : "characters",
+                "length" : 6
+            }
         ],
-        "foreign key" : [
-            "Ustanova predmet",
-            "Oznaka predmeta"
-        ],
-        "attributes" : [],
         "relations" : {}
     },
     "tok_studija.csv" : {
-        "type" : "serial",
-        "primary key" : [
-            "Ustanova",
-            "Oznaka programa",
-            "Student iz ustanove",
-            "Struka",
-            "Broj indeksa",
-            "Skolska godina",
-            "Godina studija",
-            "Blok",
-            "Redni broj upisa"
-        ],
-        "foreign key" : [],    
         "attributes" : [
-            "Datum upisa",
-            "Datum overe",
-            "ESPB pocetni",
-            "ESPB krajnji"
+            {   "name" : "Ustanova",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Oznaka programa",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 3
+            },
+            {   "name" : "Student iz ustanove",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Struka",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Broj indeksa",
+                "type" : "primary key",
+                "input" : "characters",
+                "length" : 6
+            },
+            {   "name" : "Skolska godina",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 4
+            },
+            {   "name" : "Godina studija",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 1
+            },
+            {   "name" : "Blok",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Redni broj upisa",
+                "type" : "primary key",
+                "input" : "number",
+                "length" : 2
+            },
+            {   "name" : "Datum upisa",
+                "type" : "required",
+                "input" : "date",
+                "length" : 0
+            },
+            {   "name" : "Datum overe",
+                "type" : "optional",
+                "input" : "date",
+                "length" : 0
+            },
+            {   "name" : "ESPB pocetni",
+                "type" : "required",
+                "input" : "number",
+                "length" : 3
+            },
+            {   "name" : "ESPB krajnji",
+                "type" : "required",
+                "input" : "number",
+                "length" : 3
+            }
         ],
         "relations" : {}
     }

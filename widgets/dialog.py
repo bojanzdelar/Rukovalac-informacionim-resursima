@@ -14,7 +14,7 @@ class Dialog(QtWidgets.QDialog):
         layout = QtWidgets.QGridLayout()
     
         for i, attribute in enumerate(self.attributes):
-            label = QtWidgets.QLabel(attribute, self)
+            label = QtWidgets.QLabel(attribute["name"], self)
             input = QtWidgets.QLineEdit(self)
             layout.addWidget(label, i, 0)
             layout.addWidget(input, i, 1)

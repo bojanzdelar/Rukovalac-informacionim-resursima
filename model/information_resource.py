@@ -20,17 +20,28 @@ class InformationResource:
             csv.writer(file).writerows(self.data)
 
     def get_attribute(self, index=None):
-        list = self.meta["primary key"] + self.meta["foreign key"] + self.meta["attributes"]
-        return list[index] if index else list
+        list = self.meta["attributes"]
+        return list[index] if index is not None else list
     
     def get_attribute_index(self, attribute):
-        return self.get_attribute().index(attribute)
+        if type(attribute) is dict:
+            return self.get_attribute().index(attribute)
+        for index, attr in enumerate(self.meta["attributes"]):
+            if attribute == attr["name"]:
+                return index
 
     def get_attributes_indexes(self, attributes):
         indexes = []
         for attribute in attributes:
             indexes.append(self.get_attribute_index(attribute))
         return indexes
+
+    def get_primary_key(self):
+        primary_key = []
+        for attribute in self.meta["attributes"]:
+            if attribute["type"] == "primary key":
+                primary_key.append(attribute)
+        return primary_key
 
     def get_relations(self):
         return self.meta["relations"]

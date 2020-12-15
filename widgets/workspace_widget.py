@@ -45,7 +45,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.tab_widget.clear()
         for file_name, attributes in relations.items():
             model = Model(file_name)
-            main_attributes = self.information_resource.meta["primary key"]
+            main_attributes = self.information_resource.get_primary_key()
             main_attributes_indexes = self.information_resource.get_attributes_indexes(main_attributes)
             values = []
             for attr_index in main_attributes_indexes:
