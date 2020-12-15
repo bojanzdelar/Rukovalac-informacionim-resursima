@@ -8,12 +8,12 @@
             },
             {   "name" : "Naziv",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 80
             },
             {   "name" : "Adresa",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 80
             }
         ],
@@ -43,22 +43,22 @@
             },
             {   "name" : "Broj indeksa",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 6
             },
             {   "name" : "Prezime",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 20
             },
             {   "name" : "Ime roditelja",
                 "type" : "optional",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 20
             },
             {   "name" : "Ime",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 20
             },
             {   "name" : "Pol",
@@ -68,12 +68,12 @@
             },
             {   "name" : "Oznaka",
                 "type" : "optional",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 80
             },
             {   "name" : "Telefon",
                 "type" : "optional",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 20
             },
             {   "name" : "JMBG",
@@ -104,7 +104,7 @@
             },
             {   "name" : "Naziv",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 80
             }
         ],
@@ -123,12 +123,12 @@
             },
             {   "name" : "Oznaka",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 6
             },
             {   "name" : "Naziv",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 120
             },
             {   "name" : "ESPB",
@@ -158,12 +158,12 @@
             },
             {   "name" : "Oznaka programa",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 3
             },
             {   "name" : "Naziv programa",
                 "type" : "required",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 120
             }
         ],
@@ -187,7 +187,7 @@
             },
             {   "name" : "Oznaka programa",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 3
             },
             {   "name" : "Blok",
@@ -207,7 +207,7 @@
             },
             {   "name" : "Oznaka predmeta",
                 "type" : "foreign key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 6
             }
         ],
@@ -222,7 +222,7 @@
             },
             {   "name" : "Oznaka programa",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 3
             },
             {   "name" : "Student iz ustanove",
@@ -237,7 +237,7 @@
             },
             {   "name" : "Broj indeksa",
                 "type" : "primary key",
-                "input" : "characters",
+                "input" : "variable characters",
                 "length" : 6
             },
             {   "name" : "Skolska godina",

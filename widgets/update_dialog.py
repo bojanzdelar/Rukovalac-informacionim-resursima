@@ -11,10 +11,16 @@ class UpdateDialog(Dialog):
 
     def fill_input(self):
         element = self.information_resource.read_element(self.index)
-        for index in range(len(self.attributes)):
-            self.layout().itemAtPosition(index, 1).widget().setText(element[index])
+        for index, attribute in enumerate(self.attributes):
+            widget = self.layout().itemAtPosition(index, 1).widget()
+            if attribute["input"] == "date":
+                widget.setDate(QtCore.QDate.fromString(element[index], "dd/MM/yyyy"))
+            else:   
+                widget.setText(element[index])
 
     def action(self):
+        if not self.validate():
+            return
         element = []
         for index in range(len(self.attributes)):
             element.append(self.layout().itemAtPosition(index, 1).widget().text())

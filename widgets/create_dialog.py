@@ -8,6 +8,8 @@ class CreateDialog(Dialog):
         self.setWindowTitle("Create")
 
     def action(self):
+        if not self.validate():
+            return
         element = []
         for index in range(len(self.attributes)):
             element.append(self.layout().itemAtPosition(index, 1).widget().text())
