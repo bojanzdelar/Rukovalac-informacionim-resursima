@@ -37,16 +37,16 @@ class Dialog(QtWidgets.QDialog):
     def validate(self):
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
+            if attribute["type"] != "optional" and widget.text() == "":
+                label = self.layout().itemAtPosition(i, 0).widget().text()
+                QtWidgets.QMessageBox.about(self, "Greska", f"Polje {label} ne sme da bude prazno")
+                return False
             if widget.validator():
                 state = widget.validator().validate(widget.text(), 0)[0]
                 if state != QtGui.QValidator.Acceptable:
                     label = self.layout().itemAtPosition(i, 0).widget().text()
                     QtWidgets.QMessageBox.about(self, "Greska", f"Vrednost uneta u polje {label} nije dozvoljena")
                     return False
-            if attribute["type"] != "optional" and widget.text() == "":
-                label = self.layout().itemAtPosition(i, 0).widget().text()
-                QtWidgets.QMessageBox.about(self, "Greska", f"Polje {label} ne sme da bude prazno")
-                return False
         return True
 
     @abstractmethod
