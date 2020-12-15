@@ -45,6 +45,21 @@ class InformationResource:
                 primary_key.append(attribute)
         return primary_key
 
+    
+    def primary_key_used(self, new_element):
+        indexes = self.get_attributes_indexes(self.get_primary_key())
+        if not len(indexes):
+            return False, -1
+        for i, element in enumerate(self.data):
+            unique = False
+            for index in indexes:
+                if new_element[index] != element[index]:
+                    unique = True
+                    break
+            if not unique:
+                return True, i
+        return False, -1
+
     def get_relations(self):
         return self.meta["relations"]
 

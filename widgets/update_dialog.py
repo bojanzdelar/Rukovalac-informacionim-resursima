@@ -19,10 +19,14 @@ class UpdateDialog(Dialog):
                 widget.setText(element[index])
 
     def action(self):
-        if not self.validate():
+        if not self.validate_input():
             return
         element = []
         for index in range(len(self.attributes)):
             element.append(self.layout().itemAtPosition(index, 1).widget().text())
+        primary_key_used, position = self.information_resource.primary_key_used(element)
+        if primary_key_used and self.index != position: 
+            QtWidgets.QMessageBox.about(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
+            return
         self.information_resource.update_element(self.index, element)
         self.close()

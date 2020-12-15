@@ -34,7 +34,7 @@ class Dialog(QtWidgets.QDialog):
 
         return layout
 
-    def validate(self):
+    def validate_input(self):
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
             if attribute["type"] != "optional" and widget.text() == "":
