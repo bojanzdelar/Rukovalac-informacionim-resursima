@@ -26,7 +26,7 @@ class MainWindow(QtWidgets.QMainWindow):
         central_widget = self.centralWidget()
         command = action.text()
         if command == "Close all":
-            central_widget.clear()
+            central_widget.delete_all()
         elif command == "Save all":
             for i in range(central_widget.count()):
                 central_widget.widget(i).information_resource.save_data()

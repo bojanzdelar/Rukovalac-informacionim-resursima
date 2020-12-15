@@ -6,6 +6,7 @@ class CentralWidget(QtWidgets.QTabWidget):
         super().__init__(parent)
 
         self.create_tab_widget()
+        self.open_files = []
 
     def create_tab_widget(self):
         self.setTabsClosable(True)
@@ -13,10 +14,17 @@ class CentralWidget(QtWidgets.QTabWidget):
 
     def add_tab(self, path):
         file_name = path.split("/")[-1]
-        self.addTab(WorkspaceWidget(file_name, self), file_name)
+        if file_name not in self.open_files:
+            self.open_files.append(file_name)
+            self.addTab(WorkspaceWidget(file_name, self), file_name)
 
     def delete_tab(self, index):
+        self.open_files.remove(self.currentWidget().file_name)
         self.removeTab(index)
 
     def delete_active_tab(self):
         self.removeTab(self.currentIndex())
+
+    def delete_all(self):
+        self.clear()
+        self.open_files = []
