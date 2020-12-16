@@ -60,16 +60,8 @@ class InformationResource:
                 return True, i
         return False, -1
 
-    def get_relations(self):
-        return self.meta["relations"]
-
     def get_children(self):
-        children = {}
-        relations = self.get_relations()
-        for key, value in relations.items():
-            if value["type"] == "child":
-                children[key] = value
-        return children
+        return self.meta["children"]
 
     def create_element(self, element):
         self.data.append(element)
@@ -83,6 +75,13 @@ class InformationResource:
     def delete_element(self, index):
         self.data.pop(index)
 
+    def column_values(self, column):
+        values = set()
+        index = self.get_attribute_index(column)
+        for row in self.data:
+            values.add(row[index])
+        return sorted(values)
+
     def filter(self, attributes, values):
         indexes = self.get_attributes_indexes(attributes)
         for element in reversed(self.data):
@@ -90,3 +89,5 @@ class InformationResource:
                 if element[index] != value:
                     self.data.remove(element)
                     break
+
+    

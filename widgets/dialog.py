@@ -1,5 +1,6 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from abc import abstractmethod
+from model.information_resource import InformationResource
 
 class Dialog(QtWidgets.QDialog):
     def __init__(self, information_resource, parent = None):
@@ -15,7 +16,12 @@ class Dialog(QtWidgets.QDialog):
 
         for i, attribute in enumerate(self.attributes):
             label = QtWidgets.QLabel(attribute["name"], self)
-            if attribute["input"] in ["characters", "variable characters", "number"]:
+            if "foreign key" in attribute["type"]:
+                input = QtWidgets.QComboBox(self)
+                relation = [(k, v) for k,v in attribute["relation"].items()][0]
+                values = InformationResource(relation[0]).column_values(relation[1])
+                input.addItems(values)
+            elif attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self)
                 input.setMaxLength(attribute["length"])
                 if attribute["input"] == "characters":
@@ -25,9 +31,10 @@ class Dialog(QtWidgets.QDialog):
             elif attribute["input"] == "date":
                 input = QtWidgets.QDateEdit(self)
                 input.setMinimumDate(QtCore.QDate.fromString("01/01/1900", "dd/MM/yyyy"))
-                input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))     
+                input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
             layout.addWidget(label, i, 0)
             layout.addWidget(input, i, 1)
+            
         self.button = QtWidgets.QPushButton("OK")
         self.button.clicked.connect(self.action)
         layout.addWidget(self.button, i + 1, 1)
@@ -37,6 +44,8 @@ class Dialog(QtWidgets.QDialog):
     def validate_input(self):
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
+            if "foreign key" in attribute["type"]:
+                continue
             if "required" in attribute["type"] and widget.text() == "":
                 label = self.layout().itemAtPosition(i, 0).widget().text()
                 QtWidgets.QMessageBox.about(self, "Greska", f"Polje {label} ne sme da bude prazno")

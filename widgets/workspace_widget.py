@@ -43,8 +43,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def selected(self, index):
         children = self.information_resource.get_children()
         self.tab_widget.clear()
-        for file_name, info in children.items():
-            attributes = info["attribute"]
+        for file_name, attributes in children.items():
             model = Model(file_name)
             main_attributes = self.information_resource.get_primary_key()
             main_attributes_indexes = self.information_resource.get_attributes_indexes(main_attributes)

@@ -11,8 +11,10 @@ class CreateDialog(Dialog):
         if not self.validate_input():
             return
         element = []
-        for index in range(len(self.attributes)):
-            element.append(self.layout().itemAtPosition(index, 1).widget().text())
+        for index, attribute in enumerate(self.attributes):
+            widget = self.layout().itemAtPosition(index, 1).widget()
+            text = widget.currentText() if "foreign key" in attribute["type"] else widget.text()
+            element.append(text)
         primary_key_used, _ = self.information_resource.primary_key_used(element)
         if primary_key_used:
             QtWidgets.QMessageBox.about(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")

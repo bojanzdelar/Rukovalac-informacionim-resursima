@@ -11,19 +11,23 @@ class UpdateDialog(Dialog):
 
     def fill_input(self):
         element = self.information_resource.read_element(self.index)
-        for index, attribute in enumerate(self.attributes):
-            widget = self.layout().itemAtPosition(index, 1).widget()
-            if attribute["input"] == "date":
-                widget.setDate(QtCore.QDate.fromString(element[index], "dd/MM/yyyy"))
+        for i, attribute in enumerate(self.attributes):
+            widget = self.layout().itemAtPosition(i, 1).widget()
+            if "foreign key" in attribute["type"]:
+                widget.setCurrentIndex(widget.findText(element[i]))
+            elif attribute["input"] == "date":
+                widget.setDate(QtCore.QDate.fromString(element[i], "dd/MM/yyyy"))
             else:   
-                widget.setText(element[index])
+                widget.setText(element[i])
 
     def action(self):
         if not self.validate_input():
             return
         element = []
-        for index in range(len(self.attributes)):
-            element.append(self.layout().itemAtPosition(index, 1).widget().text())
+        for i, attribute in enumerate(self.attributes):
+            widget = self.layout().itemAtPosition(i, 1).widget()
+            text = widget.currentText() if "foreign key" in attribute["type"] else widget.text()
+            element.append(text)
         primary_key_used, position = self.information_resource.primary_key_used(element)
         if primary_key_used and self.index != position: 
             QtWidgets.QMessageBox.about(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")

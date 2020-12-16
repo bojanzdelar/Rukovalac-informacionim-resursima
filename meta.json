@@ -17,21 +17,16 @@
                 "length" : 80
             }
         ],
-        "relations" : {
-            "studenti.csv" : {
-                "type" : "child",
-                "attribute" : "Ustanova"
-            },
-            "studijski_programi.csv" : {
-                "type" : "child",
-                "attribute" : "Ustanova"
-            }
+        "children" : {
+            "studenti.csv" : "Ustanova",
+            "studijski_programi.csv" : "Ustanova"
         }
     },
     "studenti.csv" : {
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : { "visokoskolska_ustanova.csv" : "Oznaka" },
                 "input" : "characters",
                 "length" : 2
             },
@@ -85,15 +80,8 @@
                 "input" : "date"
             }
         ],
-        "relations" : {
-            "visokoskolska_ustanova.csv" : {
-                "type" : "parent",
-                "attribute" : "Oznaka"
-            },
-            "tok_studija.csv" : {
-                "type" : "child",
-                "attribute" : ["Ustanova", "Struka", "Broj indeksa"]
-            }
+        "children" : {
+            "tok_studija.csv" : ["Ustanova", "Struka", "Broj indeksa"]
         }
     },
     "nivo_studija.csv" : {
@@ -109,17 +97,15 @@
                 "length" : 80
             }
         ],
-        "relations" : {
-            "studijski_programi.csv" : {
-                "type" : "child",
-                "attribute" : "Nivo"
-            }
+        "children" : {
+            "studijski_programi.csv" : "Nivo"
         }
     },
     "nastavni_predmet.csv" : {
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {"visokoskolska_ustanova.csv" : "Ustanova"},
                 "input" : "characters",
                 "length" : 2
             },
@@ -139,26 +125,25 @@
                 "length" : 2
             }
         ],
-        "relations" : {
-            "visokoskolska_ustanova.csv" : {
-                "type" : "parent",
-                "attribute" : "Ustanova"
-            },
-            "plan_studijske_grupe.csv" : {
-                "type" : "child",
-                "attribute" : ["Ustanova predmet", "Oznaka predmeta"]
-            }
+        "children" : {
+            "plan_studijske_grupe.csv" : ["Ustanova predmet", "Oznaka predmeta"]
         }
     },
     "studijski_programi.csv" : {
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : { 
+                    "visokoskolska_ustanova.csv" : "Oznaka"
+                },
                 "input" : "characters",
                 "length" : 2  
             },
             {   "name" : "Nivo",
                 "type" : ["foreign key", "required"],
+                "relation" : {
+                    "nivo_studija.csv" : "Oznaka"
+                },
                 "input" : "number",
                 "length" : 2
             },
@@ -173,34 +158,26 @@
                 "length" : 120
             }
         ],
-        "relations" : {
-            "visokoskolska_ustanova.csv" : {
-                "type" : "parent",
-                "attribute" : "Oznaka"
-            },
-            "nivo_studija.csv" : {
-                "type" : "parent",
-                "attribute" : "Oznaka"
-            },
-            "tok_studija.csv" : {
-                "type" : "child",
-                "attribute" : ["Ustanova", "Oznaka programa"]
-            },
-            "plan_studijske_grupe.csv" : {
-                "type" : "child",
-                "attribute" : ["Program Ustanove", "Oznaka programa"]
-            }
+        "children" : {
+            "tok_studija.csv" : ["Ustanova", "Oznaka programa"],
+            "plan_studijske_grupe.csv" : ["Program Ustanove", "Oznaka programa"]
         }
     },
     "plan_studijske_grupe.csv" : {
         "attributes" : [
             {   "name" : "Program Ustanove",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studijski_programi.csv" : "Ustanova"
+                },
                 "input" : "characters",
                 "length" : 2
             },
             {   "name" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studijski_programi.csv" : "Oznaka programa"
+                },
                 "input" : "variable characters",
                 "length" : 3
             },
@@ -216,50 +193,62 @@
             },
             {   "name" : "Ustanova predmet",
                 "type" : ["foreign key", "required"],
+                "relation" : {
+                    "nastavni_predmet.csv" : "Ustanova"
+                },
                 "input" : "characters",
                 "length" : 2
             },
             {   "name" : "Oznaka predmeta",
                 "type" : ["foreign key", "required"],
+                "relation" : {
+                    "nastavni_predmet.csv" : "Oznaka"
+                },
                 "input" : "variable characters",
                 "length" : 6
             }
         ],
-        "relations" : {
-            "studijski_programi.csv" : {
-                "type" : "parent",
-                "attribute" : ["Ustanova", "Oznaka programa"]
-            },
-            "nastavni_predmet.csv" : {
-                "type" : "parent",
-                "attribute" : ["Ustanova", "Oznaka"]
-            }
-        }
+        "children" : {}
     },
     "tok_studija.csv" : {
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studijski_programi.csv" : "Ustanova"
+                },
                 "input" : "characters",
                 "length" : 2
             },
             {   "name" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studijski_programi.csv" : "Oznaka programa"
+                },
                 "input" : "variable characters",
                 "length" : 3
             },
             {   "name" : "Student iz ustanove",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studenti.csv" : "Ustanova"
+                },
                 "input" : "characters",
                 "length" : 2
             },
             {   "name" : "Struka",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studenti.csv" : "Struka"
+                },
                 "input" : "characters",
                 "length" : 2
             },
             {   "name" : "Broj indeksa",
                 "type" : ["primary key", "foreign key", "required"],
+                "relation" : {
+                    "studenti.csv" : "Broj indeksa"
+                },
                 "input" : "variable characters",
                 "length" : 6
             },
@@ -302,15 +291,6 @@
                 "length" : 3
             }
         ],
-        "relations" : {
-            "studenti.csv" : {
-                "type" : "parent",
-                "attribute" : ["Ustanova", "Struka", "Broj indeksa"]
-            },
-            "studijski_programi.csv" : {
-                "type" : "parent",
-                "attribute" : ["Ustanova", "Oznaka programa"]
-            }
-        }
+        "children" : {}
     }
 }
