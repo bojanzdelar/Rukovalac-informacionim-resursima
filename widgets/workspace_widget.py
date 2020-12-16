@@ -23,7 +23,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tool_bar.create_action.triggered.connect(self.create_row)
         tool_bar.update_action.triggered.connect(self.update_row)
         tool_bar.delete_action.triggered.connect(self.delete_row)
-        tool_bar.save_action.triggered.connect(lambda: self.information_resource.save_data())
+        tool_bar.save_action.triggered.connect(self.save_table)
         return tool_bar
 
     def create_table(self, parent = None):
@@ -88,3 +88,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.model.layoutChanged.emit()
         self.main_table.clearSelection()
         self.tab_widget.clear()
+
+    def save_table(self):
+        self.model.layoutAboutToBeChanged.emit()
+        self.information_resource.save_data()
+        self.model.layoutChanged.emit()

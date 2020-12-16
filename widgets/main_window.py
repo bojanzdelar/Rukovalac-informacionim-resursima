@@ -29,7 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
             central_widget.delete_all()
         elif command == "Save all":
             for i in range(central_widget.count()):
-                central_widget.widget(i).information_resource.save_data()
+                central_widget.widget(i).save_table()
         elif command == "Exit":
             self.close()
         elif command == "Manual":
