@@ -41,7 +41,7 @@ class InformationResource:
     def get_primary_key(self):
         primary_key = []
         for attribute in self.meta["attributes"]:
-            if attribute["type"] == "primary key":
+            if "primary key" in attribute["type"]:
                 primary_key.append(attribute)
         return primary_key
 
