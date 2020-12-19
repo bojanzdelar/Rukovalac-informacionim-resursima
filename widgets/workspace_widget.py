@@ -83,6 +83,11 @@ class WorkspaceWidget(QtWidgets.QWidget):
         indexes = self.main_table.selectionModel().selectedIndexes()
         if not len(indexes):
             return
+        index = indexes[0].row()
+        if self.information_resource.restrict(index):
+            QtWidgets.QMessageBox.warning(self, "Greska", "Ne mozete da obrisete entitet" 
+                + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
+            return
         self.model.layoutAboutToBeChanged.emit()
         self.information_resource.delete_element(indexes[0].row())
         self.model.layoutChanged.emit()

@@ -17,7 +17,7 @@ class CreateDialog(Dialog):
             element.append(text)
         primary_key_used, _ = self.information_resource.primary_key_used(element)
         if primary_key_used:
-            QtWidgets.QMessageBox.about(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
+            QtWidgets.QMessageBox.warning(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
             return
         self.information_resource.create_element(element)
         self.close()

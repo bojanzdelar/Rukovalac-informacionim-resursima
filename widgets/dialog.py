@@ -9,6 +9,7 @@ class Dialog(QtWidgets.QDialog):
         self.information_resource = information_resource
         self.attributes = self.information_resource.get_attribute()
         self.resize(300, len(self.attributes) * 35)
+        self.setWindowIcon(QtGui.QIcon("icons/app.png"))
         self.setLayout(self.generate_layout())
 
     def generate_layout(self):
@@ -48,13 +49,13 @@ class Dialog(QtWidgets.QDialog):
                 continue
             if "required" in attribute["type"] and widget.text() == "":
                 label = self.layout().itemAtPosition(i, 0).widget().text()
-                QtWidgets.QMessageBox.about(self, "Greska", f"Polje {label} ne sme da bude prazno")
+                QtWidgets.QMessageBox.warning(self, "Greska", f"Polje {label} ne sme da bude prazno")
                 return False
             if attribute["input"] != "date" and widget.validator():
                 state = widget.validator().validate(widget.text(), 0)[0]
                 if state != QtGui.QValidator.Acceptable:
                     label = self.layout().itemAtPosition(i, 0).widget().text()
-                    QtWidgets.QMessageBox.about(self, "Greska", f"Vrednost uneta u polje {label} nije dozvoljena")
+                    QtWidgets.QMessageBox.warning(self, "Greska", f"Vrednost uneta u polje {label} nije dozvoljena")
                     return False
         return True
 

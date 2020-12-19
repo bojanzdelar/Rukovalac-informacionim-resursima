@@ -99,4 +99,14 @@ class InformationResource:
                     self.data.remove(element)
                     break
 
-    
+    def restrict(self, index, new_element=None):
+        indexes = self.get_attributes_indexes(self.get_primary_key())
+        children = self.get_children()
+        for file_name, attributes in children.items():
+            child = InformationResource(file_name)
+            for i, attribute in zip(indexes, attributes):
+                values = child.column_values(attribute)
+                element = self.read_element(index)
+                if element[i] in values and (not new_element or element[i] != new_element[i]):
+                    return True
+        return False
