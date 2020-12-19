@@ -24,12 +24,3 @@ class Model(QtCore.QAbstractTableModel):
         for i in range(self.columnCount()):
             if section == i and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
                 return self.information_resource.get_attribute(i)["name"]
-
-    def setData(self, index, value, role=QtCore.Qt.EditRole):
-        if value == "":
-            return False
-        for i in range(self.columnCount()):
-            if index.column() == i and role == QtCore.Qt.EditRole:
-                self.get_element(index)[i] = value
-                return True
-        return False
