@@ -87,9 +87,10 @@ class InformationResource:
     def sort(self):
         primary_key = self.get_primary_key()
         if not len(primary_key):
-            return
+            return False
         indexes = self.get_attributes_indexes(primary_key)
         self.data.sort(key = operator.itemgetter(*indexes))
+        return True
 
     def filter(self, attributes, values):
         indexes = self.get_attributes_indexes(attributes)
