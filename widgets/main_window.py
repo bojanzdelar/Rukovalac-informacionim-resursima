@@ -14,9 +14,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setMenuBar(MenuBar(self))
         self.menuBar().triggered.connect(self.menu_actions)
 
-        self.setStatusBar(QtWidgets.QStatusBar())
-        self.statusBar().showMessage("Status bar")
         self.setCentralWidget(CentralWidget(self))
+
+        self.setStatusBar(QtWidgets.QStatusBar())
+
+        self.timer= QtCore.QTimer()
+        self.timer.timeout.connect(self.show_time)
+        self.timer.start(1000)
 
         dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
@@ -33,6 +37,13 @@ class MainWindow(QtWidgets.QMainWindow):
         elif command == "Exit":
             self.close()
         elif command == "Manual":
-            ...
+            QtWidgets.QMessageBox.information(self, "Manual", "Uputstvo za upotrebu programa Rukovalac informacionim resursima"
+                + " mozete preuzeti na internet stranici www.infhandler.com/rs")
         elif command == "About":
-            ...
+            QtWidgets.QMessageBox.information(self, "About", "Program Rukovalac informacionim resursima je realizovan " 
+                + " u sklopu projekta iz predmeta Baze podataka. Autor je Bojan Zdelar, ciji je broj indeksa 2019/270983")
+
+    def show_time(self):
+        time = QtCore.QDateTime.currentDateTime()
+        time_display = time.toString('hh:mm:ss, dd/MM/yyyy')
+        self.statusBar().showMessage(time_display)

@@ -4,8 +4,8 @@ from model.information_resource import InformationResource
 
 class Dialog(QtWidgets.QDialog):
     def __init__(self, information_resource, parent = None):
-        super().__init__(parent)
-
+        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint)
+        
         self.information_resource = information_resource
         self.attributes = self.information_resource.get_attribute()
         self.resize(300, len(self.attributes) * 35)
