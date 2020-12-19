@@ -265,8 +265,8 @@
             }
         ],
         "children" : {
-            "studenti_sek.csv" : "Ustanova",
-            "studijski_programi_sek.csv" : "Ustanova"
+            "studenti_sek.csv" : ["Ustanova"],
+            "studijski_programi_sek.csv" : ["Ustanova"]
         }
     },
     "studenti_sek.csv" : {
@@ -347,7 +347,7 @@
             }
         ],
         "children" : {
-            "studijski_programi_sek.csv" : "Nivo"
+            "studijski_programi_sek.csv" : ["Nivo"]
         }
     },
     "nastavni_predmet_sek.csv" : {
