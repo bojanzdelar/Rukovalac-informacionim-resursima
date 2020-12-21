@@ -33,7 +33,7 @@ class UpdateDialog(Dialog):
         if primary_key_used and self.index != position: 
             QtWidgets.QMessageBox.warning(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
             return
-        if self.information_resource.restrict(self.index, element):
+        if self.information_resource.restrict_update(self.index, element):
             QtWidgets.QMessageBox.warning(self, "Greska", "Ne mozete da izmenite vrednost primarnog kljuca" 
                 + " koji se koristi kao strani kljuc u child tabelama")
             return

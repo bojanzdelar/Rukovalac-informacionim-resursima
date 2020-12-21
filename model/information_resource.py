@@ -43,7 +43,6 @@ class InformationResource:
                 primary_key.append(attribute)
         return primary_key
 
-    
     def primary_key_used(self, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         if not len(indexes):
@@ -96,7 +95,7 @@ class InformationResource:
                     self.data.remove(element)
                     break
 
-    def restrict(self, index, new_element=None):
+    def restrict_update(self, index, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.get_children()
         for file_name, attributes in children.items():
@@ -104,6 +103,22 @@ class InformationResource:
             for i, attribute in zip(indexes, attributes):
                 values = child.column_values(attribute)
                 element = self.read_element(index)
-                if element[i] in values and (not new_element or element[i] != new_element[i]):
+                if element[i] in values and element[i] != new_element[i]:
                     return True
+        return False
+
+    def restrict_remove(self, index):
+        indexes = self.get_attributes_indexes(self.get_primary_key())
+        children = self.get_children()
+        for file_name, attributes in children.items():
+            child = InformationResource(file_name)
+            used = True
+            for i, attribute in zip(indexes, attributes):
+                values = child.column_values(attribute)
+                element = self.read_element(index)
+                if not element[i] in values:
+                    used = False
+                    break
+            if used:
+                return True
         return False

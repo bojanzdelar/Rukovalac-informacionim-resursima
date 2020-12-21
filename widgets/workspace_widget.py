@@ -97,7 +97,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         if not len(indexes):
             return
         index = indexes[0].row()
-        if self.information_resource.restrict(index):
+        if self.information_resource.restrict_remove(index):
             QtWidgets.QMessageBox.warning(self, "Greska", "Ne mozete da obrisete entitet" 
                 + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
             return
