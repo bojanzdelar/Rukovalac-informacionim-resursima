@@ -20,4 +20,6 @@ class DockWidget(QtWidgets.QDockWidget):
         self.setWidget(self.tree)
 
     def file_clicked(self, index):
-        self.clicked.emit(self.model.filePath(index))
+        info = self.model.fileInfo(index)
+        if info.isFile():
+            self.clicked.emit(self.model.filePath(index))
