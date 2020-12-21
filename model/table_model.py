@@ -1,7 +1,7 @@
 from PySide2 import QtCore
 from .information_resource import InformationResource
 
-class Model(QtCore.QAbstractTableModel):
+class TableModel(QtCore.QAbstractTableModel):
     def __init__(self, file_name, parent=None):
         super().__init__(parent)
         self.information_resource = InformationResource(file_name)

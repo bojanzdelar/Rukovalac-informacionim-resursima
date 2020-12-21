@@ -1,5 +1,5 @@
 from PySide2 import QtCore, QtWidgets, QtGui
-from model.model import Model
+from model.table_model import TableModel
 from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
@@ -44,7 +44,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return table
 
     def create_main_table(self):
-        self.model = Model(self.file_name)
+        self.model = TableModel(self.file_name)
         self.information_resource = self.model.information_resource
         main_table = self.create_table()
         main_table.setModel(self.model)
@@ -55,7 +55,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         children = self.information_resource.get_children()
         self.tab_widget.clear()
         for file_name, attributes in children.items():
-            model = Model(file_name)
+            model = TableModel(file_name)
             main_attributes = self.information_resource.get_primary_key()
             main_attributes_indexes = self.information_resource.get_attributes_indexes(main_attributes)
             values = []

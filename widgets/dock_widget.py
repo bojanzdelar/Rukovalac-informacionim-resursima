@@ -1,5 +1,5 @@
 from PySide2 import QtWidgets, QtCore
-from widgets.file_system_model import FileSystemModel
+from model.file_system_model import FileSystemModel
 
 class DockWidget(QtWidgets.QDockWidget):
     clicked = QtCore.Signal(str)
