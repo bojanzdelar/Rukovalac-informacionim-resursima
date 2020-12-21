@@ -9,7 +9,7 @@ class FilterDialog(QtWidgets.QDialog):
         self.attributes = information_resource.get_attribute()
         self.attribute = attribute
         self.text = text
-        self.resize(300, 200)
+        self.resize(300, 150)
         self.setWindowTitle("Edit filter")
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))
         self.setLayout(self.generate_layout())

@@ -8,7 +8,7 @@ class Dialog(QtWidgets.QDialog):
         
         self.information_resource = information_resource
         self.attributes = self.information_resource.get_attribute()
-        self.resize(300, len(self.attributes) * 35)
+        self.resize(300, len(self.attributes) * 50)
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))
         self.setLayout(self.generate_layout())
 
