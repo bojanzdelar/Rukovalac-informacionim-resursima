@@ -1,4 +1,5 @@
 from PySide2 import QtWidgets, QtCore
+from widgets.file_system_model import FileSystemModel
 
 class DockWidget(QtWidgets.QDockWidget):
     clicked = QtCore.Signal(str)
@@ -6,8 +7,7 @@ class DockWidget(QtWidgets.QDockWidget):
     def __init__(self, title, parent):
         super().__init__(title, parent)
 
-        self.model = QtWidgets.QFileSystemModel()
-        self.model.setRootPath(QtCore.QDir.currentPath() + "/data")
+        self.model = FileSystemModel(QtCore.QDir.currentPath() + "/data")
 
         self.tree = QtWidgets.QTreeView()
         self.tree.setModel(self.model)
