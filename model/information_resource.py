@@ -1,17 +1,13 @@
+from meta.meta import read_meta
 import csv
-import json
 import operator
 
 class InformationResource:
     def __init__(self, file_name):
         self.file_name = file_name
-        self.meta = self.read_meta()
+        self.meta = read_meta()[file_name]
         self.data = self.read_data()
 
-    def read_meta(self):
-        with open("meta.json", "r", encoding="utf-8") as file:
-            return json.load(file)[self.file_name]
-    
     def read_data(self):
         with open("data/" + self.file_name, "r", encoding="utf-8") as file:
             return [row for row in csv.reader(file)]

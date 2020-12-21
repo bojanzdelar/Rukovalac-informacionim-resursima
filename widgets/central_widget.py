@@ -1,5 +1,6 @@
 from PySide2 import QtWidgets
 from .workspace_widget import WorkspaceWidget
+from meta.meta import read_meta
 
 class CentralWidget(QtWidgets.QTabWidget):
     def __init__(self, parent):
@@ -14,7 +15,8 @@ class CentralWidget(QtWidgets.QTabWidget):
 
     def add_tab(self, path):
         file_name = path.split("/")[-1]
-        if file_name not in self.open_files:
+        meta = read_meta()
+        if file_name not in self.open_files and file_name in meta:
             self.open_files.append(file_name)
             self.addTab(WorkspaceWidget(file_name, self), file_name)
 
