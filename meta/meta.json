@@ -1,6 +1,6 @@
 {
     "visokoskolska_ustanova.ser.csv" : {
-        "display" : "Visokoskolske ustanove",
+        "display" : "Visokoskolske ustanove - Serijska",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["required"],
@@ -21,7 +21,7 @@
         "children" : {}
     },
     "studenti.ser.csv" : {
-        "display" : "Studenti",
+        "display" : "Studenti - Serijska",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -81,7 +81,7 @@
         "children" : {}
     },
     "nivo_studija.ser.csv" : {
-        "display" : "Nivoi studija",
+        "display" : "Nivoi studija - Serijska",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["required"],
@@ -97,7 +97,7 @@
         "children" : {}
     },
     "nastavni_predmet.ser.csv" : {
-        "display" : "Nastavni predmeti",
+        "display" : "Nastavni predmeti - Serijska",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -123,7 +123,7 @@
         "children" : {}
     },
     "studijski_programi.ser.csv" : {
-        "display" : "Studijski programi",
+        "display" : "Studijski programi - Serijska",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -149,7 +149,7 @@
         "children" : {}
     },
     "plan_studijske_grupe.ser.csv" : {
-        "display" : "Planovi studijskih grupa",
+        "display" : "Planovi studijskih grupa - Serijska",
         "attributes" : [
             {   "name" : "Program Ustanove",
                 "type" : ["required"],
@@ -185,7 +185,7 @@
         "children" : {}
     },
     "tok_studija.ser.csv" : {
-        "display" : "Tokovi studija",
+        "display" : "Tokovi studija - Serijska",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -254,7 +254,7 @@
         "children" : {}
     },
     "visokoskolska_ustanova.sek.csv" : {
-        "display" : "Visokoskolske ustanove",
+        "display" : "Visokoskolske ustanove - Sekvencijalna",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["primary key", "required"],
@@ -278,7 +278,7 @@
         }
     },
     "studenti.sek.csv" : {
-        "display" : "Studenti",
+        "display" : "Studenti - Sekvencijalna",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -343,7 +343,7 @@
         }
     },
     "nivo_studija.sek.csv" : {
-        "display" : "Nivoi studija",
+        "display" : "Nivoi studija - Sekvencijalna",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["primary key", "required"],
@@ -361,7 +361,7 @@
         }
     },
     "nastavni_predmet.sek.csv" : {
-        "display" : "Nastavni predmeti",
+        "display" : "Nastavni predmeti - Sekvencijalna",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -392,7 +392,7 @@
         }
     },
     "studijski_programi.sek.csv" : {
-        "display" : "Studijski programi",
+        "display" : "Studijski programi - Sekvencijalna",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -427,7 +427,7 @@
         }
     },
     "plan_studijske_grupe.sek.csv" : {
-        "display" : "Planovi studijskih grupa",
+        "display" : "Planovi studijskih grupa - Sekvencijalna",
         "attributes" : [
             {   "name" : "Program Ustanove",
                 "type" : ["primary key", "foreign key", "required"],
@@ -475,7 +475,7 @@
         "children" : {}
     },
     "tok_studija.sek.csv" : {
-        "display" : "Tokovi studija",
+        "display" : "Tokovi studija - Sekvencijalna",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
