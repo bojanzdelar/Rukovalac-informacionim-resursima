@@ -1,5 +1,4 @@
 import sys
-import mysql.connector
 from PySide2 import QtWidgets
 from widgets.main_window import MainWindow
 

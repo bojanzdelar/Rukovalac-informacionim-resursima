@@ -24,18 +24,8 @@ class Dialog(QtWidgets.QDialog):
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
                 if isinstance(self.information_resource, SequentialFile):
                     values = SequentialFile(relation[0]).column_values(relation[1])
-
-
-
-
-
-
                 else:
                     values = Database(relation[0]).column_values(relation[1])
-
-
-
-
                 input.addItems(values)
             elif attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self)

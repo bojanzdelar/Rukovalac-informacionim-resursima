@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from meta.meta import read_meta
-import mysql.connector
 
 class InformationResource(ABC):
     def __init__(self, file_name):

@@ -49,4 +49,4 @@ class Database(InformationResource):
         self.csor.callproc("column_values", [column, self.file_name[0:-4]])
         for res in self.csor.stored_results():
             values = res.fetchall()
-        return sorted([value[0] for value in values])
+        return sorted([str(value[0]) for value in values])
