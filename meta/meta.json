@@ -1,6 +1,71 @@
 {
+    "studenti.sql" : {
+        "display" : "Studenti",
+        "attributes" : [
+            {   "name" : "Ustanova",
+                "type" : ["primary key", "foreign key", "required"],
+                "relation" : { 
+                    "visokoskolska_ustanova.sek.csv" : "Oznaka" 
+                },
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Struka",
+                "type" : ["primary key", "required"],
+                "input" : "characters",
+                "length" : 2
+            },
+            {   "name" : "Broj indeksa",
+                "type" : ["primary key", "required"],
+                "input" : "variable characters",
+                "length" : 6
+            },
+            {   "name" : "Prezime",
+                "type" : ["required"],
+                "input" : "variable characters",
+                "length" : 20
+            },
+            {   "name" : "Ime roditelja",
+                "type" : [],
+                "input" : "variable characters",
+                "length" : 20
+            },
+            {   "name" : "Ime",
+                "type" : ["required"],
+                "input" : "variable characters",
+                "length" : 20
+            },
+            {   "name" : "Pol",
+                "type" : ["required"],
+                "input" : "characters",
+                "length" : 1
+            },
+            {   "name" : "Adresa stanovanja",
+                "type" : [],
+                "input" : "variable characters",
+                "length" : 80
+            },
+            {   "name" : "Telefon",
+                "type" : [],
+                "input" : "variable characters",
+                "length" : 20
+            },
+            {   "name" : "JMBG",
+                "type" : [],
+                "input" : "characters",
+                "length" : 13
+            },
+            {   "name" : "Datum rodjenja",
+                "type" : [],
+                "input" : "date"
+            }
+        ],
+        "children" : {
+            "tok_studija.sek.csv" : ["Ustanova", "Struka", "Broj indeksa"]
+        }
+    },
     "visokoskolska_ustanova.ser.csv" : {
-        "display" : "Visokoskolske ustanove - Serijska",
+        "display" : "Visokoskolske ustanove",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["required"],
@@ -21,7 +86,7 @@
         "children" : {}
     },
     "studenti.ser.csv" : {
-        "display" : "Studenti - Serijska",
+        "display" : "Studenti",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -81,7 +146,7 @@
         "children" : {}
     },
     "nivo_studija.ser.csv" : {
-        "display" : "Nivoi studija - Serijska",
+        "display" : "Nivoi studija",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["required"],
@@ -97,7 +162,7 @@
         "children" : {}
     },
     "nastavni_predmet.ser.csv" : {
-        "display" : "Nastavni predmeti - Serijska",
+        "display" : "Nastavni predmeti",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -123,7 +188,7 @@
         "children" : {}
     },
     "studijski_programi.ser.csv" : {
-        "display" : "Studijski programi - Serijska",
+        "display" : "Studijski programi",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -149,7 +214,7 @@
         "children" : {}
     },
     "plan_studijske_grupe.ser.csv" : {
-        "display" : "Planovi studijskih grupa - Serijska",
+        "display" : "Planovi studijskih grupa",
         "attributes" : [
             {   "name" : "Program Ustanove",
                 "type" : ["required"],
@@ -185,7 +250,7 @@
         "children" : {}
     },
     "tok_studija.ser.csv" : {
-        "display" : "Tokovi studija - Serijska",
+        "display" : "Tokovi studija",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["required"],
@@ -254,7 +319,7 @@
         "children" : {}
     },
     "visokoskolska_ustanova.sek.csv" : {
-        "display" : "Visokoskolske ustanove - Sekvencijalna",
+        "display" : "Visokoskolske ustanove",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["primary key", "required"],
@@ -278,7 +343,7 @@
         }
     },
     "studenti.sek.csv" : {
-        "display" : "Studenti - Sekvencijalna",
+        "display" : "Studenti",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -343,7 +408,7 @@
         }
     },
     "nivo_studija.sek.csv" : {
-        "display" : "Nivoi studija - Sekvencijalna",
+        "display" : "Nivoi studija",
         "attributes" : [
             {   "name" : "Oznaka",
                 "type" : ["primary key", "required"],
@@ -361,7 +426,7 @@
         }
     },
     "nastavni_predmet.sek.csv" : {
-        "display" : "Nastavni predmeti - Sekvencijalna",
+        "display" : "Nastavni predmeti",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -392,7 +457,7 @@
         }
     },
     "studijski_programi.sek.csv" : {
-        "display" : "Studijski programi - Sekvencijalna",
+        "display" : "Studijski programi",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
@@ -427,7 +492,7 @@
         }
     },
     "plan_studijske_grupe.sek.csv" : {
-        "display" : "Planovi studijskih grupa - Sekvencijalna",
+        "display" : "Planovi studijskih grupa",
         "attributes" : [
             {   "name" : "Program Ustanove",
                 "type" : ["primary key", "foreign key", "required"],
@@ -475,7 +540,7 @@
         "children" : {}
     },
     "tok_studija.sek.csv" : {
-        "display" : "Tokovi studija - Sekvencijalna",
+        "display" : "Tokovi studija",
         "attributes" : [
             {   "name" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],

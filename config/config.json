@@ -1,0 +1,5 @@
+{
+    "meta" : "meta/meta.json",
+    "serial_data" : "data/serial/",
+    "sequential_data" : "data/sequential/"
+}
