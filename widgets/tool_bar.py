@@ -10,7 +10,6 @@ class ToolBar(QtWidgets.QToolBar):
         self.create_action = self.addAction(QtGui.QIcon("icons/create.png"), "Create")
         self.update_action = self.addAction(QtGui.QIcon("icons/update.png"), "Update")
         self.delete_action = self.addAction(QtGui.QIcon("icons/delete.png"), "Delete")
-        self.sort_action = self.addAction(QtGui.QIcon("icons/sort.png"), "Sort")
         self.save_action = self.addAction(QtGui.QIcon("icons/save.png"), "Save")
         self.addSeparator()
         self.filter_action = self.addAction(QtGui.QIcon("icons/filter.png"), "Filter")

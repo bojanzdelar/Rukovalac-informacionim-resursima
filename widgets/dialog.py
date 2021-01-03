@@ -1,6 +1,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from abc import abstractmethod
 from model.information_resource import InformationResource
+from model.sequential_file import SequentialFile
 
 class Dialog(QtWidgets.QDialog):
     def __init__(self, information_resource, parent = None):
@@ -17,10 +18,10 @@ class Dialog(QtWidgets.QDialog):
 
         for i, attribute in enumerate(self.attributes):
             label = QtWidgets.QLabel(attribute["name"], self)
-            if "foreign key" in attribute["type"]:
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
                 input = QtWidgets.QComboBox(self)
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
-                values = InformationResource(relation[0]).column_values(relation[1])
+                values = SequentialFile(relation[0]).column_values(relation[1])
                 input.addItems(values)
             elif attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self)
@@ -58,6 +59,10 @@ class Dialog(QtWidgets.QDialog):
                     QtWidgets.QMessageBox.warning(self, "Greska", f"Vrednost uneta u polje {label} nije dozvoljena")
                     return False
         return True
+
+    @abstractmethod
+    def validate_primary_key(self):
+        ...
 
     @abstractmethod
     def action(self):

@@ -1,4 +1,5 @@
-from PySide2 import QtCore, QtWidgets
+from PySide2 import QtCore
+from model.serial_file import SerialFile
 from widgets.dialog import Dialog
 
 class CreateDialog(Dialog):
@@ -15,9 +16,5 @@ class CreateDialog(Dialog):
             widget = self.layout().itemAtPosition(index, 1).widget()
             text = widget.currentText() if "foreign key" in attribute["type"] else widget.text()
             element.append(text)
-        primary_key_used, _ = self.information_resource.primary_key_used(element)
-        if primary_key_used:
-            QtWidgets.QMessageBox.warning(self, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
-            return
-        self.information_resource.create_element(element)
-        self.close()
+        if self.information_resource.create_element(element):
+            self.close()

@@ -1,4 +1,5 @@
 from PySide2 import QtCore, QtWidgets, QtGui
+from model.sequential_file import SequentialFile
 from model.table_model import TableModel
 from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
@@ -32,7 +33,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tool_bar.update_action.triggered.connect(self.update_row)
         tool_bar.delete_action.triggered.connect(self.delete_row)
         tool_bar.save_action.triggered.connect(self.save_table)
-        tool_bar.sort_action.triggered.connect(self.sort)
         tool_bar.filter_action.triggered.connect(self.filter)
         tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
         return tool_bar
@@ -41,6 +41,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         table = QtWidgets.QTableView(parent)
         table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
         return table
 
     def create_main_table(self):
@@ -52,6 +53,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return main_table
 
     def selected(self, index):
+        if not isinstance(self.information_resource, SequentialFile):
+            return
+
         children = self.information_resource.get_children()
         self.tab_widget.clear()
         for file_name, attributes in children.items():
@@ -96,11 +100,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
         indexes = self.main_table.selectionModel().selectedIndexes()
         if not len(indexes):
             return
-        index = indexes[0].row()
-        if self.information_resource.restrict_remove(index):
-            QtWidgets.QMessageBox.warning(self, "Greska", "Ne mozete da obrisete entitet" 
-                + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
-            return
         self.model.layoutAboutToBeChanged.emit()
         self.information_resource.delete_element(indexes[0].row())
         self.model.layoutChanged.emit()
@@ -113,13 +112,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.information_resource.save_data()
         self.model.layoutChanged.emit()
 
-    def sort(self):
-        self.model.layoutAboutToBeChanged.emit()
-        if not self.information_resource.sort():
-            QtWidgets.QMessageBox.warning(self, "Greska", 
-                "Ne mozete da sortirate tabelu koja nema primarni kljuc")
-        self.model.layoutChanged.emit()
-
     def filter(self):
         self.filter_show() if self.filter_enabled else self.filter_hide()
         self.filter_enabled = not self.filter_enabled
@@ -127,14 +119,14 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def filter_show(self):
         for i in range(self.model.rowCount()):
             self.main_table.showRow(i)
-        self.tool_bar.actions()[6].setIcon(QtGui.QIcon("icons/filter.png"))
+        self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter.png"))
 
     def filter_hide(self):
         for i in range(self.model.rowCount()):
             element = self.information_resource.read_element(i)
             if self.filter_text.lower() not in element[self.filter_attribute].lower():
                 self.main_table.hideRow(i)
-        self.tool_bar.actions()[6].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
+        self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
     def refilter(self):
         if self.filter_enabled:
