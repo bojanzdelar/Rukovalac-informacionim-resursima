@@ -13,13 +13,13 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
             info = self.fileInfo(index)
             name = info.fileName()
             if info.isFile() and name in self.meta:
-                    return self.meta[info.fileName()]["display"]
+                return self.meta[info.fileName()]["display"]
         elif role == QtCore.Qt.DecorationRole:
             info = self.fileInfo(index)
-            name = info.fileName()
             if info.isFile():
-                if name.endswith("ser.csv"):
+                parent_dir = info.dir().dirName()
+                if parent_dir == "serial":
                     return QtGui.QIcon("icons/serial.png")
-                elif name.endswith("sek.csv"):
+                elif parent_dir == "sequential":
                     return QtGui.QIcon("icons/sequential.png")
         return super().data(index, role)

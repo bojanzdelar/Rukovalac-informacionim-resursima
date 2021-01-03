@@ -1,6 +1,6 @@
 from PySide2 import QtCore
-from model.serial_file import SerialFile
 from widgets.dialog import Dialog
+from model.sequential_file import SequentialFile
 
 class CreateDialog(Dialog):
     def __init__(self, information_resource, parent = None):
@@ -14,7 +14,10 @@ class CreateDialog(Dialog):
         element = []
         for index, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(index, 1).widget()
-            text = widget.currentText() if "foreign key" in attribute["type"] else widget.text()
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
+                text = widget.currentText()
+            else:
+                text = widget.text()
             element.append(text)
         if self.information_resource.create_element(element):
             self.close()

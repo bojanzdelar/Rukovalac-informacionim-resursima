@@ -7,9 +7,10 @@ from widgets.filter_dialog import FilterDialog
 from widgets.tool_bar import ToolBar
 
 class WorkspaceWidget(QtWidgets.QWidget):
-    def __init__(self, file_name, parent):
+    def __init__(self, parent_dir, file_name, parent):
         super().__init__(parent)
 
+        self.parent_dir = parent_dir
         self.file_name = file_name
         self.filter_enabled = False
         self.filter_attribute = 0
@@ -45,7 +46,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         return table
 
     def create_main_table(self):
-        self.model = TableModel(self.file_name)
+        self.model = TableModel(self.parent_dir, self.file_name)
         self.information_resource = self.model.information_resource
         main_table = self.create_table()
         main_table.setModel(self.model)
@@ -59,7 +60,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         children = self.information_resource.get_children()
         self.tab_widget.clear()
         for file_name, attributes in children.items():
-            model = TableModel(file_name)
+            model = TableModel(self.parent_dir, file_name)
             main_attributes = self.information_resource.get_primary_key()
             main_attributes_indexes = self.information_resource.get_attributes_indexes(main_attributes)
             values = []

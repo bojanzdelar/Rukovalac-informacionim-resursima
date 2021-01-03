@@ -15,10 +15,12 @@ class CentralWidget(QtWidgets.QTabWidget):
 
     def add_tab(self, path):
         file_name = path.split("/")[-1]
+        parent_dir = path.split("/")[-2]
         meta = read_meta()
-        if file_name not in self.open_files and file_name in meta:
-            self.open_files.append(file_name)
-            self.addTab(WorkspaceWidget(file_name, self), file_name)
+        tab_name = meta[file_name]["display"] + " - " + parent_dir
+        if tab_name not in self.open_files and file_name in meta:
+            self.open_files.append(tab_name)
+            self.addTab(WorkspaceWidget(parent_dir, file_name, self), tab_name)
 
     def delete_tab(self, index):
         self.open_files.remove(self.tabText(index))

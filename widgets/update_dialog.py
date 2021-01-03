@@ -1,7 +1,6 @@
 from PySide2 import QtCore
 from widgets.dialog import Dialog
-from model.information_resource import InformationResource
-from model.serial_file import SerialFile
+from model.sequential_file import SequentialFile
 
 class UpdateDialog(Dialog):
     def __init__(self, information_resource, index, parent = None):
@@ -15,7 +14,7 @@ class UpdateDialog(Dialog):
         element = self.information_resource.read_element(self.index)
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
-            if "foreign key" in attribute["type"]:
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
                 widget.setCurrentIndex(widget.findText(element[i]))
             elif attribute["input"] == "date":
                 widget.setDate(QtCore.QDate.fromString(element[i], "dd/MM/yyyy"))
@@ -28,7 +27,10 @@ class UpdateDialog(Dialog):
         element = []
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
-            text = widget.currentText() if "foreign key" in attribute["type"] else widget.text()
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
+                text = widget.currentText()
+            else:
+                text = widget.text()
             element.append(text)
         if self.information_resource.update_element(self.index, element):
             self.close()

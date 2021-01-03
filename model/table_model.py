@@ -1,16 +1,18 @@
 from PySide2 import QtCore
 from .serial_file import SerialFile
 from .sequential_file import SequentialFile
+from .database import Database
 
 class TableModel(QtCore.QAbstractTableModel):
-    def __init__(self, file_name, parent=None):
+    def __init__(self, parent_dir, file_name, parent=None):
         super().__init__(parent)
-        if file_name.endswith(".ser.csv"):
+        if parent_dir == "serial":
             self.information_resource = SerialFile(file_name)
-        elif file_name.endswith(".sek.csv"):
+        elif parent_dir == "sequential":
             self.information_resource = SequentialFile(file_name)
-        # TODO: dodati podrsku za tabele iz relacione baze
-
+        elif parent_dir == "database":
+            self.information_resource = Database(file_name)
+            
     def get_element(self, index):
         return self.information_resource.read_element(index.row())
   
