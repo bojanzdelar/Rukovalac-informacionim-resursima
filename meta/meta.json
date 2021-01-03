@@ -284,11 +284,11 @@
         "display" : "Tokovi studija",
         "attributes" : [
             {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova",
+                "name" : "stu_vu_oznaka",
+                "display" : "Student iz ustanove",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studijski_programi.csv" : "vu_oznaka"
+                    "studenti.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -304,11 +304,11 @@
                 "length" : 3
             },
             {   
-                "name" : "stu_vu_oznaka",
-                "display" : "Student iz ustanove",
+                "name" : "vu_oznaka",
+                "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studenti.csv" : "vu_oznaka"
+                    "studijski_programi.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2

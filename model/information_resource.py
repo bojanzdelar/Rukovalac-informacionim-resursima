@@ -15,21 +15,19 @@ class InformationResource(ABC):
     def save_data(self):
         ...
 
-    @abstractmethod
     def create_element(self, element):
-        ...
+        self.data.append(element)
+        return True
 
-    @abstractmethod
     def read_element(self, index):
-        ...
+        return self.data[index]
 
-    @abstractmethod
     def update_element(self, index, element):
-        ...
+        self.data[index] = element
+        return True
 
-    @abstractmethod
     def delete_element(self, index):
-        ...
+        self.data.pop(index)
 
     @abstractmethod
     def filter(self, attributes, values):

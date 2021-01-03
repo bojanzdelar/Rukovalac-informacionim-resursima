@@ -1,6 +1,8 @@
+from PySide2 import QtWidgets
 from model.information_resource import InformationResource
 from config.config import read_config
 import mysql.connector
+from decimal import Decimal
 
 class Database(InformationResource):
     def __init__(self, file_name):
@@ -28,10 +30,16 @@ class Database(InformationResource):
 
     def save_data(self):
         self.connection.commit()
-        print("test")
+        self.data = self.read_data()
 
     def create_element(self, element):
-        ...
+        arguments = "(" + ", ".join([f"'{attribute}'" for attribute in element]) + ")"
+        try:
+            self.csor.callproc("insert_element", [self.file_name[0:-4], arguments])
+            return super().create_element(element)
+        except mysql.connector.errors.IntegrityError:
+            QtWidgets.QMessageBox.warning(None, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
+            return False
 
     def read_element(self, index):
         return self.data[index]
@@ -40,7 +48,19 @@ class Database(InformationResource):
         ...
 
     def delete_element(self, index):
-        ...
+        element = self.data[index]
+        arguments = ""
+        for i, el in enumerate(element): 
+            name = self.meta["attributes"][i]["name"]
+            arguments += f"({name} = '{element[i]}')"
+            if i != len(element) - 1:
+                arguments += " AND "
+        try:
+            self.csor.callproc("delete_element", [self.file_name[0:-4], arguments])
+            super().delete_element(index)
+        except mysql.connector.errors.IntegrityError:
+            QtWidgets.QMessageBox.warning(None, "Greska", "Ne mozete da obrisete entitet" 
+                + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
 
     def filter(self, attributes, values):
         ...
