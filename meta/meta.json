@@ -303,5 +303,17 @@
             }
         ],
         "children" : {}
+    },
+    "serial" : {
+        "display" : "Serijske datoteke",
+        "abbreviation" : "Ser."
+    },
+    "sequential" : {
+        "display" : "Sekvencijalne datoteke",
+        "abbreviation" : "Sekv."
+    },
+    "database" : {
+        "display" : "Relaciona baza podataka",
+        "abbreviation" : "RBP"
     }
 }

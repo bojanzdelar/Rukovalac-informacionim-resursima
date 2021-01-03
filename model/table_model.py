@@ -25,7 +25,7 @@ class TableModel(QtCore.QAbstractTableModel):
     def data(self, index, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):
             if index.column() == i and role == QtCore.Qt.DisplayRole:
-                return self.get_element(index)[i]
+                return str(self.get_element(index)[i])
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):

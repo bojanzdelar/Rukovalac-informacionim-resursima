@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.timer.timeout.connect(self.show_time)
         self.timer.start(1000)
 
-        dock_widget = DockWidget("Datoteke", self)
+        dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
 

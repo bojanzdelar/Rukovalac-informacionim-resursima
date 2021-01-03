@@ -1,6 +1,10 @@
 {
     "meta" : "meta/meta.json",
+    "data" : "data",
     "serial_data" : "data/serial/",
     "sequential_data" : "data/sequential/",
-    "database" : "data/database/"
+    "user" : "root",
+    "password" : "root",
+    "host" : "127.0.0.1",
+    "database": "univerzitet"
 }

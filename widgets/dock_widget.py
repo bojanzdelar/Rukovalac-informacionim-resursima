@@ -1,5 +1,6 @@
 from PySide2 import QtWidgets, QtCore
 from model.file_system_model import FileSystemModel
+from config.config import read_config
 
 class DockWidget(QtWidgets.QDockWidget):
     clicked = QtCore.Signal(str)
@@ -7,11 +8,12 @@ class DockWidget(QtWidgets.QDockWidget):
     def __init__(self, title, parent):
         super().__init__(title, parent)
 
-        self.model = FileSystemModel(QtCore.QDir.currentPath() + "/data")
+        config = read_config()
 
+        self.model = FileSystemModel(QtCore.QDir.currentPath() + "/" + config["data"])
         self.tree = QtWidgets.QTreeView()
         self.tree.setModel(self.model)
-        self.tree.setRootIndex(self.model.index(QtCore.QDir.currentPath() + "/data"))
+        self.tree.setRootIndex(self.model.index(QtCore.QDir.currentPath() + "/" + config["data"]))
         self.tree.clicked.connect(self.file_clicked)
 
         for i in range(1, self.model.columnCount()):

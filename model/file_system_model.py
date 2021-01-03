@@ -10,16 +10,18 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
 
     def data(self, index, role=QtCore.Qt.DecorationRole):
         if role == QtCore.Qt.DisplayRole:
-            info = self.fileInfo(index)
-            name = info.fileName()
-            if info.isFile() and name in self.meta:
-                return self.meta[info.fileName()]["display"]
+            file = self.fileInfo(index)
+            if file.fileName() in self.meta:
+                return self.meta[file.fileName()]["display"]
         elif role == QtCore.Qt.DecorationRole:
-            info = self.fileInfo(index)
-            if info.isFile():
-                parent_dir = info.dir().dirName()
-                if parent_dir == "serial":
+            file = self.fileInfo(index)
+            name = file.fileName()
+            if file.isDir():
+                if name == "serial":
                     return QtGui.QIcon("icons/serial.png")
-                elif parent_dir == "sequential":
+                elif name == "sequential":
                     return QtGui.QIcon("icons/sequential.png")
+                elif name == "database":
+                    return QtGui.QIcon("icons/database.png")
+            return QtGui.QIcon("icons/item.png")
         return super().data(index, role)

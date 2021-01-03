@@ -1,22 +1,34 @@
 from model.information_resource import InformationResource
+from config.config import read_config
 import mysql.connector
 
 class Database(InformationResource):
     def __init__(self, file_name):
+        self.connect()
+
         super().__init__(file_name)
 
+    def __del__(self):
+        self.disconnect()
+
+    def connect(self):
+        config = read_config()
+        self.connection = mysql.connector.connect(user=config["user"], password=config["password"], 
+                                                  host=config["host"], database=config["database"])
+        self.csor = self.connection.cursor()
+
+    def disconnect(self):
+        self.csor.close()
+        self.connection.close()
+
     def read_data(self):
-        connection = mysql.connector.connect(user="root", password="root", host="127.0.0.1", database="univerzitet")
-        csor = connection.cursor()
-        
-        csor.callproc("show_table", [self.file_name[0:-4]])
-        for res in csor.stored_results():
-            data = res.fetchall()
+        self.csor.callproc("show_table", [self.file_name[0:-4]])
+        for res in self.csor.stored_results():
+            return res.fetchall()
 
-        csor.close()
-        connection.close()
-
-        return data
+    def save_data(self):
+        self.connection.commit()
+        print("test")
 
     def read_element(self, index):
         return self.data[index]
