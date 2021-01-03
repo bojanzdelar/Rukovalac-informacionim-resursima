@@ -2,217 +2,277 @@
     "visokoskolska_ustanova.csv" : {
         "display" : "Visokoskolske ustanove",
         "attributes" : [
-            {   "name" : "Oznaka",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Oznaka",
                 "type" : ["primary key", "required"],
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Naziv",
+            {   
+                "name" : "vu_naziv",
+                "display" : "Naziv",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 80
             },
-            {   "name" : "Adresa",
+            { 
+                "name" : "vu_adresa",
+                "display" : "Adresa",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 80
             }
         ],
         "children" : {
-            "studenti.csv" : ["Ustanova"],
-            "studijski_programi.csv" : ["Ustanova"]
+            "studenti.csv" : ["vu_oznaka"],
+            "studijski_programi.csv" : ["vu_oznaka"]
         }
     },
     "studenti.csv" : {
         "display" : "Studenti",
         "attributes" : [
-            {   "name" : "Ustanova",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : { 
-                    "visokoskolska_ustanova.csv" : "Oznaka" 
+                    "visokoskolska_ustanova.csv" : "vu_oznaka" 
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Struka",
+            {   
+                "name" : "stu_struka",
+                "display" : "Struka",
                 "type" : ["primary key", "required"],
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Broj indeksa",
+            {   
+                "name" : "stu_broj_indeksa",
+                "display" : "Broj indeksa",
                 "type" : ["primary key", "required"],
                 "input" : "variable characters",
                 "length" : 6
             },
-            {   "name" : "Prezime",
+            {   
+                "name" : "stu_prezime",
+                "display" : "Prezime",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 20
             },
-            {   "name" : "Ime roditelja",
+            {   
+                "name" : "stu_ime_roditelja",
+                "display" : "Ime roditelja",
                 "type" : [],
                 "input" : "variable characters",
                 "length" : 20
             },
-            {   "name" : "Ime",
+            {   
+                "name" : "stu_ime",
+                "display" : "Ime",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 20
             },
-            {   "name" : "Pol",
+            {   
+                "name" : "stu_pol",
+                "display" : "Pol",
                 "type" : ["required"],
                 "input" : "characters",
                 "length" : 1
             },
-            {   "name" : "Adresa stanovanja",
+            {   
+                "name" : "stu_adresa_stanovanja",
+                "display" : "Adresa stanovanja",
                 "type" : [],
                 "input" : "variable characters",
                 "length" : 80
             },
-            {   "name" : "Telefon",
+            {   
+                "name" : "stu_telefon",
+                "display" : "Telefon",
                 "type" : [],
                 "input" : "variable characters",
                 "length" : 20
             },
-            {   "name" : "JMBG",
+            {   
+                "name" : "stu_jmbg",
+                "display" : "JMBG",
                 "type" : [],
                 "input" : "characters",
                 "length" : 13
             },
-            {   "name" : "Datum rodjenja",
+            {   
+                "name" : "stu_datum_rodjenja",
+                "display" : "Datum rodjenja",
                 "type" : [],
                 "input" : "date"
             }
         ],
         "children" : {
-            "tok_studija.csv" : ["Ustanova", "Struka", "Broj indeksa"]
+            "tok_studija.csv" : ["stu_vu_oznaka", "stu_struka", "stu_broj_indeksa"]
         }
     },
     "nivo_studija.csv" : {
         "display" : "Nivoi studija",
         "attributes" : [
-            {   "name" : "Oznaka",
+            {   
+                "name" : "niv_oznaka",
+                "display" : "Oznaka",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Naziv",
+            {   
+                "name" : "niv_naziv",
+                "display" : "Naziv",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 80
             }
         ],
         "children" : {
-            "studijski_programi.csv" : ["Nivo"]
+            "studijski_programi.csv" : ["niv_oznaka"]
         }
     },
     "nastavni_predmet.csv" : {
         "display" : "Nastavni predmeti",
         "attributes" : [
-            {   "name" : "Ustanova",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "visokoskolska_ustanova.csv" : "Oznaka"
+                    "visokoskolska_ustanova.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Oznaka",
+            {   
+                "name" : "np_oznaka",
+                "display" : "Oznaka",
                 "type" : ["primary key", "required"],
                 "input" : "variable characters",
                 "length" : 6
             },
-            {   "name" : "Naziv",
+            {   
+                "name" : "np_naziv",
+                "display" : "Naziv",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 120
             },
-            {   "name" : "ESPB",
+            {   
+                "name" : "np_espb",
+                "display" : "ESPB",
                 "type" : ["required"],
                 "input" : "number",
                 "length" : 2
             }
         ],
         "children" : {
-            "plan_studijske_grupe.csv" : ["Ustanova predmet", "Oznaka predmeta"]
+            "plan_studijske_grupe.csv" : ["vu_oznaka", "np_oznaka"]
         }
     },
     "studijski_programi.csv" : {
         "display" : "Studijski programi",
         "attributes" : [
-            {   "name" : "Ustanova",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : { 
-                    "visokoskolska_ustanova.csv" : "Oznaka"
+                    "visokoskolska_ustanova.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2  
             },
-            {   "name" : "Nivo",
+            {   
+                "name" : "niv_oznaka",
+                "display" : "Nivo",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "nivo_studija.csv" : "Oznaka"
+                    "nivo_studija.csv" : "niv_oznaka"
                 },
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Oznaka programa",
+            {   
+                "name" : "sp_oznaka",
+                "display" : "Oznaka programa",
                 "type" : ["primary key", "required"],
                 "input" : "variable characters",
                 "length" : 3
             },
-            {   "name" : "Naziv programa",
+            {   
+                "name" : "sp_naziv",
+                "display" : "Naziv programa",
                 "type" : ["required"],
                 "input" : "variable characters",
                 "length" : 120
             }
         ],
         "children" : {
-            "tok_studija.csv" : ["Ustanova", "Oznaka programa"],
-            "plan_studijske_grupe.csv" : ["Program Ustanove", "Oznaka programa"]
+            "tok_studija.csv" : ["vu_oznaka", "sp_oznaka"],
+            "plan_studijske_grupe.csv" : ["vu_oznaka", "sp_oznaka"]
         }
     },
     "plan_studijske_grupe.csv" : {
         "display" : "Planovi studijskih grupa",
         "attributes" : [
-            {   "name" : "Program Ustanove",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Program Ustanove",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studijski_programi.csv" : "Ustanova"
+                    "studijski_programi.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Oznaka programa",
+            {   
+                "name" : "sp_oznaka",
+                "display" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studijski_programi.csv" : "Oznaka programa"
+                    "studijski_programi.csv" : "sp_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 3
             },
-            {   "name" : "Blok",
+            {   
+                "name" : "spb_blok",
+                "display" : "Blok",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Pozicija",
+            {   
+                "name" : "spb_pozicija",
+                "display" : "Pozicija",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Ustanova predmet",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Ustanova predmet",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "nastavni_predmet.csv" : "Ustanova"
+                    "nastavni_predmet.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Oznaka predmeta",
+            {   
+                "name" : "np_oznaka",
+                "display" : "Oznaka predmeta",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "nastavni_predmet.csv" : "Oznaka"
+                    "nastavni_predmet.csv" : "np_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 6
@@ -223,80 +283,106 @@
     "tok_studija.csv" : {
         "display" : "Tokovi studija",
         "attributes" : [
-            {   "name" : "Ustanova",
+            {   
+                "name" : "vu_oznaka",
+                "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studijski_programi.csv" : "Ustanova"
+                    "studijski_programi.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Oznaka programa",
+            {   
+                "name" : "sp_oznaka",
+                "display" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studijski_programi.csv" : "Oznaka programa"
+                    "studijski_programi.csv" : "sp_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 3
             },
-            {   "name" : "Student iz ustanove",
+            {   
+                "name" : "stu_vu_oznaka",
+                "display" : "Student iz ustanove",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studenti.csv" : "Ustanova"
+                    "studenti.csv" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Struka",
+            {   
+                "name" : "stu_struka",
+                "display" : "Struka",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studenti.csv" : "Struka"
+                    "studenti.csv" : "stu_struka"
                 },
                 "input" : "characters",
                 "length" : 2
             },
-            {   "name" : "Broj indeksa",
+            {   
+                "name" : "stu_broj_indeksa",
+                "display" : "Broj indeksa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "studenti.csv" : "Broj indeksa"
+                    "studenti.csv" : "stu_broj_indeksa"
                 },
                 "input" : "variable characters",
                 "length" : 6
             },
-            {   "name" : "Skolska godina",
+            {   
+                "name" : "tok_skolska_godina",
+                "display" : "Skolska godina",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 4
             },
-            {   "name" : "Godina studija",
+            {   
+                "name" : "tok_godina_studija",
+                "display" : "Godina studija",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 1
             },
-            {   "name" : "Blok",
+            {   
+                "name" : "tok_blok",
+                "display" : "Blok",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Redni broj upisa",
+            {   
+                "name" : "tok_redni_broj_upisa",
+                "display" : "Redni broj upisa",
                 "type" : ["primary key", "required"],
                 "input" : "number",
                 "length" : 2
             },
-            {   "name" : "Datum upisa",
+            {   
+                "name" : "tok_datum_upisa",
+                "display" : "Datum upisa",
                 "type" : ["required"],
                 "input" : "date"
             },
-            {   "name" : "Datum overe",
+            {   
+                "name" : "tok_datum_overe",
+                "display" : "Datum overe",
                 "type" : [],
                 "input" : "date"
             },
-            {   "name" : "ESPB pocetni",
+            {   
+                "name" : "tok_espb_pocetni",
+                "display" : "ESPB pocetni",
                 "type" : ["required"],
                 "input" : "number",
                 "length" : 3
             },
-            {   "name" : "ESPB krajnji",
+            {   
+                "name" : "tok_espb_krajnji",
+                "display" : "ESPB krajnji",
                 "type" : ["required"],
                 "input" : "number",
                 "length" : 3

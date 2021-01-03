@@ -30,4 +30,4 @@ class TableModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
         for i in range(self.columnCount()):
             if section == i and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-                return self.information_resource.get_attribute(i)["name"]
+                return self.information_resource.get_attribute(i)["display"]

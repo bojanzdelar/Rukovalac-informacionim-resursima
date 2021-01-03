@@ -19,7 +19,7 @@ class FilterDialog(QtWidgets.QDialog):
 
         label_attribute = QtWidgets.QLabel("Attribute", self)
         input_attribute = QtWidgets.QComboBox(self)
-        input_attribute.addItems([attribute["name"] for attribute in self.attributes])
+        input_attribute.addItems([attribute["display"] for attribute in self.attributes])
         input_attribute.setCurrentIndex(self.attribute)
 
         label_text = QtWidgets.QLabel("Text", self)

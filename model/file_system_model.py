@@ -8,12 +8,15 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
         self.meta = read_meta()
         self.setRootPath(root)
 
+    def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
+        return ""
+
     def data(self, index, role=QtCore.Qt.DecorationRole):
-        if role == QtCore.Qt.DisplayRole:
+        if index.column() == 0 and role == QtCore.Qt.DisplayRole:
             file = self.fileInfo(index)
             if file.fileName() in self.meta:
                 return self.meta[file.fileName()]["display"]
-        elif role == QtCore.Qt.DecorationRole:
+        elif index.column() == 0 and role == QtCore.Qt.DecorationRole:
             file = self.fileInfo(index)
             name = file.fileName()
             if file.isDir():

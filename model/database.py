@@ -30,5 +30,23 @@ class Database(InformationResource):
         self.connection.commit()
         print("test")
 
+    def create_element(self, element):
+        ...
+
     def read_element(self, index):
         return self.data[index]
+
+    def update_element(self, index, element):
+        ...
+
+    def delete_element(self, index):
+        ...
+
+    def filter(self, attributes, values):
+        ...
+
+    def column_values(self, column):
+        self.csor.callproc("column_values", [column, self.file_name[0:-4]])
+        for res in self.csor.stored_results():
+            values = res.fetchall()
+        return sorted([value[0] for value in values])

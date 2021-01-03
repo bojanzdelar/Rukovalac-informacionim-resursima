@@ -2,6 +2,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from abc import abstractmethod
 from model.information_resource import InformationResource
 from model.sequential_file import SequentialFile
+from model.database import Database
 
 class Dialog(QtWidgets.QDialog):
     def __init__(self, information_resource, parent = None):
@@ -17,11 +18,24 @@ class Dialog(QtWidgets.QDialog):
         layout = QtWidgets.QGridLayout()
 
         for i, attribute in enumerate(self.attributes):
-            label = QtWidgets.QLabel(attribute["name"], self)
-            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
+            label = QtWidgets.QLabel(attribute["display"], self)
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
                 input = QtWidgets.QComboBox(self)
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
-                values = SequentialFile(relation[0]).column_values(relation[1])
+                if isinstance(self.information_resource, SequentialFile):
+                    values = SequentialFile(relation[0]).column_values(relation[1])
+
+
+
+
+
+
+                else:
+                    values = Database(relation[0]).column_values(relation[1])
+
+
+
+
                 input.addItems(values)
             elif attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self)

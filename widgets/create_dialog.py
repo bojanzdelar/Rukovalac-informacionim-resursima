@@ -1,6 +1,7 @@
 from PySide2 import QtCore
 from widgets.dialog import Dialog
 from model.sequential_file import SequentialFile
+from model.database import Database
 
 class CreateDialog(Dialog):
     def __init__(self, information_resource, parent = None):
@@ -14,7 +15,7 @@ class CreateDialog(Dialog):
         element = []
         for index, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(index, 1).widget()
-            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
                 text = widget.currentText()
             else:
                 text = widget.text()
