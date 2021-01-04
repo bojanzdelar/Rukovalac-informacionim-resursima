@@ -43,9 +43,22 @@ class SequentialFile(SerialFile):
                 + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
             return
         super().delete_element(index)
-    
-    def get_children(self):
-        return self.meta["children"]
+
+    def get_children(self, index):
+        children_meta = self.meta["children"]
+        children = []
+
+        for file_name, attributes in children_meta.items():
+            main_attributes = self.get_primary_key()
+            main_attributes_indexes = self.get_attributes_indexes(main_attributes)
+            values = []
+            for attr_index in main_attributes_indexes:
+                values.append(self.read_element(index)[attr_index])
+            child = SequentialFile(file_name)
+            child.filter(attributes, values)
+            children.append(child)
+
+        return children
 
     def get_primary_key(self):
         primary_key = []
@@ -70,7 +83,7 @@ class SequentialFile(SerialFile):
     
     def restrict_update(self, index, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
-        children = self.get_children()
+        children = self.meta["children"]
         for file_name, attributes in children.items():
             child = SequentialFile(file_name)
             for i, attribute in zip(indexes, attributes):
@@ -82,7 +95,7 @@ class SequentialFile(SerialFile):
 
     def restrict_remove(self, index):
         indexes = self.get_attributes_indexes(self.get_primary_key())
-        children = self.get_children()
+        children = self.meta["children"]
         for file_name, attributes in children.items():
             child = SequentialFile(file_name)
             used = True
@@ -99,7 +112,6 @@ class SequentialFile(SerialFile):
     def sort(self):
         primary_key = self.get_primary_key()
         if not len(primary_key):
-            return False
+            return
         indexes = self.get_attributes_indexes(primary_key)
         self.data.sort(key = operator.itemgetter(*indexes))
-        return True

@@ -38,21 +38,6 @@ class SerialFile(InformationResource):
                     self.data.remove(element)
                     break
     
-    def get_attribute_index(self, attribute):
-        if type(attribute) is dict:
-            return self.get_attribute().index(attribute)
-        for index, attr in enumerate(self.meta["attributes"]):
-            if attribute == attr["name"]:
-                return index
-
-    def get_attributes_indexes(self, attributes):
-        indexes = []
-        if type(attributes) != list:
-            attributes = [attributes]
-        for attribute in attributes:
-            indexes.append(self.get_attribute_index(attribute))
-        return indexes
-
     def column_values(self, column):
         values = set()
         index = self.get_attribute_index(column)

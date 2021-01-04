@@ -1,5 +1,6 @@
 from PySide2 import QtCore, QtWidgets, QtGui
 from model.sequential_file import SequentialFile
+from model.database import Database
 from model.table_model import TableModel
 from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
@@ -60,26 +61,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.information_resource = self.model.information_resource
         main_table = self.create_table()
         main_table.setModel(self.model)
-        main_table.clicked.connect(self.selected)
+        main_table.clicked.connect(self.selected_row)
         return main_table
-
-    def selected(self, index):
-        if not isinstance(self.information_resource, SequentialFile):
-            return
-
-        children = self.information_resource.get_children()
-        self.tab_widget.clear()
-        for file_name, attributes in children.items():
-            model = TableModel(self.parent_dir, file_name)
-            main_attributes = self.information_resource.get_primary_key()
-            main_attributes_indexes = self.information_resource.get_attributes_indexes(main_attributes)
-            values = []
-            for attr_index in main_attributes_indexes:
-                values.append(self.model.get_element(index)[attr_index])
-            model.information_resource.filter(attributes, values)
-            tab = self.create_table(self.tab_widget)
-            tab.setModel(model)
-            self.tab_widget.addTab(tab, file_name)
 
     def create_tab_widget(self):
         tab_widget = QtWidgets.QTabWidget(self)
@@ -117,6 +100,19 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.main_table.clearSelection()
         self.tab_widget.clear()
         self.refilter()
+
+    def selected_row(self, index):
+        if not isinstance(self.information_resource, (SequentialFile, Database)):
+            return
+
+        children = self.information_resource.get_children(index.row())
+        self.tab_widget.clear() 
+        for table in children:
+            model = TableModel(self.parent_dir)
+            model.information_resource = table
+            tab = self.create_table(self.tab_widget)
+            tab.setModel(model)
+            self.tab_widget.addTab(tab, table.file_name) 
 
     def save_table(self):
         self.model.layoutAboutToBeChanged.emit()

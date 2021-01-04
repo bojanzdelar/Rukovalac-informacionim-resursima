@@ -18,7 +18,13 @@ class Dialog(QtWidgets.QDialog):
         layout = QtWidgets.QGridLayout()
 
         for i, attribute in enumerate(self.attributes):
+            # label
             label = QtWidgets.QLabel(attribute["display"], self)
+            if "primary key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
+                label.setText("\U0001F511 " + label.text())
+            elif "required" in attribute["type"]:
+                label.setText("\u274C " + label.text())
+            # input
             if "foreign key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
                 input = QtWidgets.QComboBox(self)
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
@@ -39,6 +45,7 @@ class Dialog(QtWidgets.QDialog):
                 input.setDisplayFormat("dd/MM/yyyy")
                 input.setMinimumDate(QtCore.QDate.fromString("01/01/1900", "dd/MM/yyyy"))
                 input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
+
             layout.addWidget(label, i, 0)
             layout.addWidget(input, i, 1)
             

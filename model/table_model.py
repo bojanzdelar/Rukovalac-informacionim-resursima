@@ -4,8 +4,10 @@ from .sequential_file import SequentialFile
 from .database import Database
 
 class TableModel(QtCore.QAbstractTableModel):
-    def __init__(self, parent_dir, file_name, parent=None):
+    def __init__(self, parent_dir, file_name=None, parent=None):
         super().__init__(parent)
+        if not file_name:
+            return
         if parent_dir == "serial":
             self.information_resource = SerialFile(file_name)
         elif parent_dir == "sequential":
