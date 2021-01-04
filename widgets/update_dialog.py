@@ -19,7 +19,7 @@ class UpdateDialog(Dialog):
             elif attribute["input"] == "date":
                 widget.setDate(QtCore.QDate.fromString(element[i], "dd/MM/yyyy"))
             else:   
-                widget.setText(element[i])
+                widget.setText(str(element[i]))
 
     def action(self):
         if not self.validate_input():
