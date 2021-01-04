@@ -5,6 +5,18 @@ from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
 from widgets.tool_bar import ToolBar
+from datetime import datetime
+import operator
+
+ops = {
+    "=" : operator.eq,
+    "!=" : operator.ne,
+    "<" : operator.lt,
+    "<=" : operator.le,
+    ">=" : operator.ge,
+    ">" : operator.gt,
+    "like" : operator.contains,
+}
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, parent_dir, file_name, parent):
@@ -12,11 +24,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
         self.parent_dir = parent_dir
         self.file_name = file_name
-        self.filter_enabled = False
-        self.filter_attribute = 0
-        self.filter_text = ""
-
         self.generate_layout()
+        self.filter_enabled = False
+        self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -124,21 +134,34 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def filter_hide(self):
         for i in range(self.model.rowCount()):
-            element = self.information_resource.read_element(i)
-            if self.filter_text.lower() not in element[self.filter_attribute].lower():
+            element = self.information_resource.read_element(i).copy()
+            match_filter = True
+            for j in range(len(element)):
+                operator, text = self.filter_values[j]
+                input_type = self.information_resource.get_attribute(j)["input"]
+                if (text == "") or (input_type == "date" and text == "01/01/1900"):
+                    continue
+                if input_type == "date":
+                    text = datetime.strptime(text, "%d/%m/%Y")
+                    element[j] = datetime.strptime(str(element[j]), "%d/%m/%Y")
+                if (operator == "not like" and ops["like"](element[j], text)) \
+                        or (operator != "not like" and not ops[operator](element[j], text)):
+                    match_filter = False
+                    break
+            if not match_filter:
                 self.main_table.hideRow(i)
         self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
     def refilter(self):
         if self.filter_enabled:
+            self.filter_show()
             self.filter_hide()
 
     def filter_dialog(self):
-        dialog = FilterDialog(self.information_resource, self.filter_attribute, self.filter_text)
+        dialog = FilterDialog(self.information_resource, self.filter_values)
         dialog.changed.connect(self.change_filter)
         dialog.exec_()
 
     def change_filter(self, list):
-        self.filter_attribute = list[0]
-        self.filter_text = list[1]
+        self.filter_values = list
         self.refilter()

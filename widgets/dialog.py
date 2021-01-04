@@ -36,6 +36,7 @@ class Dialog(QtWidgets.QDialog):
                     input.setValidator(QtGui.QRegExpValidator("[1-9][0-9]*"))
             elif attribute["input"] == "date":
                 input = QtWidgets.QDateEdit(self)
+                input.setDisplayFormat("dd/MM/yyyy")
                 input.setMinimumDate(QtCore.QDate.fromString("01/01/1900", "dd/MM/yyyy"))
                 input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
             layout.addWidget(label, i, 0)

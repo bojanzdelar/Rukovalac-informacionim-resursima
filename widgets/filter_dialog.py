@@ -3,13 +3,11 @@ from PySide2 import QtCore, QtWidgets, QtGui
 class FilterDialog(QtWidgets.QDialog):
     changed = QtCore.Signal(list)
 
-    def __init__(self, information_resource, attribute, text, parent=None):
-        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint)
+    def __init__(self, information_resource, values, parent=None):
+        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 
 
         self.attributes = information_resource.get_attribute()
-        self.attribute = attribute
-        self.text = text
-        self.resize(300, 150)
+        self.values = values
         self.setWindowTitle("Edit filter")
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))
         self.setLayout(self.generate_layout())
@@ -17,27 +15,43 @@ class FilterDialog(QtWidgets.QDialog):
     def generate_layout(self):
         layout = QtWidgets.QGridLayout()
 
-        label_attribute = QtWidgets.QLabel("Attribute", self)
-        input_attribute = QtWidgets.QComboBox(self)
-        input_attribute.addItems([attribute["display"] for attribute in self.attributes])
-        input_attribute.setCurrentIndex(self.attribute)
+        for i, attribute in enumerate(self. attributes):
+            label = QtWidgets.QLabel(attribute["display"], self)
 
-        label_text = QtWidgets.QLabel("Text", self)
-        input_text = QtWidgets.QLineEdit(self.text, self)
+            if attribute["input"] in ["characters", "variable characters", "number"]:
+                input = QtWidgets.QLineEdit(self.values[i][1], self)
+                input.setMaxLength(attribute["length"])
+                if attribute["input"] == "number":
+                    input.setValidator(QtGui.QRegExpValidator("[0-9]*"))
+            elif attribute["input"] == "date":
+                input = QtWidgets.QDateEdit(QtCore.QDate.fromString(self.values[i][1], "dd/MM/yyyy"), self)
+                input.setDisplayFormat("dd/MM/yyyy")
+                input.setMinimumDate(QtCore.QDate.fromString("01/01/1900", "dd/MM/yyyy"))
+                input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
 
-        button = QtWidgets.QPushButton("OK")
-        button.clicked.connect(self.action)
+            operator = QtWidgets.QComboBox(self)
+            operator.addItems(["=", "!="])
+            if attribute["input"]  != "date":
+                operator.addItems(["like", "not like"])
+            if attribute["input"] in ["number", "date"]:
+                operator.addItems(["<", "<=", ">=", ">"])
+            operator.setCurrentText(self.values[i][0])
 
-        layout.addWidget(label_attribute, 0, 0)
-        layout.addWidget(input_attribute, 0, 1)
-        layout.addWidget(label_text, 1, 0)
-        layout.addWidget(input_text, 1, 1)
-        layout.addWidget(button, 2, 1)
+            layout.addWidget(label, i, 0)
+            layout.addWidget(operator, i, 1)
+            layout.addWidget(input, i, 2)
+
+        self.button = QtWidgets.QPushButton("OK")
+        self.button.clicked.connect(self.action)
+        layout.addWidget(self.button, i + 1, 2)
 
         return layout
-
+        
     def action(self):
-        attribute = self.layout().itemAtPosition(0, 1).widget().currentIndex()
-        text = self.layout().itemAtPosition(1, 1).widget().text()
-        self.changed.emit([attribute, text])
+        self.values = []
+        for i in range(len(self.attributes)):
+            operator = self.layout().itemAtPosition(i, 1).widget().currentText()
+            input = self.layout().itemAtPosition(i, 2).widget().text()
+            self.values.append((operator, input))
+        self.changed.emit(self.values)
         self.close()
