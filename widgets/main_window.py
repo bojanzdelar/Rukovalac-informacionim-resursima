@@ -25,7 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
         dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
-
+        
     def menu_actions(self, action):
         central_widget = self.centralWidget()
         command = action.text()

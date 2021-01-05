@@ -1,6 +1,18 @@
 from model.information_resource import InformationResource
 from config.config import read_config
+from datetime import datetime
 import csv
+import operator 
+
+ops = {
+    "=" : operator.eq,
+    "!=" : operator.ne,
+    "<" : operator.lt,
+    "<=" : operator.le,
+    ">=" : operator.ge,
+    ">" : operator.gt,
+    "like" : operator.contains,
+}
 
 class SerialFile(InformationResource):
     def __init__(self, file_name):
@@ -30,13 +42,26 @@ class SerialFile(InformationResource):
     def delete_element(self, index):
         self.data.pop(index)
 
-    def filter(self, attributes, values):
-        indexes = self.get_attributes_indexes(attributes)
-        for element in reversed(self.data):
-            for index, value in zip(indexes, values):
-                if element[index] != value:
-                    self.data.remove(element)
+    def filter(self, values):
+        hide_indexes = []
+        for index in range(len(self.data)):
+            element = self.read_element(index)
+            match_filter = True
+            for i in range(len(element)):
+                operator, text = values[i]
+                input_type = self.get_attribute(i)["input"]
+                if (text == "") or (input_type == "date" and text == "01/01/1900"):
+                    continue
+                if input_type == "date":
+                    text = datetime.strptime(text, "%d/%m/%Y")
+                    element[i] = datetime.strptime(str(element[i]), "%d/%m/%Y")
+                if (operator == "not like" and ops["like"](element[i], text)) \
+                        or (operator != "not like" and not ops[operator](element[i], text)):
+                    match_filter = False
                     break
+            if not match_filter:
+                hide_indexes.append(index)
+        return hide_indexes
     
     def column_values(self, column):
         values = set()

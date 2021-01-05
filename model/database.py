@@ -81,8 +81,20 @@ class Database(InformationResource):
             QtWidgets.QMessageBox.warning(None, "Greska", "Ne mozete da obrisete entitet" 
                 + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
 
-    def filter(self, attributes, values):
-        ...
+    def filter(self, values):
+        where = []
+        for i in range(len(values)):
+            attribute = self.get_attribute(i)
+            name = attribute["name"]
+            operator = values[i][0]
+            value = values[i][1]
+            if (value == "") or (attribute["input"] == "date" and value == "01/01/1900"):
+                continue
+            where.append(f"{name} {operator} '{value}'")
+        where = " AND ".join(where)
+        self.csor.callproc("select_where", [self.file_name[0:-4], where])
+        for res in self.csor.stored_results():
+            self.data = res.fetchall()
 
     def get_children(self, index):
         children_meta = self.meta["children"]

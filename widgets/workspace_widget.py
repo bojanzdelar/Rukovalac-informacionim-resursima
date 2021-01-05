@@ -6,18 +6,7 @@ from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
 from widgets.tool_bar import ToolBar
-from datetime import datetime
-import operator
-
-ops = {
-    "=" : operator.eq,
-    "!=" : operator.ne,
-    "<" : operator.lt,
-    "<=" : operator.le,
-    ">=" : operator.ge,
-    ">" : operator.gt,
-    "like" : operator.contains,
-}
+from meta.meta import read_meta
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, parent_dir, file_name, parent):
@@ -28,6 +17,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.generate_layout()
         self.filter_enabled = False
         self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
+        self.meta = read_meta()
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -112,7 +102,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
             model.information_resource = table
             tab = self.create_table(self.tab_widget)
             tab.setModel(model)
-            self.tab_widget.addTab(tab, table.file_name) 
+            tab_name = self.meta[table.file_name]["display"]
+            self.tab_widget.addTab(tab, tab_name) 
 
     def save_table(self):
         self.model.layoutAboutToBeChanged.emit()
@@ -120,38 +111,20 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.model.layoutChanged.emit()
 
     def filter(self):
-        self.filter_show() if self.filter_enabled else self.filter_hide()
+        if self.filter_enabled:
+            for i in range(self.model.rowCount()):
+                self.main_table.showRow(i)
+            self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter.png"))
+        else:
+            for i in self.information_resource.filter(self.filter_values):
+                self.main_table.hideRow(i)
+            self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
+
         self.filter_enabled = not self.filter_enabled
 
-    def filter_show(self):
-        for i in range(self.model.rowCount()):
-            self.main_table.showRow(i)
-        self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter.png"))
-
-    def filter_hide(self):
-        for i in range(self.model.rowCount()):
-            element = self.information_resource.read_element(i).copy()
-            match_filter = True
-            for j in range(len(element)):
-                operator, text = self.filter_values[j]
-                input_type = self.information_resource.get_attribute(j)["input"]
-                if (text == "") or (input_type == "date" and text == "01/01/1900"):
-                    continue
-                if input_type == "date":
-                    text = datetime.strptime(text, "%d/%m/%Y")
-                    element[j] = datetime.strptime(str(element[j]), "%d/%m/%Y")
-                if (operator == "not like" and ops["like"](element[j], text)) \
-                        or (operator != "not like" and not ops[operator](element[j], text)):
-                    match_filter = False
-                    break
-            if not match_filter:
-                self.main_table.hideRow(i)
-        self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
-
     def refilter(self):
-        if self.filter_enabled:
-            self.filter_show()
-            self.filter_hide()
+        for i in range(2):
+            self.filter()
 
     def filter_dialog(self):
         dialog = FilterDialog(self.information_resource, self.filter_values)

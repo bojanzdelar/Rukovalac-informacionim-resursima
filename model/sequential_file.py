@@ -1,8 +1,8 @@
 from PySide2 import QtWidgets
 from model.serial_file import SerialFile
+from model.external_merge_sort import ExternalMergeSort
 from config.config import read_config
 import csv
-import operator
 
 class SequentialFile(SerialFile):
     def __init__(self, file_name):
@@ -14,10 +14,14 @@ class SequentialFile(SerialFile):
             return [row for row in csv.reader(file)]
 
     def save_data(self):
-        path = read_config()["sequential_data"]
-        self.sort()
+        config = read_config()
+        path = config["sequential_data"]
         with open(path + self.file_name, "w", encoding="utf-8", newline='') as file:
             csv.writer(file).writerows(self.data)
+        obj = ExternalMergeSort(path, self.file_name, config["split_size"], 
+            self.get_attributes_indexes(self.get_primary_key()))
+        obj.sort()
+        self.data = self.read_data()
 
     def create_element(self, element):
         primary_key_used, _ = self.primary_key_used(element)
@@ -55,10 +59,18 @@ class SequentialFile(SerialFile):
             for attr_index in main_attributes_indexes:
                 values.append(self.read_element(index)[attr_index])
             child = SequentialFile(file_name)
-            child.filter(attributes, values)
+            child._filter_child(attributes, values)
             children.append(child)
 
         return children
+
+    def _filter_child(self, attributes, values):
+        indexes = self.get_attributes_indexes(attributes)
+        for element in reversed(self.data):
+            for index, value in zip(indexes, values):
+                if element[index] != value:
+                    self.data.remove(element)
+                    break
 
     def get_primary_key(self):
         primary_key = []
@@ -108,10 +120,3 @@ class SequentialFile(SerialFile):
             if used:
                 return True
         return False
-    
-    def sort(self):
-        primary_key = self.get_primary_key()
-        if not len(primary_key):
-            return
-        indexes = self.get_attributes_indexes(primary_key)
-        self.data.sort(key = operator.itemgetter(*indexes))

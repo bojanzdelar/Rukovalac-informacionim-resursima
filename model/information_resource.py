@@ -30,7 +30,7 @@ class InformationResource(ABC):
         self.data.pop(index)
 
     @abstractmethod
-    def filter(self, attributes, values):
+    def filter(self, values):
         ...
 
     def get_attribute(self, index=None):

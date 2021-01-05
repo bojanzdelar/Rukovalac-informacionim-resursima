@@ -15,6 +15,7 @@ class DockWidget(QtWidgets.QDockWidget):
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.model.index(QtCore.QDir.currentPath() + "/" + config["data"]))
         self.tree.clicked.connect(self.file_clicked)
+        self.tree.expandAll() # FIXME: doesnt work
 
         for i in range(1, self.model.columnCount()):
             self.tree.hideColumn(i)
