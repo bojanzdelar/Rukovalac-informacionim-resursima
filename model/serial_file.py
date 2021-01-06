@@ -45,7 +45,7 @@ class SerialFile(InformationResource):
     def filter(self, values):
         hide_indexes = []
         for index in range(len(self.data)):
-            element = self.read_element(index)
+            element = self.read_element(index).copy()
             match_filter = True
             for i in range(len(element)):
                 operator, text = values[i]
@@ -55,6 +55,9 @@ class SerialFile(InformationResource):
                 if input_type == "date":
                     text = datetime.strptime(text, "%d/%m/%Y")
                     element[i] = datetime.strptime(str(element[i]), "%d/%m/%Y")
+                elif input_type != "number":
+                    text = text.lower()
+                    element[i] = element[i].lower()
                 if (operator == "not like" and ops["like"](element[i], text)) \
                         or (operator != "not like" and not ops[operator](element[i], text)):
                     match_filter = False

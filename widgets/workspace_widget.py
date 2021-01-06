@@ -1,4 +1,5 @@
 from PySide2 import QtCore, QtWidgets, QtGui
+from model.serial_file import SerialFile
 from model.sequential_file import SequentialFile
 from model.database import Database
 from model.table_model import TableModel
@@ -112,12 +113,22 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def filter(self):
         if self.filter_enabled:
-            for i in range(self.model.rowCount()):
-                self.main_table.showRow(i)
+            if isinstance(self.information_resource, SerialFile):
+                for i in range(self.model.rowCount()):
+                    self.main_table.showRow(i)
+            elif isinstance(self. information_resource, Database):
+                self.model.layoutAboutToBeChanged.emit()
+                self.information_resource.data = self.information_resource.read_data()
+                self.model.layoutChanged.emit()
             self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter.png"))
         else:
-            for i in self.information_resource.filter(self.filter_values):
-                self.main_table.hideRow(i)
+            if isinstance(self.information_resource, SerialFile):
+                for i in self.information_resource.filter(self.filter_values):
+                    self.main_table.hideRow(i)
+            elif isinstance(self.information_resource, Database):
+                self.model.layoutAboutToBeChanged.emit()
+                self.information_resource.filter(self.filter_values)
+                self.model.layoutChanged.emit()
             self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
         self.filter_enabled = not self.filter_enabled

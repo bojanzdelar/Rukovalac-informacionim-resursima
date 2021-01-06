@@ -30,7 +30,6 @@ class Database(InformationResource):
 
     def save_data(self):
         self.connection.commit()
-        self.data = self.read_data()
 
     def create_element(self, element):
         values = "(" + ", ".join([f"'{attribute}'" for attribute in element]) + ")"
@@ -90,7 +89,11 @@ class Database(InformationResource):
             value = values[i][1]
             if (value == "") or (attribute["input"] == "date" and value == "01/01/1900"):
                 continue
+            if "like" in operator:
+                value = f"%{value}%"
             where.append(f"{name} {operator} '{value}'")
+        if not len(where):
+            return
         where = " AND ".join(where)
         self.csor.callproc("select_where", [self.file_name[0:-4], where])
         for res in self.csor.stored_results():

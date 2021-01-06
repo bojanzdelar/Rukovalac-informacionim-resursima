@@ -1,5 +1,5 @@
 import tempfile
-import operator # ovo izbrisi iz seq file i dosta ovih importa je visak vrvt
+import operator
 import os 
 
 class ExternalMergeSort:
@@ -24,6 +24,7 @@ class ExternalMergeSort:
                 size += 1
                 if size % self.split_size == 0:
                     self.create_temp_file(buffer)
+                    buffer=[]
                 line = file.readline()
         self.create_temp_file(buffer)
 
@@ -31,11 +32,10 @@ class ExternalMergeSort:
         buffer.sort(key = operator.itemgetter(*self.sort_indexes))
         for i, item in enumerate(buffer):
             buffer[i] = ",".join(item)
-        temp_file = tempfile.NamedTemporaryFile(mode="r+", dir=self.path)
+        temp_file = tempfile.NamedTemporaryFile(mode="w+", dir=self.path)
         temp_file.writelines(buffer)
         temp_file.seek(0)
         self.temp_files.append(temp_file)
-        buffer=[]
 
     def merge(self):
         list = []

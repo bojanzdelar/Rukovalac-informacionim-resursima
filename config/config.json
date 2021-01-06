@@ -7,5 +7,5 @@
     "password" : "root",
     "host" : "127.0.0.1",
     "database" : "univerzitet",
-    "split_size" : 20
+    "split_size" : 10
 }
