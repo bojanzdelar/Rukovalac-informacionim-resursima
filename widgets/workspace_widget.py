@@ -49,10 +49,14 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def create_main_table(self):
         self.model = TableModel(self.parent_dir, self.file_name)
+        self.proxy_model = QtCore.QSortFilterProxyModel(self)
+        self.proxy_model.setSourceModel(self.model)
         self.information_resource = self.model.information_resource
         main_table = self.create_table()
-        main_table.setModel(self.model)
+        main_table.setModel(self.proxy_model)
         main_table.clicked.connect(self.selected_row)
+        main_table.setSortingEnabled(True)
+        main_table.sortByColumn(0, QtCore.Qt.AscendingOrder)
         return main_table
 
     def create_tab_widget(self):
@@ -72,8 +76,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
         indexes = self.main_table.selectionModel().selectedIndexes()
         if not len(indexes):
             return
+        index = self.proxy_model.mapToSource(indexes[0])
         self.model.layoutAboutToBeChanged.emit()
-        dialog = UpdateDialog(self.information_resource, indexes[0].row())
+        dialog = UpdateDialog(self.information_resource, index.row())
         dialog.exec_() 
         self.model.layoutChanged.emit()
         self.refilter()
@@ -85,8 +90,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
         indexes = self.main_table.selectionModel().selectedIndexes()
         if not len(indexes):
             return
+        index = self.proxy_model.mapToSource(indexes[0])
         self.model.layoutAboutToBeChanged.emit()
-        self.information_resource.delete_element(indexes[0].row())
+        self.information_resource.delete_element(index.row())
         self.model.layoutChanged.emit()
         self.main_table.clearSelection()
         self.tab_widget.clear()
@@ -95,7 +101,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def selected_row(self, index):
         if not isinstance(self.information_resource, (SequentialFile, Database)):
             return
-
+        index = self.proxy_model.mapToSource(index)
         children = self.information_resource.get_children(index.row())
         self.tab_widget.clear() 
         for table in children:
