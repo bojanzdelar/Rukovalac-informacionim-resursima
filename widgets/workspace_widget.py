@@ -6,10 +6,13 @@ from model.table_model import TableModel
 from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
+from widgets.navigation_dialog import NavigationDialog
 from widgets.tool_bar import ToolBar
 from meta.meta import read_meta
 
 class WorkspaceWidget(QtWidgets.QWidget):
+    navigate = QtCore.Signal(str, str)
+
     def __init__(self, parent_dir, file_name, parent):
         super().__init__(parent)
 
@@ -22,9 +25,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
-        self.tool_bar = self.create_tool_bar()
         self.tab_widget = self.create_tab_widget()
         self.main_table = self.create_main_table()
+        self.tool_bar = self.create_tool_bar()
         self.main_layout.addWidget(self.tool_bar)
         self.main_layout.addWidget(self.main_table)
         self.main_layout.addWidget(self.tab_widget)
@@ -38,6 +41,12 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tool_bar.save_action.triggered.connect(self.save_table)
         tool_bar.filter_action.triggered.connect(self.filter)
         tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
+        if isinstance(self.information_resource, (SequentialFile, Database)):
+            tool_bar.add_navigation()
+            tool_bar.parent_action.triggered.connect(self.parent)
+            tool_bar.child_action.triggered.connect(self.child)
+            tool_bar.left_action.triggered.connect(lambda: self.move(-1))
+            tool_bar.right_action.triggered.connect(lambda: self.move(1))
         return tool_bar
 
     def create_tab_widget(self):
@@ -154,3 +163,35 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def change_filter(self, list):
         self.filter_values = list
         self.refilter()
+
+    def parent(self):
+        parents = self.information_resource.get_parents()
+        if not parents:
+            QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema parent tabele")
+            return
+        tables = {}
+        for parent in parents:
+            tables[self.meta[parent]["display"]] = parent
+        dialog = NavigationDialog(tables)
+        dialog.selected.connect(self.change_table)
+        dialog.exec_()
+
+    def child(self):
+        children = self.information_resource.meta["children"]
+        if not children:
+            QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema child tabele")
+            return
+        tables = {}
+        for child in children:
+            tables[self.meta[child]["display"]] = child
+        dialog = NavigationDialog(tables)
+        dialog.selected.connect(self.change_table)
+        dialog.exec_()
+
+    def change_table(self, table_name):
+        self.navigate.emit(self.parent_dir, table_name)
+
+    def move(self, relative_index):
+        self.tab_widget.setCurrentIndex(self.tab_widget.currentIndex() + relative_index)
+
+    
