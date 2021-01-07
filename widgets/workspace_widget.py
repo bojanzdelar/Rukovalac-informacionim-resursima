@@ -15,16 +15,16 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
         self.parent_dir = parent_dir
         self.file_name = file_name
+        self.meta = read_meta()
         self.generate_layout()
         self.filter_enabled = False
         self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
-        self.meta = read_meta()
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
         self.tool_bar = self.create_tool_bar()
-        self.main_table = self.create_main_table()
         self.tab_widget = self.create_tab_widget()
+        self.main_table = self.create_main_table()
         self.main_layout.addWidget(self.tool_bar)
         self.main_layout.addWidget(self.main_table)
         self.main_layout.addWidget(self.tab_widget)
@@ -39,6 +39,12 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tool_bar.filter_action.triggered.connect(self.filter)
         tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
         return tool_bar
+
+    def create_tab_widget(self):
+        tab_widget = QtWidgets.QTabWidget(self)
+        tab_widget.setTabsClosable(True)
+        tab_widget.tabCloseRequested.connect(self.delete_tab)
+        return tab_widget
 
     def create_table(self, parent = None):
         table = QtWidgets.QTableView(parent)
@@ -57,13 +63,10 @@ class WorkspaceWidget(QtWidgets.QWidget):
         main_table.clicked.connect(self.selected_row)
         main_table.setSortingEnabled(True)
         main_table.sortByColumn(0, QtCore.Qt.AscendingOrder)
+        if len(self.information_resource.data):
+            main_table.selectRow(0)
+            self.selected_row(self.proxy_model.index(0,0))
         return main_table
-
-    def create_tab_widget(self):
-        tab_widget = QtWidgets.QTabWidget(self)
-        tab_widget.setTabsClosable(True)
-        tab_widget.tabCloseRequested.connect(self.delete_tab)
-        return tab_widget
 
     def create_row(self):
         self.model.layoutAboutToBeChanged.emit()
