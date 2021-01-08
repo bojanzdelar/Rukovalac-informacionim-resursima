@@ -20,6 +20,8 @@ class Dialog(QtWidgets.QDialog):
         for i, attribute in enumerate(self.attributes):
             # label
             label = QtWidgets.QLabel(attribute["display"], self)
+            if attribute["input"] == "characters":
+                label.setText(label.text() + " (" + str(attribute["length"]) + ")")
             if "primary key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
                 label.setText("\U0001F511 " + label.text())
             elif "required" in attribute["type"]:
