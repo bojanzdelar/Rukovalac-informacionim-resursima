@@ -30,9 +30,12 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.main_layout = QtWidgets.QVBoxLayout()
         self.tab_widget = self.create_tab_widget()
         self.main_table = self.create_main_table()
+        self.current_page = QtWidgets.QLabel("")
+        self.current_page.setAlignment(QtCore.Qt.AlignRight)
         self.tool_bar = self.create_tool_bar()
         self.main_layout.addWidget(self.tool_bar)
         self.main_layout.addWidget(self.main_table)
+        self.main_layout.addWidget(self.current_page)
         self.main_layout.addWidget(self.tab_widget)
         self.setLayout(self.main_layout)
 
@@ -135,10 +138,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def filter(self):
         if self.filter_enabled:
-            if isinstance(self.information_resource, SerialFile):
-                for i in range(self.model.rowCount()):
-                    self.main_table.hideRow(i)
-            elif isinstance(self. information_resource, Database):
+            if isinstance(self. information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.data = self.information_resource.read_data()
                 self.model.layoutChanged.emit()
@@ -148,8 +148,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
                 self.filter_indexes = self.information_resource.filter(self.filter_values)
                 for i, index in enumerate(self.filter_indexes):
                     self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
-                for i in self.filter_indexes:
-                    self.main_table.showRow(i)
             elif isinstance(self.information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.filter(self.filter_values)
@@ -203,30 +201,40 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.navigate.emit(self.parent_dir, table_name)
 
     def set_page(self, page):
-        if page < 0 or (page >= len(self.information_resource.data) / self.page_size) \
-                or (isinstance(self.information_resource, SerialFile) \
-                and self.filter_enabled and page >= len(self.filter_indexes) / self.page_size):
+        if page < 0 or page > self.total_pages():
             return
         self.page = page
+        self.current_page.setText(f"Current page: {self.page + 1} / {int(self.total_pages()) + 1}")
         self.display_page()
+
+    def total_pages(self):
+        if isinstance(self.information_resource, SerialFile) and self.filter_enabled:
+            return len(self.filter_indexes) / self.page_size
+        else:
+            return len(self.information_resource.data) / self.page_size
 
     def change_page(self, relative_page):
         self.set_page(self.page + relative_page)
     
     def display_page(self):
+        index = None
+        for i in range(self.model.rowCount()):
+            self.main_table.hideRow(i)
+
         if self.filter_enabled and isinstance(self.information_resource, SerialFile):
-            for i in range(self.model.rowCount()):
-                self.main_table.hideRow(i)
+            self.filter_indexes = self.information_resource.filter(self.filter_values)
+            for i, index in enumerate(self.filter_indexes):
+                self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
             for i in self.filter_indexes[self.page * self.page_size: (self.page + 1)  * self.page_size]:
                 self.main_table.showRow(i)
-            index = self.filter_indexes[self.page * self.page_size]
+            if len(self.filter_indexes):
+                index = self.filter_indexes[self.page * self.page_size]
 
         else:
-            for i in range(self.model.rowCount()):
-                self.main_table.hideRow(i)
             for i in range(self.page * self.page_size, (self.page + 1) * self.page_size):
                 self.main_table.showRow(i)
             index = self.page * self.page_size
 
-        self.main_table.selectRow(index)
-        self.selected_row(self.proxy_model.index(index,0))
+        if index:
+            self.main_table.selectRow(index)
+            self.selected_row(self.proxy_model.index(index,0))

@@ -24,9 +24,9 @@ class FilterDialog(QtWidgets.QDialog):
                 if attribute["input"] == "number":
                     input.setValidator(QtGui.QRegExpValidator("[0-9]*"))
             elif attribute["input"] == "date":
-                input = QtWidgets.QDateEdit(QtCore.QDate.fromString(self.values[i][1], "dd/MM/yyyy"), self)
-                input.setDisplayFormat("dd/MM/yyyy")
-                input.setMinimumDate(QtCore.QDate.fromString("01/01/1900", "dd/MM/yyyy"))
+                input = QtWidgets.QDateEdit(QtCore.QDate.fromString(self.values[i][1], "yyyy-MM-dd"), self)
+                input.setDisplayFormat("yyyy-MM-dd")
+                input.setMinimumDate(QtCore.QDate.fromString("1900-01-01", "yyyy-MM-dd"))
                 input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
 
             operator = QtWidgets.QComboBox(self)

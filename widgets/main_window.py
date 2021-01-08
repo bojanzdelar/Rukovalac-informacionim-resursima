@@ -45,5 +45,5 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def show_time(self):
         time = QtCore.QDateTime.currentDateTime()
-        time_display = time.toString('hh:mm:ss, dd/MM/yyyy')
+        time_display = time.toString('hh:mm:ss, yyyy-MM-dd')
         self.statusBar().showMessage(time_display)

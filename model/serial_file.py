@@ -50,11 +50,11 @@ class SerialFile(InformationResource):
             for i in range(len(element)):
                 operator, text = values[i]
                 input_type = self.get_attribute(i)["input"]
-                if (text == "") or (input_type == "date" and text == "01/01/1900"):
+                if (text == "") or (input_type == "date" and text == "1900-01-01"):
                     continue
                 if input_type == "date":
-                    text = datetime.strptime(text, "%d/%m/%Y")
-                    element[i] = datetime.strptime(str(element[i]), "%d/%m/%Y")
+                    text = datetime.strptime(text, "%Y-%m-%d")
+                    element[i] = datetime.strptime(str(element[i]), "%Y-%m-%d")
                 elif input_type != "number":
                     text = text.lower()
                     element[i] = element[i].lower()

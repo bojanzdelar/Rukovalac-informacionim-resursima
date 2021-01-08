@@ -17,7 +17,7 @@ class UpdateDialog(Dialog):
             if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
                 widget.setCurrentIndex(widget.findText(element[i]))
             elif attribute["input"] == "date":
-                widget.setDate(QtCore.QDate.fromString(element[i], "dd/MM/yyyy"))
+                widget.setDate(QtCore.QDate.fromString(element[i], "yyyy-MM-dd"))
             else:   
                 widget.setText(str(element[i]))
 

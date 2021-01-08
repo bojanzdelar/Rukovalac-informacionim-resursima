@@ -87,7 +87,7 @@ class Database(InformationResource):
             name = attribute["name"]
             operator = values[i][0]
             value = values[i][1]
-            if (value == "") or (attribute["input"] == "date" and value == "01/01/1900"):
+            if (value == "") or (attribute["input"] == "date" and value == "1900-01-01"):
                 continue
             if "like" in operator:
                 value = f"%{value}%"
