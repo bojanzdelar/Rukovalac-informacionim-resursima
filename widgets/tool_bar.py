@@ -14,10 +14,11 @@ class ToolBar(QtWidgets.QToolBar):
         self.addSeparator()
         self.filter_action = self.addAction(QtGui.QIcon("icons/filter.png"), "Filter")
         self.edit_filter_action = self.addAction(QtGui.QIcon("icons/settings.png"), "Edit filter")
+        self.addSeparator()
+        self.left_action = self.addAction(QtGui.QIcon("icons/left.png"), "Left")
+        self.right_action = self.addAction(QtGui.QIcon("icons/right.png"), "Right")
 
     def add_navigation(self):
         self.addSeparator()
         self.parent_action = self.addAction(QtGui.QIcon("icons/up.png"), "Parent")
         self.child_action = self.addAction(QtGui.QIcon("icons/down.png"), "Child")
-        self.left_action = self.addAction(QtGui.QIcon("icons/left.png"), "Left")
-        self.right_action = self.addAction(QtGui.QIcon("icons/right.png"), "Right")

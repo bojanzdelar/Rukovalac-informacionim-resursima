@@ -9,6 +9,7 @@ from widgets.filter_dialog import FilterDialog
 from widgets.navigation_dialog import NavigationDialog
 from widgets.tool_bar import ToolBar
 from meta.meta import read_meta
+from config.config import read_config
 
 class WorkspaceWidget(QtWidgets.QWidget):
     navigate = QtCore.Signal(str, str)
@@ -22,6 +23,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.generate_layout()
         self.filter_enabled = False
         self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
+        self.page_size = read_config()["page_size"]
+        self.set_page(0)
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -41,12 +44,12 @@ class WorkspaceWidget(QtWidgets.QWidget):
         tool_bar.save_action.triggered.connect(self.save_table)
         tool_bar.filter_action.triggered.connect(self.filter)
         tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
+        tool_bar.left_action.triggered.connect(lambda: self.change_page(-1))
+        tool_bar.right_action.triggered.connect(lambda: self.change_page(1))
         if isinstance(self.information_resource, (SequentialFile, Database)):
             tool_bar.add_navigation()
             tool_bar.parent_action.triggered.connect(self.parent)
             tool_bar.child_action.triggered.connect(self.child)
-            tool_bar.left_action.triggered.connect(lambda: self.move(-1))
-            tool_bar.right_action.triggered.connect(lambda: self.move(1))
         return tool_bar
 
     def create_tab_widget(self):
@@ -72,6 +75,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         main_table.clicked.connect(self.selected_row)
         main_table.setSortingEnabled(True)
         main_table.sortByColumn(0, QtCore.Qt.AscendingOrder)
+        main_table.horizontalHeader().sectionClicked.connect(lambda: self.set_page(self.page))
         if len(self.information_resource.data):
             main_table.selectRow(0)
             self.selected_row(self.proxy_model.index(0,0))
@@ -133,7 +137,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         if self.filter_enabled:
             if isinstance(self.information_resource, SerialFile):
                 for i in range(self.model.rowCount()):
-                    self.main_table.showRow(i)
+                    self.main_table.hideRow(i)
             elif isinstance(self. information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.data = self.information_resource.read_data()
@@ -141,8 +145,11 @@ class WorkspaceWidget(QtWidgets.QWidget):
             self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter.png"))
         else:
             if isinstance(self.information_resource, SerialFile):
-                for i in self.information_resource.filter(self.filter_values):
-                    self.main_table.hideRow(i)
+                self.filter_indexes = self.information_resource.filter(self.filter_values)
+                for i, index in enumerate(self.filter_indexes):
+                    self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
+                for i in self.filter_indexes:
+                    self.main_table.showRow(i)
             elif isinstance(self.information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.filter(self.filter_values)
@@ -150,10 +157,14 @@ class WorkspaceWidget(QtWidgets.QWidget):
             self.tool_bar.actions()[5].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
         self.filter_enabled = not self.filter_enabled
+        self.set_page(0)
 
     def refilter(self):
-        for i in range(2):
-            self.filter()
+        if self.filter_enabled:
+            old_page = self.page
+            for i in range(2):
+                self.filter()
+            self.set_page(old_page)
 
     def filter_dialog(self):
         dialog = FilterDialog(self.information_resource, self.filter_values)
@@ -191,7 +202,31 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def change_table(self, table_name):
         self.navigate.emit(self.parent_dir, table_name)
 
-    def move(self, relative_index):
-        self.tab_widget.setCurrentIndex(self.tab_widget.currentIndex() + relative_index)
+    def set_page(self, page):
+        if page < 0 or (page >= len(self.information_resource.data) / self.page_size) \
+                or (isinstance(self.information_resource, SerialFile) \
+                and self.filter_enabled and page >= len(self.filter_indexes) / self.page_size):
+            return
+        self.page = page
+        self.display_page()
 
+    def change_page(self, relative_page):
+        self.set_page(self.page + relative_page)
     
+    def display_page(self):
+        if self.filter_enabled and isinstance(self.information_resource, SerialFile):
+            for i in range(self.model.rowCount()):
+                self.main_table.hideRow(i)
+            for i in self.filter_indexes[self.page * self.page_size: (self.page + 1)  * self.page_size]:
+                self.main_table.showRow(i)
+            index = self.filter_indexes[self.page * self.page_size]
+
+        else:
+            for i in range(self.model.rowCount()):
+                self.main_table.hideRow(i)
+            for i in range(self.page * self.page_size, (self.page + 1) * self.page_size):
+                self.main_table.showRow(i)
+            index = self.page * self.page_size
+
+        self.main_table.selectRow(index)
+        self.selected_row(self.proxy_model.index(index,0))

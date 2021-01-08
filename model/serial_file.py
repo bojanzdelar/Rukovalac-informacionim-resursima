@@ -43,7 +43,7 @@ class SerialFile(InformationResource):
         self.data.pop(index)
 
     def filter(self, values):
-        hide_indexes = []
+        show_indexes = []
         for index in range(len(self.data)):
             element = self.read_element(index).copy()
             match_filter = True
@@ -62,9 +62,9 @@ class SerialFile(InformationResource):
                         or (operator != "not like" and not ops[operator](element[i], text)):
                     match_filter = False
                     break
-            if not match_filter:
-                hide_indexes.append(index)
-        return hide_indexes
+            if match_filter:
+                show_indexes.append(index)
+        return show_indexes
     
     def column_values(self, column):
         values = set()
