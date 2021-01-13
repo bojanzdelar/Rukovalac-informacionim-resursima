@@ -3,7 +3,7 @@
     "data" : "data",
     "serial_data" : "data/serial/",
     "sequential_data" : "data/sequential/",
-    "page_size" : 12,
+    "page_size" : 30,
     "user" : "root",
     "password" : "root",
     "host" : "127.0.0.1",

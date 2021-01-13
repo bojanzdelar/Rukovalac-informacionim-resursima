@@ -28,7 +28,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def generate_layout(self):
         self.main_layout = QtWidgets.QVBoxLayout()
-        self.tab_widget = self.create_tab_widget()
         self.main_table = self.create_main_table()
         self.current_page = QtWidgets.QLabel("")
         self.current_page.setAlignment(QtCore.Qt.AlignRight)
@@ -36,7 +35,13 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.main_layout.addWidget(self.tool_bar)
         self.main_layout.addWidget(self.main_table)
         self.main_layout.addWidget(self.current_page)
-        self.main_layout.addWidget(self.tab_widget)
+        if isinstance(self.information_resource, (SequentialFile, Database)) \
+                and self.information_resource.meta["children"]:
+            self.tab_widget = self.create_tab_widget()
+            self.main_layout.addWidget(self.tab_widget)
+        if len(self.information_resource.data):
+            self.main_table.selectRow(0)
+            self.selected_row(self.proxy_model.index(0,0))
         self.setLayout(self.main_layout)
 
     def create_tool_bar(self):
@@ -79,9 +84,6 @@ class WorkspaceWidget(QtWidgets.QWidget):
         main_table.setSortingEnabled(True)
         main_table.sortByColumn(0, QtCore.Qt.AscendingOrder)
         main_table.horizontalHeader().sectionClicked.connect(lambda: self.set_page(self.page))
-        if len(self.information_resource.data):
-            main_table.selectRow(0)
-            self.selected_row(self.proxy_model.index(0,0))
         return main_table
 
     def create_row(self):
@@ -118,7 +120,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.refilter()
 
     def selected_row(self, index):
-        if not isinstance(self.information_resource, (SequentialFile, Database)):
+        if not isinstance(self.information_resource, (SequentialFile, Database)) \
+                or not self.information_resource.meta["children"]:
             return
         index = self.proxy_model.mapToSource(index)
         children = self.information_resource.get_children(index.row())
@@ -209,9 +212,9 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def total_pages(self):
         if isinstance(self.information_resource, SerialFile) and self.filter_enabled:
-            return len(self.filter_indexes) / self.page_size
+            return (len(self.filter_indexes) - 1) / self.page_size
         else:
-            return len(self.information_resource.data) / self.page_size
+            return (len(self.information_resource.data) - 1) / self.page_size
 
     def change_page(self, relative_page):
         self.set_page(self.page + relative_page)

@@ -40,7 +40,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.information(self, "Manual", "Uputstvo za upotrebu programa Rukovalac informacionim resursima"
                 + " mozete preuzeti na internet stranici www.infhandler.com/rs")
         elif command == "About":
-            QtWidgets.QMessageBox.information(self, "About", "Program Rukovalac informacionim resursima je realizovan " 
+            QtWidgets.QMessageBox.information(self, "About", "Program Rukovalac informacionim resursima je realizovan" 
                 + " u sklopu projekta iz predmeta Baze podataka. Autor je Bojan Zdelar, ciji je broj indeksa 2019/270983")
 
     def show_time(self):
