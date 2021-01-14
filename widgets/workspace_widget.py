@@ -1,5 +1,5 @@
 from PySide2 import QtCore, QtWidgets, QtGui
-from model.serial_file import SerialFile
+from model.serial_file import SerialFile, ops
 from model.sequential_file import SequentialFile
 from model.database import Database
 from model.table_model import TableModel
@@ -7,19 +7,22 @@ from widgets.create_dialog import CreateDialog
 from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
 from widgets.navigation_dialog import NavigationDialog
+from widgets.split_dialog import SplitDialog
 from widgets.tool_bar import ToolBar
-from meta.meta import read_meta
+from meta.meta import get_files, get_file_display
 from config.config import read_config
+import csv
+import os
 
 class WorkspaceWidget(QtWidgets.QWidget):
     navigate = QtCore.Signal(str, str)
+    close = QtCore.Signal()
 
     def __init__(self, parent_dir, file_name, parent):
         super().__init__(parent)
 
         self.parent_dir = parent_dir
         self.file_name = file_name
-        self.meta = read_meta()
         self.generate_layout()
         self.filter_enabled = False
         self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
@@ -58,6 +61,10 @@ class WorkspaceWidget(QtWidgets.QWidget):
             tool_bar.add_navigation()
             tool_bar.parent_action.triggered.connect(self.parent)
             tool_bar.child_action.triggered.connect(self.child)
+        if isinstance(self.information_resource, SerialFile):
+            tool_bar.add_split_merge()
+            tool_bar.split_action.triggered.connect(self.split)
+            tool_bar.merge_action.triggered.connect(self.merge)
         return tool_bar
 
     def create_tab_widget(self):
@@ -131,7 +138,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
             model.information_resource = table
             tab = self.create_table(self.tab_widget)
             tab.setModel(model)
-            tab_name = self.meta[table.file_name]["display"]
+            tab_name = get_file_display(table.file_name, self.parent_dir)
             self.tab_widget.addTab(tab, tab_name) 
 
     def save_table(self):
@@ -177,31 +184,77 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.refilter()
 
     def parent(self):
-        parents = self.information_resource.get_parents()
-        if not parents:
+        parent_types = self.information_resource.get_parents()
+        parent_files = []
+        for type in parent_types:
+            parent_files += get_files(type, self.parent_dir)
+        if not parent_files:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema parent tabele")
             return
         tables = {}
-        for parent in parents:
-            tables[self.meta[parent]["display"]] = parent
+        for parent in parent_files:
+            tables[get_file_display(parent, self.parent_dir)] = parent
         dialog = NavigationDialog(tables)
         dialog.selected.connect(self.change_table)
         dialog.exec_()
 
     def child(self):
-        children = self.information_resource.meta["children"]
-        if not children:
+        children_types = self.information_resource.meta["children"]
+        children_files = []
+        for type in children_types:
+            children_files += get_files(type, self.parent_dir)
+        if not children_files:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema child tabele")
             return
         tables = {}
-        for child in children:
-            tables[self.meta[child]["display"]] = child
+        for child in children_files:
+            tables[get_file_display(child, self.parent_dir)] = child
         dialog = NavigationDialog(tables)
         dialog.selected.connect(self.change_table)
         dialog.exec_()
 
     def change_table(self, table_name):
         self.navigate.emit(self.parent_dir, table_name)
+
+    def split(self):
+        dialog = SplitDialog(self.information_resource)
+        dialog.selected.connect(self.split_information_resource)
+        dialog.exec_()
+
+    def split_information_resource(self, condition):
+        i, operator, text = condition
+        path = read_config()[self.information_resource.get_type()]
+        old_file_name = self.information_resource.file_name
+        first_file_name = (old_file_name[0:-4] + "-"  
+            + self.information_resource.get_attribute(i)["name"] + operator + text + ".csv")
+        second_file_name = (old_file_name[0:-4] + "-not(" 
+            + self.information_resource.get_attribute(i)["name"] + operator + text + ").csv")
+
+        for index in range(len(self.information_resource.data)):
+            element = self.information_resource.read_element(index).copy()
+            
+            input_type = self.information_resource.get_attribute(i)["input"]
+            if input_type == "date":
+                text = datetime.strptime(text, "%Y-%m-%d")
+                element[i] = datetime.strptime(str(element[i]), "%Y-%m-%d")
+            elif input_type != "number":
+                text = text.lower()
+                element[i] = element[i].lower()
+
+            if (operator == "not like" and ops["like"](element[i], text)) \
+                    or (operator != "not like" and not ops[operator](element[i], text)):
+                file_name = second_file_name # FIXME: generisi ime i dodaj u meta
+            else:
+                file_name = first_file_name
+
+            with open(path + file_name, "a", encoding="utf-8") as file:
+                    csv.writer(file).writerow(element)
+
+        os.remove(path + old_file_name)
+        self.close.emit()
+
+    def merge(self):
+        ...
 
     def set_page(self, page):
         if page < 0 or page > self.total_pages():

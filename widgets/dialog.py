@@ -1,8 +1,8 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from abc import abstractmethod
-from model.information_resource import InformationResource
 from model.sequential_file import SequentialFile
 from model.database import Database
+from meta.meta import get_files
 
 class Dialog(QtWidgets.QDialog):
     def __init__(self, information_resource, parent = None):
@@ -31,7 +31,10 @@ class Dialog(QtWidgets.QDialog):
                 input = QtWidgets.QComboBox(self)
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
                 if isinstance(self.information_resource, SequentialFile):
-                    values = SequentialFile(relation[0]).column_values(relation[1])
+                    file_names = get_files(relation[0], "sequential")
+                    seq_file = SequentialFile(list(file_names.keys())[0])
+                    seq_file.data = seq_file.read_multiple_data(file_names.keys())
+                    values = seq_file.column_values(relation[1])
                 else:
                     values = Database(relation[0]).column_values(relation[1])
                 input.addItems(values)

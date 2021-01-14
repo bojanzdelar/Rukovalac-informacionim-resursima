@@ -1,8 +1,8 @@
 {
     "meta" : "meta/meta.json",
     "data" : "data",
-    "serial_data" : "data/serial/",
-    "sequential_data" : "data/sequential/",
+    "serial" : "data/serial/",
+    "sequential" : "data/sequential/",
     "page_size" : 30,
     "user" : "root",
     "password" : "root",

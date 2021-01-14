@@ -1,11 +1,18 @@
 from abc import ABC, abstractmethod
-from meta.meta import read_meta
+from meta.meta import get_file_meta
 
 class InformationResource(ABC):
     def __init__(self, file_name):
         self.file_name = file_name
-        self.meta = read_meta()[file_name]
+        self.meta = self.read_meta()
         self.data = self.read_data()
+
+    @abstractmethod 
+    def get_type(self):
+        ...
+
+    def read_meta(self):
+        return get_file_meta(self.file_name, self.get_type())
 
     @abstractmethod
     def read_data(self):
@@ -15,20 +22,22 @@ class InformationResource(ABC):
     def save_data(self):
         ...
 
+    @abstractmethod
     def create_element(self, element):
-        self.data.append(element)
-        return True
+        ...
 
+    @abstractmethod
     def read_element(self, index):
-        return self.data[index]
+        ...
 
+    @abstractmethod
     def update_element(self, index, element):
-        self.data[index] = element
-        return True
+        ...
 
+    @abstractmethod
     def delete_element(self, index):
-        self.data.pop(index)
-
+        ...
+        
     @abstractmethod
     def filter(self, values):
         ...

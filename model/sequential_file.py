@@ -1,27 +1,28 @@
 from PySide2 import QtWidgets
 from model.serial_file import SerialFile
 from model.external_merge_sort import ExternalMergeSort
+from meta.meta import get_files
 from config.config import read_config
 import csv
+import os.path
+import operator
 
 class SequentialFile(SerialFile):
     def __init__(self, file_name):
         super().__init__(file_name)
 
-    def read_data(self):
-        path = read_config()["sequential_data"]
-        with open(path + self.file_name, "r", encoding="utf-8") as file:
-            return [row for row in csv.reader(file)]
-
-    def save_data(self):
-        config = read_config()
-        path = config["sequential_data"]
-        with open(path + self.file_name, "w", encoding="utf-8", newline='') as file:
-            csv.writer(file).writerows(self.data)
-        obj = ExternalMergeSort(path, self.file_name, config["split_size"], 
-            self.get_attributes_indexes(self.get_primary_key()))
-        obj.sort()
-        self.data = self.read_data()
+    def get_type(self):
+        return "sequential"
+        
+    def read_multiple_data(self, files):
+        path = read_config()[self.get_type()]
+        data = []
+        for file_name in files:
+            if not os.path.exists(path + file_name):
+                continue
+            with open(path + file_name, "r", encoding="utf-8") as file:
+                data += [row for row in csv.reader(file)]
+        return data
 
     def create_element(self, element):
         primary_key_used, _ = self.primary_key_used(element)
@@ -51,14 +52,19 @@ class SequentialFile(SerialFile):
     def get_children(self, index):
         children_meta = self.meta["children"]
         children = []
+        path = read_config()[self.get_type()]
 
-        for file_name, attributes in children_meta.items():
+        for file_type, attributes in children_meta.items():
             main_attributes = self.get_primary_key()
             main_attributes_indexes = self.get_attributes_indexes(main_attributes)
             values = []
             for attr_index in main_attributes_indexes:
                 values.append(self.read_element(index)[attr_index])
-            child = SequentialFile(file_name)
+
+            file_names = get_files(file_type, self.get_type())
+            child = SequentialFile(list(file_names.keys())[0])
+            child.data = child.read_multiple_data(file_names.keys())
+            child._sort_child()
             child._filter_child(attributes, values)
             children.append(child)
 
@@ -71,6 +77,10 @@ class SequentialFile(SerialFile):
                 if element[index] != value:
                     self.data.remove(element)
                     break
+
+    def _sort_child(self):
+        indexes = self.get_attributes_indexes(self.get_primary_key())
+        self.data.sort(key = operator.itemgetter(*indexes))
 
     def get_primary_key(self):
         primary_key = []

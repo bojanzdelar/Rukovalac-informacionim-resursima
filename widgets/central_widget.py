@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets
 from .workspace_widget import WorkspaceWidget
-from meta.meta import read_meta
+from meta.meta import get_file_display, file_in_meta
 
 class CentralWidget(QtWidgets.QTabWidget):
     def __init__(self, parent):
@@ -8,23 +8,23 @@ class CentralWidget(QtWidgets.QTabWidget):
 
         self.create_tab_widget()
         self.open_files = []
-        self.meta = read_meta()
 
     def create_tab_widget(self):
         self.setTabsClosable(True)
         self.tabCloseRequested.connect(self.delete_tab)
 
     def tab_name(self, parent_dir, file_name):
-        return self.meta[file_name]["display"] + " - " + self.meta[parent_dir]["abbreviation"]
+        return get_file_display(file_name, parent_dir) + " - " + parent_dir[0:3]
         
     def add_tab(self, path):
         file_name = path.split("/")[-1]
         parent_dir = path.split("/")[-2]
         tab_name = self.tab_name(parent_dir, file_name)
-        if tab_name not in self.open_files and file_name in self.meta:
+        if tab_name not in self.open_files and file_in_meta(file_name, parent_dir):
             self.open_files.append(tab_name)
             workspace_widget = WorkspaceWidget(parent_dir, file_name, self)
             workspace_widget.navigate.connect(self.change_tab)
+            workspace_widget.close.connect(self.delete_active_tab)
             self.addTab(workspace_widget, tab_name)
     
     def change_tab(self, parent_dir, file_name):
@@ -37,8 +37,12 @@ class CentralWidget(QtWidgets.QTabWidget):
         self.open_files.append(tab_name)
         workspace_widget = WorkspaceWidget(parent_dir, file_name, self)
         workspace_widget.navigate.connect(self.change_tab)
+        workspace_widget.close.connect(self.close_me)
         self.insertTab(current_index, workspace_widget, tab_name)
         self.setCurrentIndex(current_index)
+
+    def delete_active_tab(self):
+        self.delete_tab(self.currentIndex())
         
     def delete_tab(self, index):
         self.open_files.remove(self.tabText(index))

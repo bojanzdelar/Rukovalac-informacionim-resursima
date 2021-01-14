@@ -2,7 +2,8 @@ from model.information_resource import InformationResource
 from config.config import read_config
 from datetime import datetime
 import csv
-import operator 
+import operator
+import os.path 
 
 ops = {
     "=" : operator.eq,
@@ -17,14 +18,19 @@ ops = {
 class SerialFile(InformationResource):
     def __init__(self, file_name):
         super().__init__(file_name)
+   
+    def get_type(self):
+        return "serial"
 
     def read_data(self):
-        path = read_config()["serial_data"]
+        path = read_config()[self.get_type()]
+        if not os.path.exists(path + self.file_name):
+            return []
         with open(path + self.file_name, "r", encoding="utf-8") as file:
             return [row for row in csv.reader(file)]
 
     def save_data(self):
-        path = read_config()["serial_data"]
+        path = read_config()[self.get_type()]
         with open(path + self.file_name, "w", encoding="utf-8", newline='') as file:
             csv.writer(file).writerows(self.data)
 

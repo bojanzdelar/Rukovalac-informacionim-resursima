@@ -22,3 +22,8 @@ class ToolBar(QtWidgets.QToolBar):
         self.addSeparator()
         self.parent_action = self.addAction(QtGui.QIcon("icons/up.png"), "Parent")
         self.child_action = self.addAction(QtGui.QIcon("icons/down.png"), "Child")
+
+    def add_split_merge(self):
+        self.addSeparator()
+        self.split_action = self.addAction(QtGui.QIcon("icons/split.png"), "Split")
+        self.merge_action = self.addAction(QtGui.QIcon("icons/merge.png"), "Merge")

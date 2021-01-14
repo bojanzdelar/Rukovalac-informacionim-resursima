@@ -1,7 +1,12 @@
 {
-    "Visokoskolska ustanova" : {
-        "files" : {
-            "visokoskolska_ustanova.csv" : "Visokoskolska ustanova",
+    "visokoskolska_ustanova" : {
+        "serial" : {
+            "visokoskolska_ustanova.csv" : "Visokoskolska ustanova"
+        },
+        "sequential" : {
+            "visokoskolska_ustanova.csv" : "Visokoskolska ustanova"
+        },
+        "database" : {
             "visokoskolska_ustanova" : "Visokoskolska ustanova"
         },
         "attributes" : [
@@ -28,13 +33,18 @@
             }
         ],
         "children" : {
-            "Studenti" : ["vu_oznaka"],
-            "Studijski programi" : ["vu_oznaka"]
+            "studenti" : ["vu_oznaka"],
+            "studijski_programi" : ["vu_oznaka"]
         }
     },
-    "Studenti" : {
-        "files" : {
-            "studenti.csv" : "Studenti",
+    "studenti" : {
+        "serial" : {
+            "studenti.csv" : "Studenti"
+        },
+        "sequential" : {
+            "studenti.csv" : "Studenti"
+        },
+        "database" : {
             "studenti" : "Studenti"
         },
         "attributes" : [
@@ -43,7 +53,7 @@
                 "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : { 
-                    "Visokoskolska ustanova" : "vu_oznaka" 
+                    "visokoskolska_ustanova" : "vu_oznaka" 
                 },
                 "input" : "characters",
                 "length" : 2
@@ -119,12 +129,17 @@
             }
         ],
         "children" : {
-            "Tok studija" : ["stu_vu_oznaka", "stu_struka", "stu_broj_indeksa"]
+            "tok_studija" : ["stu_vu_oznaka", "stu_struka", "stu_broj_indeksa"]
         }
     },
-    "Nivo studija" : {
-        "files" : {
-            "nivo_studija.csv" : "Nivo studija",
+    "nivo_studija" : {
+        "serial" : {
+            "nivo_studija.csv" : "Nivo studija"
+        },
+        "sequential" : {
+            "nivo_studija.csv" : "Nivo studija"
+        },
+        "database" : {
             "nivo_studija" : "Nivo studija"
         },
         "attributes" : [
@@ -144,12 +159,17 @@
             }
         ],
         "children" : {
-            "Studijski programi" : ["niv_oznaka"]
+            "studijski_programi" : ["niv_oznaka"]
         }
     },
-    "Nastavni predmet" :{ 
-        "files" : {
-            "nastavni_predmet.csv" : "Nastavni predmet",
+    "nastavni_predmet" : {
+        "serial" : {
+            "nastavni_predmet.csv" : "Nastavni predmet"
+        },
+        "sequential" : {
+            "nastavni_predmet.csv" : "Nastavni predmet"
+        },
+        "database" : {
             "nastavni_predmet" : "Nastavni predmet"
         },
         "attributes" : [
@@ -158,7 +178,7 @@
                 "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Visokoskolska ustanova" : "vu_oznaka"
+                    "visokoskolska_ustanova" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -186,12 +206,17 @@
             }
         ],
         "children" : {
-            "Plan studijske grupe" : ["vu_oznaka", "np_oznaka"]
+            "plan_studijske_grupe" : ["vu_oznaka", "np_oznaka"]
         }
     },
-    "Studijski programi" : {
-        "files" : {
-            "studijski_programi.csv" : "Studijski programi",
+    "studijski_programi" : {
+        "serial" : {
+            "studijski_programi.csv" : "Studijski programi"
+        },
+        "sequential" : {
+            "studijski_programi.csv" : "Studijski programi"
+        },
+        "database" : {
             "studijski_programi" : "Studijski programi"
         },
         "attributes" : [
@@ -200,7 +225,7 @@
                 "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : { 
-                    "Visokoskolska ustanova" : "vu_oznaka"
+                    "visokoskolska_ustanova" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2  
@@ -210,7 +235,7 @@
                 "display" : "Nivo",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "Nivo studija" : "niv_oznaka"
+                    "nivo_studija" : "niv_oznaka"
                 },
                 "input" : "number",
                 "length" : 2
@@ -231,13 +256,18 @@
             }
         ],
         "children" : {
-            "Tok studija" : ["vu_oznaka", "sp_oznaka"],
-            "Plan studijske grupe" : ["vu_oznaka", "sp_oznaka"]
+            "tok_studija" : ["vu_oznaka", "sp_oznaka"],
+            "plan_studijske_grupe" : ["vu_oznaka", "sp_oznaka"]
         }
     },
-    "Plan studijske grupe" : {
-        "files" : {
-            "plan_studijske_grupe.csv" : "Plan studijske grupe",
+    "plan_studijske_grupe" : {
+        "serial" : {
+            "plan_studijske_grupe.csv" : "Plan studijske grupe"
+        },
+        "sequential" : {
+            "plan_studijske_grupe.csv" : "Plan studijske grupe"
+        },
+        "database" : {
             "plan_studijske_grupe" : "Plan studijske grupe"
         },
         "attributes" : [
@@ -246,7 +276,7 @@
                 "display" : "Program Ustanove",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studijski programi" : "vu_oznaka"
+                    "studijski_programi" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -256,7 +286,7 @@
                 "display" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studijski programi" : "sp_oznaka"
+                    "studijski_programi" : "sp_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 3
@@ -280,7 +310,7 @@
                 "display" : "Ustanova predmet",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "Nastavni predmet" : "vu_oznaka"
+                    "nastavni_predmet" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -290,7 +320,7 @@
                 "display" : "Oznaka predmeta",
                 "type" : ["foreign key", "required"],
                 "relation" : {
-                    "Nastavni predmet" : "np_oznaka"
+                    "nastavni_predmet" : "np_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 6
@@ -298,9 +328,14 @@
         ],
         "children" : {}
     },
-    "Tok studija" : {
-        "files" : {
-            "tok_studija.csv" : "Tok studija",
+    "tok_studija" : {
+        "serial" : {
+            "tok_studija.csv" : "Tok studija"
+        },
+        "sequential" : {
+            "tok_studija.csv" : "Tok studija"
+        },
+        "database" : {
             "tok_studija" : "Tok studija"
         },
         "attributes" : [
@@ -309,7 +344,7 @@
                 "display" : "Student iz ustanove",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studenti" : "vu_oznaka"
+                    "studenti" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -319,7 +354,7 @@
                 "display" : "Oznaka programa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studijski programi" : "sp_oznaka"
+                    "studijski_programi" : "sp_oznaka"
                 },
                 "input" : "variable characters",
                 "length" : 3
@@ -329,7 +364,7 @@
                 "display" : "Ustanova",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studijski programi" : "vu_oznaka"
+                    "studijski_programi" : "vu_oznaka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -339,7 +374,7 @@
                 "display" : "Struka",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studenti" : "stu_struka"
+                    "studenti" : "stu_struka"
                 },
                 "input" : "characters",
                 "length" : 2
@@ -349,7 +384,7 @@
                 "display" : "Broj indeksa",
                 "type" : ["primary key", "foreign key", "required"],
                 "relation" : {
-                    "Studenti" : "stu_broj_indeksa"
+                    "studenti" : "stu_broj_indeksa"
                 },
                 "input" : "variable characters",
                 "length" : 6
@@ -411,11 +446,9 @@
         ],
         "children" : {}
     },
-    "Folders" : {
-        "files" : {
-            "serial" : "Serijske datoteke",
-            "sequential" : "Sekvencijalne datoteke",
-            "database" : "Relaciona baza podataka"
-        }
+    "folders" : {
+        "serial" : "Serijske datoteke",
+        "sequential" : "Sekvencijalne datoteke",
+        "database" : "Relaciona baza podataka"
     }
 }

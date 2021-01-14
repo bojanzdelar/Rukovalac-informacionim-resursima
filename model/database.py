@@ -13,6 +13,9 @@ class Database(InformationResource):
     def __del__(self):
         self.disconnect()
 
+    def get_type(self):
+        return "database"
+
     def connect(self):
         config = read_config()
         self.connection = mysql.connector.connect(user=config["user"], password=config["password"], 
@@ -24,7 +27,7 @@ class Database(InformationResource):
         self.connection.close()
 
     def read_data(self):
-        self.csor.callproc("show_table", [self.file_name[0:-4]])
+        self.csor.callproc("show_table", [self.file_name])
         for res in self.csor.stored_results():
             return res.fetchall()
 
@@ -34,7 +37,7 @@ class Database(InformationResource):
     def create_element(self, element):
         values = "(" + ", ".join([f"'{attribute}'" for attribute in element]) + ")"
         try:
-            self.csor.callproc("insert_element", [self.file_name[0:-4], values])
+            self.csor.callproc("insert_element", [self.file_name, values])
             return super().create_element(element)
         except mysql.connector.errors.IntegrityError:
             QtWidgets.QMessageBox.warning(None, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
@@ -58,7 +61,7 @@ class Database(InformationResource):
         set = ", ".join(set)
         where = " AND ".join(where)
         try:
-            self.csor.callproc("update_element", [self.file_name[0:-4], set, where])
+            self.csor.callproc("update_element", [self.file_name, set, where])
             return super().update_element(index, new_element)
         except mysql.connector.errors.IntegrityError as error:
             QtWidgets.QMessageBox.warning(None, "Greska", 
@@ -74,7 +77,7 @@ class Database(InformationResource):
             where.append(f"({name} = '{element[i]}')")
         where = " AND ".join(where)
         try:
-            self.csor.callproc("delete_element", [self.file_name[0:-4], where])
+            self.csor.callproc("delete_element", [self.file_name, where])
             super().delete_element(index)
         except mysql.connector.errors.IntegrityError:
             QtWidgets.QMessageBox.warning(None, "Greska", "Ne mozete da obrisete entitet" 
@@ -95,7 +98,7 @@ class Database(InformationResource):
         if not len(where):
             return
         where = " AND ".join(where)
-        self.csor.callproc("select_where", [self.file_name[0:-4], where])
+        self.csor.callproc("select_where", [self.file_name, where])
         for res in self.csor.stored_results():
             self.data = res.fetchall()
 
@@ -116,7 +119,7 @@ class Database(InformationResource):
                 where.append(f"{attribute} = '{value}'")
             where = " AND ".join(where)
 
-            self.csor.callproc("select_where", [file_name[0:-4], where])
+            self.csor.callproc("select_where", [file_name, where])
             for res in self.csor.stored_results():
                 child.data = res.fetchall()
 
@@ -132,7 +135,7 @@ class Database(InformationResource):
         return primary_key
 
     def column_values(self, column):
-        self.csor.callproc("column_values", [column, self.file_name[0:-4]])
+        self.csor.callproc("column_values", [column, self.file_name])
         for res in self.csor.stored_results():
             values = res.fetchall()
         return sorted([str(value[0]) for value in values])
