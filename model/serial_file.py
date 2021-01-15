@@ -1,4 +1,5 @@
 from model.information_resource import InformationResource
+from meta.meta import get_file_display, add_file, remove_file
 from config.config import read_config
 from datetime import datetime
 import csv
@@ -71,6 +72,48 @@ class SerialFile(InformationResource):
             if match_filter:
                 show_indexes.append(index)
         return show_indexes
+
+    def split(self, condition):
+        i, operator, text = condition
+        path = read_config()[self.get_type()]
+        file_name = self.file_name
+        file_name_1 = (file_name[0:-4] + "-"  
+            + self.get_attribute(i)["name"] + operator + text + ".csv")
+        file_name_2 = (file_name[0:-4] + "-not(" 
+            + self.get_attribute(i)["name"] + operator + text + ").csv")
+        file_display_1 = (get_file_display(file_name, self.get_type()) + " - "
+            + self.get_attribute(i)["display"] + " " + operator + " " + text)
+        file_display_2 = (get_file_display(file_name, self.get_type()) + " - not ("
+            + self.get_attribute(i)["display"] + " " + operator + " " + text + ")")
+
+        for index in range(len(self.data)):
+            element = self.read_element(index).copy()
+            
+            input_type = self.get_attribute(i)["input"]
+            if input_type == "date":
+                text = datetime.strptime(text, "%Y-%m-%d")
+                element[i] = datetime.strptime(str(element[i]), "%Y-%m-%d")
+            elif input_type != "number":
+                text = text.lower()
+                element[i] = element[i].lower()
+
+            if (operator == "not like" and ops["like"](element[i], text)) \
+                    or (operator != "not like" and not ops[operator](element[i], text)):
+                new_file_name = file_name_2
+            else:
+                new_file_name = file_name_1
+
+            with open(path + new_file_name, "a", encoding="utf-8") as file:
+                    csv.writer(file).writerow(element)
+
+        remove_file(file_name, self.get_type())
+        add_file(file_name_1, file_display_1, self.file_type, self.get_type())
+        add_file(file_name_2, file_display_2, self.file_type, self.get_type())
+        os.remove(path + file_name)
+        #self.close.emit() #FIXME: sredi ovo
+
+    def merge(self):
+        ...
     
     def column_values(self, column):
         values = set()

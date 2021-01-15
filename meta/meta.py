@@ -38,6 +38,9 @@ def file_in_meta(file_name, file_organization):
 def folder_in_meta(folder_name):
     return folder_name in get_folders()
 
+def same_file_meta(file_name_1, file_name_2, file_organization):
+    return get_file_meta(file_name_1, file_organization) == get_file_meta(file_name_2, file_organization)
+
 def add_file(file_name, file_display, file_type, file_organization):
     meta = read_meta()
     file_meta = meta[file_type]

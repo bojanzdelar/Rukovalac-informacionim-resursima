@@ -8,8 +8,9 @@ from widgets.update_dialog import UpdateDialog
 from widgets.filter_dialog import FilterDialog
 from widgets.navigation_dialog import NavigationDialog
 from widgets.split_dialog import SplitDialog
+from widgets.merge_dialog import MergeDialog
 from widgets.tool_bar import ToolBar
-from meta.meta import get_files, get_file_display, add_file, remove_file
+from meta.meta import get_files, get_file_display
 from config.config import read_config
 import csv
 import os
@@ -218,50 +219,13 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def split(self):
         dialog = SplitDialog(self.information_resource)
-        dialog.selected.connect(self.split_information_resource)
+        dialog.selected.connect(self.information_resource.split)
         dialog.exec_()
 
-    def split_information_resource(self, condition):
-        i, operator, text = condition
-        path = read_config()[self.parent_dir]
-        file_name = self.information_resource.file_name
-        file_name_1 = (file_name[0:-4] + "-"  
-            + self.information_resource.get_attribute(i)["name"] + operator + text + ".csv")
-        file_name_2 = (file_name[0:-4] + "-not(" 
-            + self.information_resource.get_attribute(i)["name"] + operator + text + ").csv")
-        file_display_1 = (get_file_display(file_name, self.parent_dir) + " - "
-            + self.information_resource.get_attribute(i)["display"] + " " + operator + " " + text)
-        file_display_2 = (get_file_display(file_name, self.parent_dir) + " - not ("
-            + self.information_resource.get_attribute(i)["display"] + " " + operator + " " + text + ")")
-
-        for index in range(len(self.information_resource.data)):
-            element = self.information_resource.read_element(index).copy()
-            
-            input_type = self.information_resource.get_attribute(i)["input"]
-            if input_type == "date":
-                text = datetime.strptime(text, "%Y-%m-%d")
-                element[i] = datetime.strptime(str(element[i]), "%Y-%m-%d")
-            elif input_type != "number":
-                text = text.lower()
-                element[i] = element[i].lower()
-
-            if (operator == "not like" and ops["like"](element[i], text)) \
-                    or (operator != "not like" and not ops[operator](element[i], text)):
-                new_file_name = file_name_2
-            else:
-                new_file_name = file_name_1
-
-            with open(path + new_file_name, "a", encoding="utf-8") as file:
-                    csv.writer(file).writerow(element)
-
-        remove_file(file_name, self.parent_dir)
-        add_file(file_name_1, file_display_1, self.information_resource.file_type, self.parent_dir)
-        add_file(file_name_2, file_display_2, self.information_resource.file_type, self.parent_dir)
-        os.remove(path + file_name)
-        self.close.emit()
-
     def merge(self):
-        ...
+        dialog = MergeDialog(self.information_resource)
+        dialog.selected.connect(self.information_resource.merge)
+        dialog.exec_()
 
     def set_page(self, page):
         if page < 0 or page > self.total_pages():
