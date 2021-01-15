@@ -9,7 +9,7 @@ from widgets.filter_dialog import FilterDialog
 from widgets.navigation_dialog import NavigationDialog
 from widgets.split_dialog import SplitDialog
 from widgets.tool_bar import ToolBar
-from meta.meta import get_files, get_file_display
+from meta.meta import get_files, get_file_display, add_file, remove_file
 from config.config import read_config
 import csv
 import os
@@ -223,12 +223,16 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
     def split_information_resource(self, condition):
         i, operator, text = condition
-        path = read_config()[self.information_resource.get_type()]
-        old_file_name = self.information_resource.file_name
-        first_file_name = (old_file_name[0:-4] + "-"  
+        path = read_config()[self.parent_dir]
+        file_name = self.information_resource.file_name
+        file_name_1 = (file_name[0:-4] + "-"  
             + self.information_resource.get_attribute(i)["name"] + operator + text + ".csv")
-        second_file_name = (old_file_name[0:-4] + "-not(" 
+        file_name_2 = (file_name[0:-4] + "-not(" 
             + self.information_resource.get_attribute(i)["name"] + operator + text + ").csv")
+        file_display_1 = (get_file_display(file_name, self.parent_dir) + " - "
+            + self.information_resource.get_attribute(i)["display"] + " " + operator + " " + text)
+        file_display_2 = (get_file_display(file_name, self.parent_dir) + " - not ("
+            + self.information_resource.get_attribute(i)["display"] + " " + operator + " " + text + ")")
 
         for index in range(len(self.information_resource.data)):
             element = self.information_resource.read_element(index).copy()
@@ -243,14 +247,17 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
             if (operator == "not like" and ops["like"](element[i], text)) \
                     or (operator != "not like" and not ops[operator](element[i], text)):
-                file_name = second_file_name # FIXME: generisi ime i dodaj u meta
+                new_file_name = file_name_2
             else:
-                file_name = first_file_name
+                new_file_name = file_name_1
 
-            with open(path + file_name, "a", encoding="utf-8") as file:
+            with open(path + new_file_name, "a", encoding="utf-8") as file:
                     csv.writer(file).writerow(element)
 
-        os.remove(path + old_file_name)
+        remove_file(file_name, self.parent_dir)
+        add_file(file_name_1, file_display_1, self.information_resource.file_type, self.parent_dir)
+        add_file(file_name_2, file_display_2, self.information_resource.file_type, self.parent_dir)
+        os.remove(path + file_name)
         self.close.emit()
 
     def merge(self):

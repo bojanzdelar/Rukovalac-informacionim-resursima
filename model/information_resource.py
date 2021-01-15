@@ -4,7 +4,7 @@ from meta.meta import get_file_meta
 class InformationResource(ABC):
     def __init__(self, file_name):
         self.file_name = file_name
-        self.meta = self.read_meta()
+        self.file_type, self.meta = self.read_meta()
         self.data = self.read_data()
 
     @abstractmethod 

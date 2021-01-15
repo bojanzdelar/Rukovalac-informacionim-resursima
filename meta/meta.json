@@ -1,454 +1,582 @@
 {
-    "visokoskolska_ustanova" : {
-        "serial" : {
-            "visokoskolska_ustanova.csv" : "Visokoskolska ustanova"
+    "visokoskolska_ustanova": {
+        "serial": {
+            "visokoskolska_ustanova.csv": "Visokoskolska ustanova"
         },
-        "sequential" : {
-            "visokoskolska_ustanova.csv" : "Visokoskolska ustanova"
+        "sequential": {
+            "visokoskolska_ustanova.csv": "Visokoskolska ustanova"
         },
-        "database" : {
-            "visokoskolska_ustanova" : "Visokoskolska ustanova"
+        "database": {
+            "visokoskolska_ustanova": "Visokoskolska ustanova"
         },
-        "attributes" : [
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Oznaka",
-                "type" : ["primary key", "required"],
-                "input" : "characters",
-                "length" : 2
+        "attributes": [
+            {
+                "name": "vu_oznaka",
+                "display": "Oznaka",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "vu_naziv",
-                "display" : "Naziv",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 80
+            {
+                "name": "vu_naziv",
+                "display": "Naziv",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 80
             },
-            { 
-                "name" : "vu_adresa",
-                "display" : "Adresa",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 80
+            {
+                "name": "vu_adresa",
+                "display": "Adresa",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 80
             }
         ],
-        "children" : {
-            "studenti" : ["vu_oznaka"],
-            "studijski_programi" : ["vu_oznaka"]
+        "children": {
+            "studenti": [
+                "vu_oznaka"
+            ],
+            "studijski_programi": [
+                "vu_oznaka"
+            ]
         }
     },
-    "studenti" : {
-        "serial" : {
-            "studenti.csv" : "Studenti"
+    "studenti": {
+        "serial": {
+            "studenti.csv": "Studenti"
         },
-        "sequential" : {
-            "studenti.csv" : "Studenti"
+        "sequential": {
+            "studenti.csv": "Studenti"
         },
-        "database" : {
-            "studenti" : "Studenti"
+        "database": {
+            "studenti": "Studenti"
         },
-        "attributes" : [
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : { 
-                    "visokoskolska_ustanova" : "vu_oznaka" 
+        "attributes": [
+            {
+                "name": "vu_oznaka",
+                "display": "Ustanova",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "visokoskolska_ustanova": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "stu_struka",
-                "display" : "Struka",
-                "type" : ["primary key", "required"],
-                "input" : "characters",
-                "length" : 2
+            {
+                "name": "stu_struka",
+                "display": "Struka",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "stu_broj_indeksa",
-                "display" : "Broj indeksa",
-                "type" : ["primary key", "required"],
-                "input" : "variable characters",
-                "length" : 6
+            {
+                "name": "stu_broj_indeksa",
+                "display": "Broj indeksa",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 6
             },
-            {   
-                "name" : "stu_prezime",
-                "display" : "Prezime",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 20
+            {
+                "name": "stu_prezime",
+                "display": "Prezime",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 20
             },
-            {   
-                "name" : "stu_ime_roditelja",
-                "display" : "Ime roditelja",
-                "type" : [],
-                "input" : "variable characters",
-                "length" : 20
+            {
+                "name": "stu_ime_roditelja",
+                "display": "Ime roditelja",
+                "type": [],
+                "input": "variable characters",
+                "length": 20
             },
-            {   
-                "name" : "stu_ime",
-                "display" : "Ime",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 20
+            {
+                "name": "stu_ime",
+                "display": "Ime",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 20
             },
-            {   
-                "name" : "stu_pol",
-                "display" : "Pol",
-                "type" : ["required"],
-                "input" : "characters",
-                "length" : 1
+            {
+                "name": "stu_pol",
+                "display": "Pol",
+                "type": [
+                    "required"
+                ],
+                "input": "characters",
+                "length": 1
             },
-            {   
-                "name" : "stu_adresa_stanovanja",
-                "display" : "Adresa stanovanja",
-                "type" : [],
-                "input" : "variable characters",
-                "length" : 80
+            {
+                "name": "stu_adresa_stanovanja",
+                "display": "Adresa stanovanja",
+                "type": [],
+                "input": "variable characters",
+                "length": 80
             },
-            {   
-                "name" : "stu_telefon",
-                "display" : "Telefon",
-                "type" : [],
-                "input" : "variable characters",
-                "length" : 20
+            {
+                "name": "stu_telefon",
+                "display": "Telefon",
+                "type": [],
+                "input": "variable characters",
+                "length": 20
             },
-            {   
-                "name" : "stu_jmbg",
-                "display" : "JMBG",
-                "type" : [],
-                "input" : "characters",
-                "length" : 13
+            {
+                "name": "stu_jmbg",
+                "display": "JMBG",
+                "type": [],
+                "input": "characters",
+                "length": 13
             },
-            {   
-                "name" : "stu_datum_rodjenja",
-                "display" : "Datum rodjenja",
-                "type" : [],
-                "input" : "date"
+            {
+                "name": "stu_datum_rodjenja",
+                "display": "Datum rodjenja",
+                "type": [],
+                "input": "date"
             }
         ],
-        "children" : {
-            "tok_studija" : ["stu_vu_oznaka", "stu_struka", "stu_broj_indeksa"]
+        "children": {
+            "tok_studija": [
+                "stu_vu_oznaka",
+                "stu_struka",
+                "stu_broj_indeksa"
+            ]
         }
     },
-    "nivo_studija" : {
-        "serial" : {
-            "nivo_studija.csv" : "Nivo studija"
+    "nivo_studija": {
+        "serial": {
+            "nivo_studija.csv": "Nivo studija"
         },
-        "sequential" : {
-            "nivo_studija.csv" : "Nivo studija"
+        "sequential": {
+            "nivo_studija.csv": "Nivo studija"
         },
-        "database" : {
-            "nivo_studija" : "Nivo studija"
+        "database": {
+            "nivo_studija": "Nivo studija"
         },
-        "attributes" : [
-            {   
-                "name" : "niv_oznaka",
-                "display" : "Oznaka",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 2
+        "attributes": [
+            {
+                "name": "niv_oznaka",
+                "display": "Oznaka",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "niv_naziv",
-                "display" : "Naziv",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 80
+            {
+                "name": "niv_naziv",
+                "display": "Naziv",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 80
             }
         ],
-        "children" : {
-            "studijski_programi" : ["niv_oznaka"]
+        "children": {
+            "studijski_programi": [
+                "niv_oznaka"
+            ]
         }
     },
-    "nastavni_predmet" : {
-        "serial" : {
-            "nastavni_predmet.csv" : "Nastavni predmet"
+    "nastavni_predmet": {
+        "serial": {
+            "nastavni_predmet.csv": "Nastavni predmet"
         },
-        "sequential" : {
-            "nastavni_predmet.csv" : "Nastavni predmet"
+        "sequential": {
+            "nastavni_predmet.csv": "Nastavni predmet"
         },
-        "database" : {
-            "nastavni_predmet" : "Nastavni predmet"
+        "database": {
+            "nastavni_predmet": "Nastavni predmet"
         },
-        "attributes" : [
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "visokoskolska_ustanova" : "vu_oznaka"
+        "attributes": [
+            {
+                "name": "vu_oznaka",
+                "display": "Ustanova",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "visokoskolska_ustanova": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "np_oznaka",
-                "display" : "Oznaka",
-                "type" : ["primary key", "required"],
-                "input" : "variable characters",
-                "length" : 6
+            {
+                "name": "np_oznaka",
+                "display": "Oznaka",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 6
             },
-            {   
-                "name" : "np_naziv",
-                "display" : "Naziv",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 120
+            {
+                "name": "np_naziv",
+                "display": "Naziv",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 120
             },
-            {   
-                "name" : "np_espb",
-                "display" : "ESPB",
-                "type" : ["required"],
-                "input" : "number",
-                "length" : 2
+            {
+                "name": "np_espb",
+                "display": "ESPB",
+                "type": [
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             }
         ],
-        "children" : {
-            "plan_studijske_grupe" : ["vu_oznaka", "np_oznaka"]
+        "children": {
+            "plan_studijske_grupe": [
+                "vu_oznaka",
+                "np_oznaka"
+            ]
         }
     },
-    "studijski_programi" : {
-        "serial" : {
-            "studijski_programi.csv" : "Studijski programi"
+    "studijski_programi": {
+        "serial": {
+            "studijski_programi.csv": "Studijski programi"
         },
-        "sequential" : {
-            "studijski_programi.csv" : "Studijski programi"
+        "sequential": {
+            "studijski_programi.csv": "Studijski programi"
         },
-        "database" : {
-            "studijski_programi" : "Studijski programi"
+        "database": {
+            "studijski_programi": "Studijski programi"
         },
-        "attributes" : [
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : { 
-                    "visokoskolska_ustanova" : "vu_oznaka"
+        "attributes": [
+            {
+                "name": "vu_oznaka",
+                "display": "Ustanova",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "visokoskolska_ustanova": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2  
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "niv_oznaka",
-                "display" : "Nivo",
-                "type" : ["foreign key", "required"],
-                "relation" : {
-                    "nivo_studija" : "niv_oznaka"
+            {
+                "name": "niv_oznaka",
+                "display": "Nivo",
+                "type": [
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "nivo_studija": "niv_oznaka"
                 },
-                "input" : "number",
-                "length" : 2
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "sp_oznaka",
-                "display" : "Oznaka programa",
-                "type" : ["primary key", "required"],
-                "input" : "variable characters",
-                "length" : 3
+            {
+                "name": "sp_oznaka",
+                "display": "Oznaka programa",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 3
             },
-            {   
-                "name" : "sp_naziv",
-                "display" : "Naziv programa",
-                "type" : ["required"],
-                "input" : "variable characters",
-                "length" : 120
+            {
+                "name": "sp_naziv",
+                "display": "Naziv programa",
+                "type": [
+                    "required"
+                ],
+                "input": "variable characters",
+                "length": 120
             }
         ],
-        "children" : {
-            "tok_studija" : ["vu_oznaka", "sp_oznaka"],
-            "plan_studijske_grupe" : ["vu_oznaka", "sp_oznaka"]
+        "children": {
+            "tok_studija": [
+                "vu_oznaka",
+                "sp_oznaka"
+            ],
+            "plan_studijske_grupe": [
+                "vu_oznaka",
+                "sp_oznaka"
+            ]
         }
     },
-    "plan_studijske_grupe" : {
-        "serial" : {
-            "plan_studijske_grupe.csv" : "Plan studijske grupe"
+    "plan_studijske_grupe": {
+        "serial": {
+            "plan_studijske_grupe.csv": "Plan studijske grupe"
         },
-        "sequential" : {
-            "plan_studijske_grupe.csv" : "Plan studijske grupe"
+        "sequential": {
+            "plan_studijske_grupe.csv": "Plan studijske grupe"
         },
-        "database" : {
-            "plan_studijske_grupe" : "Plan studijske grupe"
+        "database": {
+            "plan_studijske_grupe": "Plan studijske grupe"
         },
-        "attributes" : [
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Program Ustanove",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studijski_programi" : "vu_oznaka"
+        "attributes": [
+            {
+                "name": "vu_oznaka",
+                "display": "Program Ustanove",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studijski_programi": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "sp_oznaka",
-                "display" : "Oznaka programa",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studijski_programi" : "sp_oznaka"
+            {
+                "name": "sp_oznaka",
+                "display": "Oznaka programa",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studijski_programi": "sp_oznaka"
                 },
-                "input" : "variable characters",
-                "length" : 3
+                "input": "variable characters",
+                "length": 3
             },
-            {   
-                "name" : "spb_blok",
-                "display" : "Blok",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 2
+            {
+                "name": "spb_blok",
+                "display": "Blok",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "spb_pozicija",
-                "display" : "Pozicija",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 2
+            {
+                "name": "spb_pozicija",
+                "display": "Pozicija",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova predmet",
-                "type" : ["foreign key", "required"],
-                "relation" : {
-                    "nastavni_predmet" : "vu_oznaka"
+            {
+                "name": "vu_oznaka",
+                "display": "Ustanova predmet",
+                "type": [
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "nastavni_predmet": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "np_oznaka",
-                "display" : "Oznaka predmeta",
-                "type" : ["foreign key", "required"],
-                "relation" : {
-                    "nastavni_predmet" : "np_oznaka"
+            {
+                "name": "np_oznaka",
+                "display": "Oznaka predmeta",
+                "type": [
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "nastavni_predmet": "np_oznaka"
                 },
-                "input" : "variable characters",
-                "length" : 6
+                "input": "variable characters",
+                "length": 6
             }
         ],
-        "children" : {}
+        "children": {}
     },
-    "tok_studija" : {
-        "serial" : {
-            "tok_studija.csv" : "Tok studija"
+    "tok_studija": {
+        "serial": {
+            "tok_studija.csv": "Tok studija"
         },
-        "sequential" : {
-            "tok_studija.csv" : "Tok studija"
+        "sequential": {
+            "tok_studija.csv": "Tok studija"
         },
-        "database" : {
-            "tok_studija" : "Tok studija"
+        "database": {
+            "tok_studija": "Tok studija"
         },
-        "attributes" : [
-            {   
-                "name" : "stu_vu_oznaka",
-                "display" : "Student iz ustanove",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studenti" : "vu_oznaka"
+        "attributes": [
+            {
+                "name": "stu_vu_oznaka",
+                "display": "Student iz ustanove",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studenti": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "sp_oznaka",
-                "display" : "Oznaka programa",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studijski_programi" : "sp_oznaka"
+            {
+                "name": "sp_oznaka",
+                "display": "Oznaka programa",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studijski_programi": "sp_oznaka"
                 },
-                "input" : "variable characters",
-                "length" : 3
+                "input": "variable characters",
+                "length": 3
             },
-            {   
-                "name" : "vu_oznaka",
-                "display" : "Ustanova",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studijski_programi" : "vu_oznaka"
+            {
+                "name": "vu_oznaka",
+                "display": "Ustanova",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studijski_programi": "vu_oznaka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "stu_struka",
-                "display" : "Struka",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studenti" : "stu_struka"
+            {
+                "name": "stu_struka",
+                "display": "Struka",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studenti": "stu_struka"
                 },
-                "input" : "characters",
-                "length" : 2
+                "input": "characters",
+                "length": 2
             },
-            {   
-                "name" : "stu_broj_indeksa",
-                "display" : "Broj indeksa",
-                "type" : ["primary key", "foreign key", "required"],
-                "relation" : {
-                    "studenti" : "stu_broj_indeksa"
+            {
+                "name": "stu_broj_indeksa",
+                "display": "Broj indeksa",
+                "type": [
+                    "primary key",
+                    "foreign key",
+                    "required"
+                ],
+                "relation": {
+                    "studenti": "stu_broj_indeksa"
                 },
-                "input" : "variable characters",
-                "length" : 6
+                "input": "variable characters",
+                "length": 6
             },
-            {   
-                "name" : "tok_skolska_godina",
-                "display" : "Skolska godina",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 4
+            {
+                "name": "tok_skolska_godina",
+                "display": "Skolska godina",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 4
             },
-            {   
-                "name" : "tok_godina_studija",
-                "display" : "Godina studija",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 1
+            {
+                "name": "tok_godina_studija",
+                "display": "Godina studija",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 1
             },
-            {   
-                "name" : "tok_blok",
-                "display" : "Blok",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 2
+            {
+                "name": "tok_blok",
+                "display": "Blok",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "tok_redni_broj_upisa",
-                "display" : "Redni broj upisa",
-                "type" : ["primary key", "required"],
-                "input" : "number",
-                "length" : 2
+            {
+                "name": "tok_redni_broj_upisa",
+                "display": "Redni broj upisa",
+                "type": [
+                    "primary key",
+                    "required"
+                ],
+                "input": "number",
+                "length": 2
             },
-            {   
-                "name" : "tok_datum_upisa",
-                "display" : "Datum upisa",
-                "type" : ["required"],
-                "input" : "date"
+            {
+                "name": "tok_datum_upisa",
+                "display": "Datum upisa",
+                "type": [
+                    "required"
+                ],
+                "input": "date"
             },
-            {   
-                "name" : "tok_datum_overe",
-                "display" : "Datum overe",
-                "type" : [],
-                "input" : "date"
+            {
+                "name": "tok_datum_overe",
+                "display": "Datum overe",
+                "type": [],
+                "input": "date"
             },
-            {   
-                "name" : "tok_espb_pocetni",
-                "display" : "ESPB pocetni",
-                "type" : ["required"],
-                "input" : "number",
-                "length" : 3
+            {
+                "name": "tok_espb_pocetni",
+                "display": "ESPB pocetni",
+                "type": [
+                    "required"
+                ],
+                "input": "number",
+                "length": 3
             },
-            {   
-                "name" : "tok_espb_krajnji",
-                "display" : "ESPB krajnji",
-                "type" : ["required"],
-                "input" : "number",
-                "length" : 3
+            {
+                "name": "tok_espb_krajnji",
+                "display": "ESPB krajnji",
+                "type": [
+                    "required"
+                ],
+                "input": "number",
+                "length": 3
             }
         ],
-        "children" : {}
+        "children": {}
     },
-    "folders" : {
-        "serial" : "Serijske datoteke",
-        "sequential" : "Sekvencijalne datoteke",
-        "database" : "Relaciona baza podataka"
+    "folders": {
+        "serial": "Serijske datoteke",
+        "sequential": "Sekvencijalne datoteke",
+        "database": "Relaciona baza podataka"
     }
 }
