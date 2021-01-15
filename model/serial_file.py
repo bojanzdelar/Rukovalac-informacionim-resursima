@@ -1,5 +1,5 @@
 from model.information_resource import InformationResource
-from meta.meta import get_file_display, add_file, remove_file
+from meta.meta import get_file_display, file_in_meta, add_file, remove_file
 from config.config import read_config
 from datetime import datetime
 import csv
@@ -77,13 +77,13 @@ class SerialFile(InformationResource):
         i, operator, text = condition
         path = read_config()[self.get_type()]
         file_name = self.file_name
-        file_name_1 = (file_name[0:-4] + "-"  
+        file_name_1 = (file_name[0:-4] + "--"  
             + self.get_attribute(i)["name"] + operator + text + ".csv")
-        file_name_2 = (file_name[0:-4] + "-not(" 
+        file_name_2 = (file_name[0:-4] + "--not(" 
             + self.get_attribute(i)["name"] + operator + text + ").csv")
-        file_display_1 = (get_file_display(file_name, self.get_type()) + " - "
+        file_display_1 = (get_file_display(file_name, self.get_type()) + " -- "
             + self.get_attribute(i)["display"] + " " + operator + " " + text)
-        file_display_2 = (get_file_display(file_name, self.get_type()) + " - not ("
+        file_display_2 = (get_file_display(file_name, self.get_type()) + " -- not ("
             + self.get_attribute(i)["display"] + " " + operator + " " + text + ")")
 
         for index in range(len(self.data)):
@@ -104,7 +104,7 @@ class SerialFile(InformationResource):
                 new_file_name = file_name_1
 
             with open(path + new_file_name, "a", encoding="utf-8") as file:
-                    csv.writer(file).writerow(element)
+                    csv.writer(file).writerow(self.read_element(index))
 
         remove_file(file_name, self.get_type())
         add_file(file_name_1, file_display_1, self.file_type, self.get_type())
@@ -112,9 +112,40 @@ class SerialFile(InformationResource):
         os.remove(path + file_name)
         #self.close.emit() #FIXME: sredi ovo
 
-    def merge(self):
-        ...
-    
+    def merge(self, other_file_name):
+        path = read_config()[self.get_type()]
+
+        new_file_name = self.file_name.split("--")[0] + ".csv"
+
+        count = 0
+        while file_in_meta(new_file_name, self.get_type()):
+            new_file_name = self.file_name + "--" + str(count) + ".csv"
+            count += 1
+
+        new_file_display = get_file_display(self.file_name, self.get_type()).split("--")[0].strip() \
+            + ("-- " + str(count) if count else "")
+
+        with open(path + self.file_name, "r", encoding="utf-8") as input_1, \
+                open(path + other_file_name, "r", encoding="utf-8") as input_2, \
+                open(path + new_file_name, "a", encoding="utf-8") as output:
+
+            for line in input_1:
+                output.write(line)
+
+            for line in input_2:
+                output.write(line)
+
+        remove_file(self.file_name, self.get_type())
+        remove_file(other_file_name, self.get_type())
+        add_file(new_file_name, new_file_display, self.file_type, self.get_type())
+        os.remove(path + self.file_name)
+        os.remove(path + other_file_name)
+        #self.close.emit() #FIXME: sredi ovo
+        #FIXME: i za drugu datoteku ako je otvorena
+
+        return new_file_name
+
+
     def column_values(self, column):
         values = set()
         index = self.get_attribute_index(column)

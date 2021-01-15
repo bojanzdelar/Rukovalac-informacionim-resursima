@@ -4,7 +4,7 @@ from config.config import read_config
 import os
 
 class MergeDialog(QtWidgets.QDialog):
-    selected = QtCore.Signal(list)
+    selected = QtCore.Signal(str)
 
     def __init__(self, information_resource, parent = None):
         super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 

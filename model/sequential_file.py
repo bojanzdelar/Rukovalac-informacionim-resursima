@@ -24,6 +24,16 @@ class SequentialFile(SerialFile):
                 data += [row for row in csv.reader(file)]
         return data
 
+    def save_data(self):
+        super().save_data()
+        self.external_merge_sort()
+
+    def external_merge_sort(self):
+        config = read_config()
+        obj = ExternalMergeSort(config[self.get_type()], self.file_name, config["split_size"], 
+            self.get_attributes_indexes(self.get_primary_key()))
+        obj.sort()
+
     def create_element(self, element):
         primary_key_used, _ = self.primary_key_used(element)
         if primary_key_used:
@@ -48,6 +58,13 @@ class SequentialFile(SerialFile):
                 + " cije se vrednosti primarnog kljuca koriste kao strani kljuc u child tabelama")
             return
         super().delete_element(index)
+
+    def merge(self, other_file_name):
+        new_file_name = super().merge(other_file_name)
+        if not new_file_name:
+            return
+        new_file = SequentialFile(new_file_name)
+        new_file.external_merge_sort()
 
     def get_children(self, index):
         children_meta = self.meta["children"]
