@@ -41,6 +41,8 @@ class Dialog(QtWidgets.QDialog):
             elif attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self)
                 input.setMaxLength(attribute["length"])
+                char_width = QtGui.QFontMetrics(input.font()).averageCharWidth()
+                input.setMaximumWidth(attribute["length"] * char_width + 10)
                 if attribute["input"] == "characters":
                     input.setValidator(QtGui.QRegExpValidator(".{%s}" % attribute["length"]))
                 elif attribute["input"] == "number":
@@ -50,6 +52,8 @@ class Dialog(QtWidgets.QDialog):
                 input.setDisplayFormat("yyyy-MM-dd")
                 input.setMinimumDate(QtCore.QDate.fromString("1900-01-01", "yyyy-MM-dd"))
                 input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
+                char_width = QtGui.QFontMetrics(input.font()).averageCharWidth()
+                input.setMaximumWidth(10 * char_width + 10)
 
             layout.addWidget(label, i, 0)
             layout.addWidget(input, i, 1)

@@ -97,9 +97,15 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def create_row(self):
         self.model.layoutAboutToBeChanged.emit()
         dialog = CreateDialog(self.information_resource)
+        dialog.created.connect(self.created)
         dialog.exec_()
         self.model.layoutChanged.emit()
         self.refilter()
+
+    def created(self):
+        self.model.layoutChanged.emit()
+        self.refilter()
+        self.model.layoutAboutToBeChanged.emit()
 
     def update_row(self):
         indexes = self.main_table.selectionModel().selectedIndexes()

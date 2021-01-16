@@ -21,6 +21,8 @@ class FilterDialog(QtWidgets.QDialog):
             if attribute["input"] in ["characters", "variable characters", "number"]:
                 input = QtWidgets.QLineEdit(self.values[i][1], self)
                 input.setMaxLength(attribute["length"])
+                char_width = QtGui.QFontMetrics(input.font()).averageCharWidth()
+                input.setMaximumWidth(attribute["length"] * char_width + 10)
                 if attribute["input"] == "number":
                     input.setValidator(QtGui.QRegExpValidator("[0-9]*"))
             elif attribute["input"] == "date":
@@ -28,6 +30,8 @@ class FilterDialog(QtWidgets.QDialog):
                 input.setDisplayFormat("yyyy-MM-dd")
                 input.setMinimumDate(QtCore.QDate.fromString("1900-01-01", "yyyy-MM-dd"))
                 input.setMaximumDate(QtCore.QDate.currentDate().addYears(1))
+                char_width = QtGui.QFontMetrics(input.font()).averageCharWidth()
+                input.setMaximumWidth(10 * char_width + 10)
 
             operator = QtWidgets.QComboBox(self)
             operator.addItems(["=", "!="])

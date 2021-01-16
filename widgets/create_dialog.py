@@ -4,6 +4,8 @@ from model.sequential_file import SequentialFile
 from model.database import Database
 
 class CreateDialog(Dialog):
+    created = QtCore.Signal()
+
     def __init__(self, information_resource, parent = None):
         super().__init__(information_resource, parent)
 
@@ -21,4 +23,4 @@ class CreateDialog(Dialog):
                 text = widget.text()
             element.append(text)
         if self.information_resource.create_element(element):
-            self.close()
+            self.created.emit()
