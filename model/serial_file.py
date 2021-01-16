@@ -1,3 +1,4 @@
+from PySide2 import QtCore
 from model.information_resource import InformationResource
 from meta.meta import get_file_display, file_in_meta, add_file, remove_file
 from config.config import read_config
@@ -86,6 +87,12 @@ class SerialFile(InformationResource):
         file_display_2 = (get_file_display(file_name, self.get_type()) + " -- not ("
             + self.get_attribute(i)["display"] + " " + operator + " " + text + ")")
 
+        new_file = open(path + file_name_1, "w")
+        new_file.close()
+
+        new_file = open(path + file_name_2, "w")
+        new_file.close()
+
         for index in range(len(self.data)):
             element = self.read_element(index).copy()
             
@@ -106,12 +113,10 @@ class SerialFile(InformationResource):
             with open(path + new_file_name, "a", encoding="utf-8") as file:
                     csv.writer(file).writerow(self.read_element(index))
 
-        remove_file(file_name, self.get_type())
         add_file(file_name_1, file_display_1, self.file_type, self.get_type())
         add_file(file_name_2, file_display_2, self.file_type, self.get_type())
         os.remove(path + file_name)
-        #self.close.emit() #FIXME: sredi ovo
-
+        
     def merge(self, other_file_name):
         path = read_config()[self.get_type()]
 
@@ -135,16 +140,9 @@ class SerialFile(InformationResource):
             for line in input_2:
                 output.write(line)
 
-        remove_file(self.file_name, self.get_type())
-        remove_file(other_file_name, self.get_type())
         add_file(new_file_name, new_file_display, self.file_type, self.get_type())
         os.remove(path + self.file_name)
         os.remove(path + other_file_name)
-        #self.close.emit() #FIXME: sredi ovo
-        #FIXME: i za drugu datoteku ako je otvorena
-
-        return new_file_name
-
 
     def column_values(self, column):
         values = set()

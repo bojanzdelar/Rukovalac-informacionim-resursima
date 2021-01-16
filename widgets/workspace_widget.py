@@ -10,14 +10,14 @@ from widgets.navigation_dialog import NavigationDialog
 from widgets.split_dialog import SplitDialog
 from widgets.merge_dialog import MergeDialog
 from widgets.tool_bar import ToolBar
-from meta.meta import get_files, get_file_display
+from meta.meta import get_files, get_file_display, get_file_tab_name, remove_file, same_file_meta
 from config.config import read_config
 import csv
 import os
 
 class WorkspaceWidget(QtWidgets.QWidget):
     navigate = QtCore.Signal(str, str)
-    close = QtCore.Signal()
+    close = QtCore.Signal(str)
 
     def __init__(self, parent_dir, file_name, parent):
         super().__init__(parent)
@@ -220,12 +220,33 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def split(self):
         dialog = SplitDialog(self.information_resource)
         dialog.selected.connect(self.information_resource.split)
-        dialog.exec_()
+        accepted = dialog.exec_()
+
+        if accepted:
+            self.close_file(self.file_name)
 
     def merge(self):
-        dialog = MergeDialog(self.information_resource)
+        file_organization = self.information_resource.get_type()
+        files = os.listdir(read_config()[file_organization])
+        files = [file for file in files \
+            if same_file_meta(self.file_name, file, file_organization) and self.file_name != file]
+        if not files:
+            QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema tabelu s kojom bi mogla da se spoji")
+            return
+
+        dialog = MergeDialog(self.information_resource, files)
         dialog.selected.connect(self.information_resource.merge)
-        dialog.exec_()
+        dialog.merged.connect(self.close_file)
+        accepted = dialog.exec_()
+
+        if accepted:
+            # Other file will be closed when signal gets emitted
+            self.close_file(self.file_name)
+
+    def close_file(self, file_name):
+        tab_name = get_file_tab_name(file_name, self.parent_dir)
+        remove_file(file_name, self.parent_dir)
+        self.close.emit(tab_name)
 
     def set_page(self, page):
         if page < 0 or page > self.total_pages():

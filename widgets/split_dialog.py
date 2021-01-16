@@ -59,4 +59,4 @@ class SplitDialog(QtWidgets.QDialog):
         operator = self.layout().itemAtPosition(1, 0).widget().currentText()
         input = self.layout().itemAtPosition(1, 1).widget().text()
         self.selected.emit([attribute, operator, input])
-        self.close()
+        self.accept()
