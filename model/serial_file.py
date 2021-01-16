@@ -144,6 +144,8 @@ class SerialFile(InformationResource):
         os.remove(path + self.file_name)
         os.remove(path + other_file_name)
 
+        return new_file_name
+
     def column_values(self, column):
         values = set()
         index = self.get_attribute_index(column)

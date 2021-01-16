@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets
 from model.serial_file import SerialFile
 from model.external_merge_sort import ExternalMergeSort
-from meta.meta import get_files
+from meta.meta import get_files, get_file_meta
 from config.config import read_config
 import csv
 import os.path
@@ -22,7 +22,7 @@ class SequentialFile(SerialFile):
                 continue
             with open(path + file_name, "r", encoding="utf-8") as file:
                 data += [row for row in csv.reader(file)]
-        return data
+        self.data = data
 
     def save_data(self):
         super().save_data()
@@ -38,6 +38,10 @@ class SequentialFile(SerialFile):
         primary_key_used, _ = self.primary_key_used(element)
         if primary_key_used:
             QtWidgets.QMessageBox.warning(None, "Greska", "Vrednost uneta u polje primarnog kljuca je zauzeta")
+            return False
+        if self.restrict_create(element):
+            QtWidgets.QMessageBox.warning(None, "Greska", "Ne mozete da dodate entitet ciji je primarni kljuc"
+                + " iskoriscen u srodnoj tabeli")
             return False
         return super().create_element(element)
 
@@ -79,8 +83,8 @@ class SequentialFile(SerialFile):
                 values.append(self.read_element(index)[attr_index])
 
             file_names = get_files(file_type, self.get_type())
-            child = SequentialFile(list(file_names.keys())[0])
-            child.data = child.read_multiple_data(file_names.keys())
+            child = SequentialFile(file_names[0])
+            child.read_multiple_data(file_names)
             child._sort_child()
             child._filter_child(attributes, values)
             children.append(child)
@@ -119,12 +123,23 @@ class SequentialFile(SerialFile):
             if not unique:
                 return True, i
         return False, -1
-    
+
+    def restrict_create(self, new_element):
+        indexes = self.get_attributes_indexes(self.get_primary_key())
+        file_type, _ = get_file_meta(self.file_name, self.get_type())
+        files = get_files(file_type, self.get_type())
+        for file in files:
+            if self.primary_key_used(new_element):
+                return True
+        return False
+
     def restrict_update(self, index, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
-        for file_name, attributes in children.items():
-            child = SequentialFile(file_name)
+        for file_type, attributes in children.items():
+            file_names = get_files(file_type, self.get_type())
+            child = SequentialFile(file_names[0])
+            child.read_multiple_data(file_names)
             for i, attribute in zip(indexes, attributes):
                 values = child.column_values(attribute)
                 element = self.read_element(index)
@@ -135,8 +150,10 @@ class SequentialFile(SerialFile):
     def restrict_remove(self, index):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
-        for file_name, attributes in children.items():
-            child = SequentialFile(file_name)
+        for file_type, attributes in children.items():
+            file_names = get_files(file_type, self.get_type())
+            child = SequentialFile(file_names[0])
+            child.read_multiple_data(file_names)
             used = True
             for i, attribute in zip(indexes, attributes):
                 values = child.column_values(attribute)

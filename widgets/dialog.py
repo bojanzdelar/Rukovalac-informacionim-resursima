@@ -32,8 +32,8 @@ class Dialog(QtWidgets.QDialog):
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
                 if isinstance(self.information_resource, SequentialFile):
                     file_names = get_files(relation[0], "sequential")
-                    seq_file = SequentialFile(list(file_names.keys())[0])
-                    seq_file.data = seq_file.read_multiple_data(file_names.keys())
+                    seq_file = SequentialFile(file_names[0])
+                    seq_file.read_multiple_data(file_names)
                     values = seq_file.column_values(relation[1])
                 else:
                     values = Database(relation[0]).column_values(relation[1])

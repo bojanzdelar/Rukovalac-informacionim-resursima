@@ -12,7 +12,7 @@ def save_meta(meta):
         json.dump(meta, file, indent=4)
 
 def get_files(file_type, file_organization):
-    return read_meta()[file_type][file_organization]
+    return list(read_meta()[file_type][file_organization].keys())
 
 def get_folders():
     return read_meta()["folders"]
