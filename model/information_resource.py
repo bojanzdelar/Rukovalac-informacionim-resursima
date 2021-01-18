@@ -60,10 +60,3 @@ class InformationResource(ABC):
         for attribute in attributes:
             indexes.append(self.get_attribute_index(attribute))
         return indexes
-
-    def get_parents(self):
-        parents = {}
-        for attribute in self.meta["attributes"]:
-            if "relation" in attribute:
-                parents.update(attribute["relation"])
-        return parents

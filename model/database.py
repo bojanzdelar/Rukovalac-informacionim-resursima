@@ -102,6 +102,13 @@ class Database(InformationResource):
         for res in self.csor.stored_results():
             self.data = res.fetchall()
 
+    def get_parents(self):
+        parents = {}
+        for attribute in self.meta["attributes"]:
+            if "relation" in attribute:
+                parents.update(attribute["relation"])
+        return parents
+
     def get_children(self, index):
         children_meta = self.meta["children"]
         children = []

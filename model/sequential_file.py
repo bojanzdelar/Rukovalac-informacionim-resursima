@@ -70,6 +70,13 @@ class SequentialFile(SerialFile):
         new_file = SequentialFile(new_file_name)
         new_file.external_merge_sort()
 
+    def get_parents(self):
+        parents = {}
+        for attribute in self.meta["attributes"]:
+            if "relation" in attribute:
+                parents.update(attribute["relation"])
+        return parents
+
     def get_children(self, index):
         children_meta = self.meta["children"]
         children = []
