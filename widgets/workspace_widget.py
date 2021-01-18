@@ -229,7 +229,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         accepted = dialog.exec_()
 
         if accepted:
-            self.close_file(self.file_name)
+            self.close_file(self.file_name, "split")
 
     def merge(self):
         file_organization = self.information_resource.get_type()
@@ -247,11 +247,15 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
         if accepted:
             # Other file will be closed when signal gets emitted
-            self.close_file(self.file_name)
+            self.close_file(self.file_name, "merge")
 
-    def close_file(self, file_name):
+    def merge_completed(self, file_name):
+        self.merged_file_name = file_name
+
+    def close_file(self, file_name, mode):
         tab_name = get_file_tab_name(file_name, self.parent_dir)
-        remove_file(file_name, self.parent_dir)
+        if mode == "split" or (mode == "merge" and self.information_resource.merged_file_name != file_name):
+            remove_file(file_name, self.parent_dir)
         self.close.emit(tab_name)
 
     def set_page(self, page):

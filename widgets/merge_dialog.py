@@ -5,7 +5,7 @@ import os
 
 class MergeDialog(QtWidgets.QDialog):
     selected = QtCore.Signal(str)
-    merged = QtCore.Signal(str)
+    merged = QtCore.Signal(str, str)
 
     def __init__(self, information_resource, files, parent = None):
         super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 
@@ -39,5 +39,5 @@ class MergeDialog(QtWidgets.QDialog):
         current_index = self.file.currentIndex()
         other_file_name = self.files[current_index]
         self.selected.emit(other_file_name)
-        self.merged.emit(other_file_name)
+        self.merged.emit(other_file_name, "merge")
         self.accept()

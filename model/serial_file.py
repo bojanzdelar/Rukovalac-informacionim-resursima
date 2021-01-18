@@ -120,30 +120,34 @@ class SerialFile(InformationResource):
     def merge(self, other_file_name):
         path = read_config()[self.get_type()]
 
-        new_file_name = self.file_name.split("--")[0] + ".csv"
-
         count = 0
-        while file_in_meta(new_file_name, self.get_type()):
-            new_file_name = self.file_name + "--" + str(count) + ".csv"
-            count += 1
+
+        if not "--" in self.file_name:
+            new_file_name = self.file_name
+        elif not "--" in other_file_name:
+            new_file_name = other_file_name
+        else:
+            new_file_name = self.file_name.split("--")[0] + ".csv"
+            while file_in_meta(new_file_name, self.get_type()):
+                new_file_name = self.file_name + "--" + str(count) + ".csv"
+                count += 1
 
         new_file_display = get_file_display(self.file_name, self.get_type()).split("--")[0].strip() \
-            + ("-- " + str(count) if count else "")
+            + (" -- " + str(count) if count else "")
 
-        with open(path + self.file_name, "r", encoding="utf-8") as input_1, \
-                open(path + other_file_name, "r", encoding="utf-8") as input_2, \
-                open(path + new_file_name, "a", encoding="utf-8") as output:
+        old_files = [file_name for file_name in [self.file_name, other_file_name] if file_name != new_file_name]
 
-            for line in input_1:
-                output.write(line)
+        for file_name in old_files:
+            with open(path + file_name, "r", encoding="utf-8") as input, \
+                    open(path + new_file_name, "a", encoding="utf-8") as output:
+                for line in input:
+                    output.write(line)
 
-            for line in input_2:
-                output.write(line)
+            os.remove(path + file_name)
 
         add_file(new_file_name, new_file_display, self.file_type, self.get_type())
-        os.remove(path + self.file_name)
-        os.remove(path + other_file_name)
-
+        
+        self.merged_file_name = new_file_name
         return new_file_name
 
     def column_values(self, column):
