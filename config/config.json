@@ -4,7 +4,7 @@
     "serial" : "data/serial/",
     "sequential" : "data/sequential/",
     "main_table_widget" : 15,
-    "table_widget" : 3,
+    "table_widget" : 5,
     "user" : "root",
     "password" : "root",
     "host" : "127.0.0.1",

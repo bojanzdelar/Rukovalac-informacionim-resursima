@@ -29,13 +29,14 @@ class MainTableWidget(TableWidget):
         self.table.clicked.connect(self.emit_selection)
 
     def create_tool_bar(self):
-        super().create_tool_bar()
-
-        self.tool_bar.add_crud_actions()        
+        self.tool_bar.add_crud()        
         self.tool_bar.create_action.triggered.connect(self.create_row)
         self.tool_bar.update_action.triggered.connect(self.update_row)
         self.tool_bar.delete_action.triggered.connect(self.delete_row)
         self.tool_bar.save_action.triggered.connect(self.save_table)
+        
+        self.tool_bar.addSeparator()
+        super().create_tool_bar()
 
         if isinstance(self.information_resource, (SequentialFile, Database)):
             self.tool_bar.add_navigation()

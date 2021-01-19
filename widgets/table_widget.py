@@ -29,26 +29,32 @@ class TableWidget(QtWidgets.QWidget):
         return "table_widget"
 
     def generate_layout(self):
-        layout = QtWidgets.QVBoxLayout()
+        layout = QtWidgets.QGridLayout()
                 
+        self.tool_bar = ToolBar(self)
         self.create_tool_bar()
         self.create_table()
         self.current_page = QtWidgets.QLabel("")
         self.current_page.setAlignment(QtCore.Qt.AlignRight)
+        self.create_page_bar()
 
-        layout.addWidget(self.tool_bar)
-        layout.addWidget(self.table)
-        layout.addWidget(self.current_page)
+        layout.addWidget(self.tool_bar, 0, 0)
+        layout.addWidget(self.table, 1, 0, 1, 3)
+        layout.addWidget(self.current_page, 2, 2)
+        layout.addWidget(self.page_bar, 3, 2, alignment=QtCore.Qt.AlignRight)
 
         self.setLayout(layout)
     
     def create_tool_bar(self):
-        self.tool_bar = ToolBar(self)
-
+        self.tool_bar.add_filter()
         self.tool_bar.filter_action.triggered.connect(self.filter)
         self.tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
-        self.tool_bar.left_action.triggered.connect(lambda: self.change_page(-1))
-        self.tool_bar.right_action.triggered.connect(lambda: self.change_page(1))
+
+    def create_page_bar(self):
+        self.page_bar = ToolBar(self)
+        self.page_bar.add_paging()
+        self.page_bar.left_action.triggered.connect(lambda: self.change_page(-1))
+        self.page_bar.right_action.triggered.connect(lambda: self.change_page(1))
 
     def create_table(self):
         self.table = QtWidgets.QTableView()
@@ -68,7 +74,7 @@ class TableWidget(QtWidgets.QWidget):
         if page < 0 or page > self.total_pages():
             return
         self.page = page
-        self.current_page.setText(f"Current page: {self.page + 1} / {int(self.total_pages()) + 1}")
+        self.current_page.setText(f"Stranica: {self.page + 1} / {int(self.total_pages()) + 1}")
         self.display_page()
 
     def total_pages(self):
@@ -106,12 +112,14 @@ class TableWidget(QtWidgets.QWidget):
                 self.emit_selection()
 
     def filter(self):
+        filter_action_position = 5 if self.get_type() == "main_table_widget" else 0
+
         if self.filter_enabled:
             if isinstance(self. information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.data = self.information_resource.read_data()
                 self.model.layoutChanged.emit()
-            self.tool_bar.actions()[2].setIcon(QtGui.QIcon("icons/filter.png"))
+            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter.png"))
         else:
             if isinstance(self.information_resource, SerialFile):
                 self.filter_indexes = self.information_resource.filter(self.filter_values)
@@ -121,7 +129,7 @@ class TableWidget(QtWidgets.QWidget):
                 self.model.layoutAboutToBeChanged.emit()
                 self.information_resource.filter(self.filter_values)
                 self.model.layoutChanged.emit()
-            self.tool_bar.actions()[2].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
+            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
         self.filter_enabled = not self.filter_enabled
         self.set_page(0)
