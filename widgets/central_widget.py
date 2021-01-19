@@ -20,8 +20,8 @@ class CentralWidget(QtWidgets.QTabWidget):
         if tab_name not in self.open_files and file_in_meta(file_name, parent_dir):
             self.open_files.append(tab_name)
             workspace_widget = WorkspaceWidget(parent_dir, file_name, self)
-            workspace_widget.navigate.connect(self.change_tab)
-            workspace_widget.close.connect(self.delete_tab_name)
+            workspace_widget.main_table_widget.change_table.connect(self.change_tab)
+            workspace_widget.main_table_widget.close_tab.connect(self.delete_tab_name)
             self.addTab(workspace_widget, tab_name)
     
     def change_tab(self, parent_dir, file_name):
@@ -33,8 +33,8 @@ class CentralWidget(QtWidgets.QTabWidget):
         self.delete_tab(current_index)
         self.open_files.append(tab_name)
         workspace_widget = WorkspaceWidget(parent_dir, file_name, self)
-        workspace_widget.navigate.connect(self.change_tab)
-        workspace_widget.close.connect(self.delete_tab_name)
+        workspace_widget.main_table_widget.change_table.connect(self.change_tab)
+        workspace_widget.main_table_widget.close_tab.connect(self.delete_tab_name)
         self.insertTab(current_index, workspace_widget, tab_name)
         self.setCurrentIndex(current_index)
         
