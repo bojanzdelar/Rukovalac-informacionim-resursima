@@ -135,8 +135,10 @@ class SequentialFile(SerialFile):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         file_type, _ = get_file_meta(self.file_name, self.get_type())
         files = get_files(file_type, self.get_type())
-        for file in files:
-            if self.primary_key_used(new_element):
+        for file_name in files:
+            file = SequentialFile(file_name)
+            primary_key_used, _ = file.primary_key_used(new_element)
+            if primary_key_used:
                 return True
         return False
 
