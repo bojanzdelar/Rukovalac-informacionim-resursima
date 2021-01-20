@@ -16,6 +16,7 @@ import os
 class MainTableWidget(TableWidget):
     change_table = QtCore.Signal(str, str)
     close_tab = QtCore.Signal(str)
+    clear_tab_widget = QtCore.Signal()
 
     def __init__(self, model, parent=None):
         super().__init__(model, parent)
@@ -80,7 +81,7 @@ class MainTableWidget(TableWidget):
         self.information_resource.delete_element(index.row())
         self.model.layoutChanged.emit()
         self.table.clearSelection()
-        self.tab_widget.clear()
+        self.clear_tab_widget.emit()
         self.refilter()
 
     def save_table(self):

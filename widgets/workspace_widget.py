@@ -22,9 +22,11 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.main_information_resource = self.main_model.information_resource
         self.main_table_widget = MainTableWidget(self.main_model)
         self.main_table_widget.row_selected.connect(self.selected_row)
+        self.main_table_widget.clear_tab_widget.connect(self.clear_tab_widget)
 
         self.main_layout.addWidget(self.main_table_widget)
         
+        self.tab_widget = None
         if isinstance(self.main_information_resource, (SequentialFile, Database)) \
                 and self.main_information_resource.meta["children"]:
             self.create_tab_widget()
@@ -40,6 +42,11 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.tab_widget = QtWidgets.QTabWidget(self)
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.delete_tab)
+
+    def clear_tab_widget(self):
+        if not self.tab_widget:
+            return
+        self.tab_widget.clear()
 
     def delete_tab(self, index):
         self.tab_widget.removeTab(index)

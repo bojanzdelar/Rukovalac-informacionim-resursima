@@ -69,6 +69,46 @@ class TableWidget(QtWidgets.QWidget):
         index = self.table.selectionModel().selectedIndexes()[0]
         self.row_selected.emit(index)
 
+    def filter(self):
+        filter_action_position = 5 if self.get_type() == "main_table_widget" else 0
+
+        if self.filter_enabled:
+            if isinstance(self. information_resource, Database):
+                self.model.layoutAboutToBeChanged.emit()
+                self.information_resource.data = self.information_resource.read_data()
+                self.model.layoutChanged.emit()
+            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter.png"))
+        else:
+            if isinstance(self.information_resource, SerialFile):
+                self.filter_indexes = self.information_resource.filter(self.filter_values)
+                for i, index in enumerate(self.filter_indexes):
+                    self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
+                self.filter_indexes.sort()
+            elif isinstance(self.information_resource, Database):
+                self.model.layoutAboutToBeChanged.emit()
+                self.information_resource.filter(self.filter_values)
+                self.model.layoutChanged.emit()
+            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
+
+        self.filter_enabled = not self.filter_enabled
+        self.set_page(0)
+
+    def refilter(self):
+        if self.filter_enabled:
+            old_page = self.page
+            for i in range(2):
+                self.filter()
+            self.set_page(old_page)
+
+    def filter_dialog(self):
+        dialog = FilterDialog(self.information_resource, self.filter_values)
+        dialog.changed.connect(self.change_filter)
+        dialog.exec_()
+
+    def change_filter(self, list):
+        self.filter_values = list
+        self.refilter()
+
     def set_page(self, page):
         if page < 0 or page > self.total_pages():
             return
@@ -94,11 +134,11 @@ class TableWidget(QtWidgets.QWidget):
             self.filter_indexes = self.information_resource.filter(self.filter_values)
             for i, index in enumerate(self.filter_indexes):
                 self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
-            for i in self.filter_indexes[self.page * self.page_size: (self.page + 1)  * self.page_size]:
+            self.filter_indexes.sort()
+            for i in self.filter_indexes[self.page * self.page_size: (self.page + 1) * self.page_size]:
                 self.table.showRow(i)
             if len(self.filter_indexes):
-                index = self.filter_indexes[self.page * self.page_size]
-
+                index = self.page * self.page_size
         else:
             for i in range(self.page * self.page_size, (self.page + 1) * self.page_size):
                 self.table.showRow(i)
@@ -109,42 +149,3 @@ class TableWidget(QtWidgets.QWidget):
 
             if self.get_type() == "main_table_widget": 
                 self.emit_selection()
-
-    def filter(self):
-        filter_action_position = 5 if self.get_type() == "main_table_widget" else 0
-
-        if self.filter_enabled:
-            if isinstance(self. information_resource, Database):
-                self.model.layoutAboutToBeChanged.emit()
-                self.information_resource.data = self.information_resource.read_data()
-                self.model.layoutChanged.emit()
-            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter.png"))
-        else:
-            if isinstance(self.information_resource, SerialFile):
-                self.filter_indexes = self.information_resource.filter(self.filter_values)
-                for i, index in enumerate(self.filter_indexes):
-                    self.filter_indexes[i] = self.proxy_model.mapFromSource(self.model.index(index, 0)).row()
-            elif isinstance(self.information_resource, Database):
-                self.model.layoutAboutToBeChanged.emit()
-                self.information_resource.filter(self.filter_values)
-                self.model.layoutChanged.emit()
-            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
-
-        self.filter_enabled = not self.filter_enabled
-        self.set_page(0)
-
-    def refilter(self):
-        if self.filter_enabled:
-            old_page = self.page
-            for i in range(2):
-                self.filter()
-            self.set_page(old_page)
-
-    def filter_dialog(self):
-        dialog = FilterDialog(self.information_resource, self.filter_values)
-        dialog.changed.connect(self.change_filter)
-        dialog.exec_()
-
-    def change_filter(self, list):
-        self.filter_values = list
-        self.refilter()
