@@ -35,13 +35,12 @@ class TableWidget(QtWidgets.QWidget):
         self.create_tool_bar()
         self.create_table()
         self.current_page = QtWidgets.QLabel("")
-        self.current_page.setAlignment(QtCore.Qt.AlignRight)
         self.create_page_bar()
 
         layout.addWidget(self.tool_bar, 0, 0)
-        layout.addWidget(self.table, 1, 0, 1, 3)
-        layout.addWidget(self.current_page, 2, 2)
-        layout.addWidget(self.page_bar, 3, 2, alignment=QtCore.Qt.AlignRight)
+        layout.addWidget(self.table, 1, 0, 1, 2)
+        layout.addWidget(self.current_page, 2, 0, alignment=QtCore.Qt.AlignRight)
+        layout.addWidget(self.page_bar, 2, 1, alignment=QtCore.Qt.AlignLeft)
 
         self.setLayout(layout)
     
