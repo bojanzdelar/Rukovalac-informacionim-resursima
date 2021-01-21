@@ -118,15 +118,17 @@ class TableWidget(QtWidgets.QWidget):
 
     def total_pages(self):
         if isinstance(self.information_resource, SerialFile) and self.filter_enabled:
-            return (len(self.filter_indexes) - 1) / self.page_size
+            total = (len(self.filter_indexes) - 1) / self.page_size 
         else:
-            return (len(self.information_resource.data) - 1) / self.page_size
+            total = (len(self.information_resource.data) - 1) / self.page_size
+        return total if total >= 0 else 0
 
     def change_page(self, relative_page):
         self.set_page(self.page + relative_page)
     
     def display_page(self):
         index = None
+        page_empty = True
         for i in range(self.model.rowCount()):
             self.table.hideRow(i)
 
@@ -137,15 +139,21 @@ class TableWidget(QtWidgets.QWidget):
             self.filter_indexes.sort()
             for i in self.filter_indexes[self.page * self.page_size: (self.page + 1) * self.page_size]:
                 self.table.showRow(i)
+                page_empty = False
+
             if len(self.filter_indexes):
-                index = self.page * self.page_size
+                index = self.filter_indexes[0]
         else:
             for i in range(self.page * self.page_size, (self.page + 1) * self.page_size):
+                if i >= len(self.model.information_resource.data):
+                    break
                 self.table.showRow(i)
+                page_empty = False
+
             index = self.page * self.page_size
 
         if index is not None:
             self.table.selectRow(index)
 
-            if self.get_type() == "main_table_widget": 
+            if self.get_type() == "main_table_widget" and not page_empty:
                 self.emit_selection()
