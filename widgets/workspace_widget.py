@@ -56,9 +56,11 @@ class WorkspaceWidget(QtWidgets.QWidget):
                 or not self.main_information_resource.meta["children"]:
             return
 
+        self.tab_widget.clear()
+        if index.row() < 0:
+            return 
         index = self.main_table_widget.proxy_model.mapToSource(index)
         children = self.main_information_resource.get_children(index.row())
-        self.tab_widget.clear() 
         for table in children:
             model = TableModel(self.parent_dir)
             model.information_resource = table

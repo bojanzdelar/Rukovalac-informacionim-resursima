@@ -23,6 +23,10 @@ class CentralWidget(QtWidgets.QTabWidget):
             workspace_widget.main_table_widget.change_table.connect(self.change_tab)
             workspace_widget.main_table_widget.close_tab.connect(self.delete_tab_name)
             self.addTab(workspace_widget, tab_name)
+            self.setCurrentIndex(self.currentIndex() + 1)
+        else:
+            index = self.index_of_tab_name(tab_name)
+            self.setCurrentIndex(index)
     
     def change_tab(self, parent_dir, file_name):
         tab_name = get_file_tab_name(file_name, parent_dir)

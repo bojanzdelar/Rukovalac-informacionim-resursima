@@ -152,6 +152,8 @@ class TableWidget(QtWidgets.QWidget):
 
             index = self.page * self.page_size
 
+        self.row_selected.emit(self.proxy_model.index(-1,-1))
+
         if index is not None:
             self.table.selectRow(index)
 
