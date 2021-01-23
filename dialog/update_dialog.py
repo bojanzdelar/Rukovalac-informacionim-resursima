@@ -28,7 +28,7 @@ class UpdateDialog(Dialog):
         element = []
         for i, attribute in enumerate(self.attributes):
             widget = self.layout().itemAtPosition(i, 1).widget()
-            if "foreign key" in attribute["type"] and isinstance(self.information_resource, SequentialFile):
+            if "foreign key" in attribute["type"] and isinstance(self.information_resource, (SequentialFile, Database)):
                 text = widget.currentText()
             else:
                 text = widget.text()
