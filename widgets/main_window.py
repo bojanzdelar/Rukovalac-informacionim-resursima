@@ -37,8 +37,8 @@ class MainWindow(QtWidgets.QMainWindow):
         elif command == "Exit":
             self.close()
         elif command == "Manual":
-            QtWidgets.QMessageBox.information(self, "Manual", "Uputstvo za upotrebu programa Rukovalac informacionim resursima"
-                + " mozete preuzeti na internet stranici www.infhandler.com/rs")
+            QtWidgets.QMessageBox.information(self, "Manual", "Uputstvu za upotrebu programa Rukovalac informacionim resursima"
+                + " mozete pristupiti klikom <a href='https://infhandler.zdelar.com'>ovde</a>")
         elif command == "About":
             QtWidgets.QMessageBox.information(self, "About", "Program Rukovalac informacionim resursima je realizovan" 
                 + " u sklopu projekta iz predmeta Baze podataka. Autor je Bojan Zdelar, ciji je broj indeksa 2019/270983")
