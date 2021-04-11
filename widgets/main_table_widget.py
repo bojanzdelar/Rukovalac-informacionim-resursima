@@ -76,6 +76,12 @@ class MainTableWidget(TableWidget):
         indexes = self.table.selectionModel().selectedIndexes()
         if not len(indexes):
             return
+
+        reply = QtWidgets.QMessageBox.question(None, "Potvrda brisanja", "Da li ste sigurni da zelite da obrisete odabrani red?",
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.No:
+            return
+
         index = self.proxy_model.mapToSource(indexes[0])
         self.model.layoutAboutToBeChanged.emit()
         self.information_resource.delete_element(index.row())
