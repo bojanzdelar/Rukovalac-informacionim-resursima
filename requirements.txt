@@ -1,0 +1,2 @@
+PySide2
+mysql-connector-python

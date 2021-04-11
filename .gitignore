@@ -137,3 +137,4 @@ new/
 bak.json
 notes.txt
 ModelZaDatoteke.txt
+*.lock
