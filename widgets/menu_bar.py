@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide6 import QtGui, QtWidgets
 
 class MenuBar(QtWidgets.QMenuBar):
     def __init__(self, parent):
@@ -10,9 +10,9 @@ class MenuBar(QtWidgets.QMenuBar):
     def generate_file_menu(self):
         file_menu = self.addMenu("File")
 
-        save_all_action = QtWidgets.QAction("Save all", self)
-        close_all_action = QtWidgets.QAction("Close all", self)
-        exit_action = QtWidgets.QAction("Exit", self)
+        save_all_action = QtGui.QAction("Save all", self)
+        close_all_action = QtGui.QAction("Close all", self)
+        exit_action = QtGui.QAction("Exit", self)
 
         file_menu.addAction(save_all_action)
         file_menu.addAction(close_all_action)
@@ -23,8 +23,8 @@ class MenuBar(QtWidgets.QMenuBar):
     def generate_help_menu(self):
         help_menu = self.addMenu("Help")
 
-        manual_action = QtWidgets.QAction("Manual", self)
-        about_action = QtWidgets.QAction("About", self)
+        manual_action = QtGui.QAction("Manual", self)
+        about_action = QtGui.QAction("About", self)
 
         help_menu.addAction(manual_action)
         help_menu.addAction(about_action)

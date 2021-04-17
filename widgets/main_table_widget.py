@@ -1,4 +1,4 @@
-from PySide2 import QtCore, QtWidgets
+from PySide6 import QtCore, QtWidgets
 from model.serial_file import SerialFile
 from model.sequential_file import SequentialFile
 from model.database import Database

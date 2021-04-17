@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide6 import QtWidgets
 from model.sequential_file import SequentialFile
 from model.database import Database
 from model.table_model import TableModel

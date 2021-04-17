@@ -1,4 +1,4 @@
-from PySide2 import QtCore
+from PySide6 import QtCore
 from model.information_resource import InformationResource
 from meta.meta import get_file_display, file_in_meta, add_file, remove_file
 from config.config import read_config

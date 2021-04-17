@@ -1,4 +1,4 @@
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from model.serial_file import SerialFile
 from model.database import Database
 from widgets.tool_bar import ToolBar

@@ -1,4 +1,4 @@
-from PySide2 import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets, QtGui
 from meta.meta import get_file_display, get_folder_display, file_in_meta, folder_in_meta
 
 class FileSystemModel(QtWidgets.QFileSystemModel):

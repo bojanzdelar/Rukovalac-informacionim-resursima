@@ -1,4 +1,4 @@
-from PySide2 import QtCore, QtWidgets, QtGui
+from PySide6 import QtCore, QtWidgets, QtGui
 from meta.meta import get_file_display, same_file_meta
 from config.config import read_config
 import os

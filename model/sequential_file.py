@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide6 import QtWidgets
 from model.serial_file import SerialFile
 from model.external_merge_sort import ExternalMergeSort
 from meta.meta import get_files, get_file_meta

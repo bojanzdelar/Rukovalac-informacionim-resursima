@@ -1,4 +1,4 @@
-from PySide2 import QtCore
+from PySide6 import QtCore
 from .serial_file import SerialFile
 from .sequential_file import SequentialFile
 from .database import Database

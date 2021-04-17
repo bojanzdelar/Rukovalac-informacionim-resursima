@@ -1,4 +1,4 @@
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from widgets.menu_bar import MenuBar
 from widgets.dock_widget import DockWidget
 from widgets.central_widget import CentralWidget
