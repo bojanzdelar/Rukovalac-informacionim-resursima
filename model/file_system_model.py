@@ -8,7 +8,9 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
         self.setRootPath(root)
 
     def headerData(self, section, orientation, role=QtCore.Qt.DisplayRole):
-        return ""
+        if section == 0 and orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
+            return "Datoteke"
+        # return super().headerData(section, orientation, role)
 
     def data(self, index, role=QtCore.Qt.DecorationRole):
         if index.column() == 0 and role == QtCore.Qt.DisplayRole:
@@ -27,8 +29,6 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
                     return QtGui.QIcon("icons/serial.png")
                 elif name == "sequential":
                     return QtGui.QIcon("icons/sequential.png")
-                elif name == "database":
-                    return QtGui.QIcon("icons/database.png")
             else:
                 return QtGui.QIcon("icons/item.png")
         return super().data(index, role)

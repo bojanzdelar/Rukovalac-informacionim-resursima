@@ -5,29 +5,41 @@ import mysql.connector
 from decimal import Decimal
 
 class Database(InformationResource):
-    def __init__(self, file_name):
-        self.connect()
+    def __init__(self, file_name=""):
+        self.connection, self.csor = Database.connect()
 
         super().__init__(file_name)
 
     def __del__(self):
-        self.disconnect()
+        self.disconnect(self.connection, self.csor)
 
     def get_type(self):
         return "database"
 
-    def connect(self):
+    @staticmethod
+    def connect():
         config = read_config()
-        self.connection = mysql.connector.connect(user=config["user"], password=config["password"], 
+        connection = mysql.connector.connect(user=config["user"], password=config["password"], 
                                                   host=config["host"], database=config["database"])
-        self.csor = self.connection.cursor()
+        csor = connection.cursor()
+        return connection, csor
 
-    def disconnect(self):
-        self.csor.close()
-        self.connection.close()
+    @staticmethod
+    def disconnect(connection, csor):
+        csor.close()
+        connection.close()
+
+    @staticmethod
+    def get_tables():
+        connection, csor = Database.connect()
+        csor.callproc("show_tables")
+        for res in csor.stored_results():
+            tables = res.fetchall()
+        Database.disconnect(connection, csor)
+        return tables
 
     def read_data(self):
-        self.csor.callproc("show_table", [self.file_name])
+        self.csor.callproc("select_table", [self.file_name])
         for res in self.csor.stored_results():
             return res.fetchall()
 

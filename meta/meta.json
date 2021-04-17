@@ -576,7 +576,6 @@
     },
     "folders": {
         "serial": "Serijske datoteke",
-        "sequential": "Sekvencijalne datoteke",
-        "database": "Relaciona baza podataka"
+        "sequential": "Sekvencijalne datoteke"
     }
 }
