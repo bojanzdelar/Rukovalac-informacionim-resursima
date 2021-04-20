@@ -1,6 +1,6 @@
 from PySide6 import QtCore, QtWidgets, QtGui
 from model.database import Database
-from meta.meta import get_file_display
+from meta.meta import get_display
 
 class DatabaseExplorerModel(QtCore.QStringListModel):
     def __init__(self, parent=None):
@@ -17,7 +17,7 @@ class DatabaseExplorerModel(QtCore.QStringListModel):
     
     def data(self, index, role=QtCore.Qt.DecorationRole):
         if index.column() == 0 and role == QtCore.Qt.DisplayRole:
-            return get_file_display(self.stringList()[index.row()], "database")
+            return get_display(self.stringList()[index.row()], "database")
         elif index.column() == 0 and role == QtCore.Qt.DecorationRole:
             return QtGui.QIcon("icons/item.png")
         return super().data(index, role)

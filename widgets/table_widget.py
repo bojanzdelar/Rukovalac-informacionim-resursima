@@ -13,20 +13,18 @@ class TableWidget(QtWidgets.QWidget):
 
         self.model = model
         self.information_resource = self.model.information_resource
-        self.parent_dir = self.information_resource.get_type()
-        self.file_name = self.information_resource.file_name
+        self.parent_dir = self.information_resource.type
+        self.name = self.information_resource.name
         self.proxy_model = QtCore.QSortFilterProxyModel(self)
         self.proxy_model.setSourceModel(self.model)
 
         self.generate_layout()
+        self.type = "table_widget"
 
         self.filter_enabled = False
         self.filter_values = [("==", "") for attribute in self.information_resource.get_attribute()]
-        self.page_size = read_config()[self.get_type()]
+        self.page_size = read_config()[self.type]
         self.set_page(0)
-
-    def get_type(self):
-        return "table_widget"
 
     def generate_layout(self):
         layout = QtWidgets.QGridLayout()
@@ -70,7 +68,7 @@ class TableWidget(QtWidgets.QWidget):
         self.row_selected.emit(index)
 
     def filter(self):
-        filter_action_position = 5 if self.get_type() == "main_table_widget" else 0
+        filter_action_position = 5 if self.type == "main_table_widget" else 0
 
         if self.filter_enabled:
             if isinstance(self. information_resource, Database):
@@ -157,5 +155,5 @@ class TableWidget(QtWidgets.QWidget):
         if index is not None:
             self.table.selectRow(index)
 
-            if self.get_type() == "main_table_widget" and not page_empty:
+            if self.type == "main_table_widget" and not page_empty:
                 self.emit_selection()

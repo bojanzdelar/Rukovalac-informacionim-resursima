@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtWidgets, QtGui
-from meta.meta import get_file_display, get_folder_display, is_in_meta, folder_in_meta
+from meta.meta import get_display, get_folder_display, is_in_meta, folder_in_meta
 
 class FileSystemModel(QtWidgets.QFileSystemModel):
     def __init__(self, root, parent=None):
@@ -18,7 +18,7 @@ class FileSystemModel(QtWidgets.QFileSystemModel):
             name = file.fileName()
             parent_dir = file.dir().dirName()
             if is_in_meta(name, parent_dir):
-                return get_file_display(name, parent_dir)
+                return get_display(name, parent_dir)
             elif file.isDir() and folder_in_meta(name):
                 return get_folder_display(name)
         elif index.column() == 0 and role == QtCore.Qt.DecorationRole:

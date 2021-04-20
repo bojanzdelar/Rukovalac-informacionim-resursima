@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtWidgets, QtGui
-from meta.meta import get_file_display, same_file_meta
+from meta.meta import get_display, same_file_meta
 from config.config import read_config
 import os
 
@@ -13,7 +13,7 @@ class MergeDialog(QtWidgets.QDialog):
         self.information_resource = information_resource
         self.files = files
         self.file_name = self.information_resource.file_name
-        self.file_organization = self.information_resource.get_type()
+        self.file_organization = self.information_resource.type
         
         self.setWindowTitle("Merge")
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))

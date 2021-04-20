@@ -1,6 +1,6 @@
 from PySide6 import QtCore
 from model.information_resource import InformationResource
-from meta.meta import get_file_display, is_in_meta, add_file, remove_file
+from meta.meta import get_display, is_in_meta, add_file, remove_file
 from config.config import read_config
 from datetime import datetime
 import csv
@@ -18,22 +18,21 @@ ops = {
 }
 
 class SerialFile(InformationResource):
-    def __init__(self, file_name):
-        super().__init__(file_name)
-   
-    def get_type(self):
-        return "serial"
+    def __init__(self, name):
+        super().__init__(name)
+
+        self.type = "serial"
 
     def read_data(self):
-        path = read_config()[self.get_type()]
-        if not os.path.exists(path + self.file_name):
+        path = read_config()[self.type]
+        if not os.path.exists(path + self.name):
             return []
-        with open(path + self.file_name, "r", encoding="utf-8") as file:
+        with open(path + self.name, "r", encoding="utf-8") as file:
             return [row for row in csv.reader(file)]
 
     def save_data(self):
-        path = read_config()[self.get_type()]
-        with open(path + self.file_name, "w", encoding="utf-8", newline='') as file:
+        path = read_config()[self.type]
+        with open(path + self.name, "w", encoding="utf-8", newline='') as file:
             csv.writer(file).writerows(self.data)
 
     def filter(self, values):
@@ -62,15 +61,15 @@ class SerialFile(InformationResource):
 
     def split(self, condition):
         i, operator, text = condition
-        path = read_config()[self.get_type()]
-        file_name = self.file_name
-        file_name_1 = (file_name[0:-4] + "--"  
+        path = read_config()[self.type]
+        name = self.name
+        file_name_1 = (name[0:-4] + "--"  
             + self.get_attribute(i)["name"] + operator + text + ".csv")
-        file_name_2 = (file_name[0:-4] + "--not(" 
+        file_name_2 = (name[0:-4] + "--not(" 
             + self.get_attribute(i)["name"] + operator + text + ").csv")
-        file_display_1 = (get_file_display(file_name, self.get_type()) + " -- "
+        file_display_1 = (get_file_display(name, self.type) + " -- "
             + self.get_attribute(i)["display"] + " " + operator + " " + text)
-        file_display_2 = (get_file_display(file_name, self.get_type()) + " -- not ("
+        file_display_2 = (get_file_display(name, self.type) + " -- not ("
             + self.get_attribute(i)["display"] + " " + operator + " " + text + ")")
 
         new_file = open(path + file_name_1, "w")
@@ -99,39 +98,39 @@ class SerialFile(InformationResource):
             with open(path + new_file_name, "a", encoding="utf-8") as file:
                     csv.writer(file).writerow(self.read_element(index))
 
-        add_file(file_name_1, file_display_1, self.file_type, self.get_type())
-        add_file(file_name_2, file_display_2, self.file_type, self.get_type())
-        os.remove(path + file_name)
+        add_file(file_name_1, file_display_1, self.file_type, self.type)
+        add_file(file_name_2, file_display_2, self.file_type, self.type)
+        os.remove(path + name)
         
     def merge(self, other_file_name):
-        path = read_config()[self.get_type()]
+        path = read_config()[self.type]
 
         count = 0
 
-        if not "--" in self.file_name:
-            new_file_name = self.file_name
+        if not "--" in self.name:
+            new_file_name = self.name
         elif not "--" in other_file_name:
             new_file_name = other_file_name
         else:
-            new_file_name = self.file_name.split("--")[0] + ".csv"
-            while file_in_meta(new_file_name, self.get_type()):
-                new_file_name = self.file_name + "--" + str(count) + ".csv"
+            new_file_name = self.name.split("--")[0] + ".csv"
+            while file_in_meta(new_file_name, self.type):
+                new_file_name = self.name + "--" + str(count) + ".csv"
                 count += 1
 
-        new_file_display = get_file_display(self.file_name, self.get_type()).split("--")[0].strip() \
+        new_file_display = get_file_display(self.name, self.type).split("--")[0].strip() \
             + (" -- " + str(count) if count else "")
 
-        old_files = [file_name for file_name in [self.file_name, other_file_name] if file_name != new_file_name]
+        old_files = [name for name in [self.name, other_file_name] if name != new_file_name]
 
-        for file_name in old_files:
-            with open(path + file_name, "r", encoding="utf-8") as input, \
+        for name in old_files:
+            with open(path + name, "r", encoding="utf-8") as input, \
                     open(path + new_file_name, "a", encoding="utf-8") as output:
                 for line in input:
                     output.write(line)
 
-            os.remove(path + file_name)
+            os.remove(path + name)
 
-        add_file(new_file_name, new_file_display, self.file_type, self.get_type())
+        add_file(new_file_name, new_file_display, self.file_type, self.type)
         
         self.merged_file_name = new_file_name
         return new_file_name

@@ -9,7 +9,7 @@ from dialog.update_dialog import UpdateDialog
 from dialog.navigation_dialog import NavigationDialog
 from dialog.split_dialog import SplitDialog
 from dialog.merge_dialog import MergeDialog
-from meta.meta import get_files, get_file_display, get_tab_name, same_file_meta, remove_file
+from meta.meta import get_files, get_display, get_tab_name, same_file_meta, remove_file
 from config.config import read_config
 import os
 
@@ -20,9 +20,8 @@ class MainTableWidget(TableWidget):
 
     def __init__(self, model, parent=None):
         super().__init__(model, parent)
-        
-    def get_type(self):
-        return "main_table_widget"
+
+        self.type = "main_table_widget"
 
     def create_table(self):
         super().create_table()
@@ -104,7 +103,7 @@ class MainTableWidget(TableWidget):
             self.close_file(self.file_name, "split")
 
     def merge(self):
-        file_organization = self.information_resource.get_type()
+        file_organization = self.information_resource.type
         files = os.listdir(read_config()[file_organization])
         files = [file for file in files \
             if same_file_meta(self.file_name, file, file_organization) and self.file_name != file]

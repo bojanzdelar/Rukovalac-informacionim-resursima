@@ -8,19 +8,18 @@ import os.path
 import operator
 
 class SequentialFile(SerialFile):
-    def __init__(self, file_name):
-        super().__init__(file_name)
+    def __init__(self, data_name):
+        super().__init__(data_name)
 
-    def get_type(self):
-        return "sequential"
+        self.type = "serial"
         
     def read_multiple_data(self, files):
-        path = read_config()[self.get_type()]
+        path = read_config()[self.type]
         data = []
-        for file_name in files:
-            if not os.path.exists(path + file_name):
+        for data_name in files:
+            if not os.path.exists(path + data_name):
                 continue
-            with open(path + file_name, "r", encoding="utf-8") as file:
+            with open(path + data_name, "r", encoding="utf-8") as file:
                 data += [row for row in csv.reader(file)]
         self.data = data
 
@@ -30,7 +29,7 @@ class SequentialFile(SerialFile):
 
     def external_merge_sort(self):
         config = read_config()
-        obj = ExternalMergeSort(config[self.get_type()], self.file_name, config["split_size"], 
+        obj = ExternalMergeSort(config[self.type], self.data_name, config["split_size"], 
             self.get_attributes_indexes(self.get_primary_key()))
         obj.sort()
 
@@ -80,7 +79,7 @@ class SequentialFile(SerialFile):
     def get_children(self, index):
         children_meta = self.meta["children"]
         children = []
-        path = read_config()[self.get_type()]
+        path = read_config()[self.type]
 
         for file_type, attributes in children_meta.items():
             main_attributes = self.get_primary_key()
@@ -89,7 +88,7 @@ class SequentialFile(SerialFile):
             for attr_index in main_attributes_indexes:
                 values.append(self.read_element(index)[attr_index])
 
-            file_names = get_files(file_type, self.get_type())
+            file_names = get_files(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             child._sort_child()
@@ -133,10 +132,10 @@ class SequentialFile(SerialFile):
 
     def restrict_create(self, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
-        file_type, _ = get_file_meta(self.file_name, self.get_type())
-        files = get_files(file_type, self.get_type())
-        for file_name in files:
-            file = SequentialFile(file_name)
+        file_type, _ = get_file_meta(self.data_name, self.type)
+        files = get_files(file_type, self.type)
+        for data_name in files:
+            file = SequentialFile(data_name)
             primary_key_used, _ = file.primary_key_used(new_element)
             if primary_key_used:
                 return True
@@ -146,7 +145,7 @@ class SequentialFile(SerialFile):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
         for file_type, attributes in children.items():
-            file_names = get_files(file_type, self.get_type())
+            file_names = get_files(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             for i, attribute in zip(indexes, attributes):
@@ -160,7 +159,7 @@ class SequentialFile(SerialFile):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
         for file_type, attributes in children.items():
-            file_names = get_files(file_type, self.get_type())
+            file_names = get_files(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             used = True

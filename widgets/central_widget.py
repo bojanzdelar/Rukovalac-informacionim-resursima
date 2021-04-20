@@ -1,5 +1,6 @@
 from PySide6 import QtWidgets
 from .workspace_widget import WorkspaceWidget
+from model.table_model import TableModel
 from meta.meta import get_tab_name, is_in_meta
 
 class CentralWidget(QtWidgets.QTabWidget):
@@ -22,7 +23,7 @@ class CentralWidget(QtWidgets.QTabWidget):
     def add_tab(self, data_name, data_type):
         tab_name = get_tab_name(data_name, data_type)
         if tab_name not in self.tabs and is_in_meta(data_name, data_type):
-            workspace_widget = WorkspaceWidget(data_type, data_name, self)
+            workspace_widget = WorkspaceWidget(data_name, data_type, self)
             workspace_widget.main_table_widget.change_table.connect(self.change_tab)
             workspace_widget.main_table_widget.close_tab.connect(self.remove_tab)
             self.addTab(workspace_widget, tab_name)
@@ -36,7 +37,7 @@ class CentralWidget(QtWidgets.QTabWidget):
         if tab_name in self.tabs:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela je vec otvorena")
             return
-        workspace_widget = WorkspaceWidget(data_type, data_name, self)
+        workspace_widget = WorkspaceWidget(data_name, data_type, self)
         workspace_widget.main_table_widget.change_table.connect(self.change_tab)
         workspace_widget.main_table_widget.close_tab.connect(self.remove_tab)
         current_index = self.currentIndex()
