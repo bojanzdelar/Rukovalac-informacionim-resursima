@@ -3,11 +3,7 @@ from PySide6 import QtGui, QtWidgets
 class ToolBar(QtWidgets.QToolBar):
     def __init__(self, parent):
         super().__init__(parent)
-
-    def add_paging(self):
-        self.left_action = self.addAction(QtGui.QIcon("icons/left.png"), "Left")
-        self.right_action = self.addAction(QtGui.QIcon("icons/right.png"), "Right")
-
+        
     def add_crud(self):
         self.create_action = self.addAction(QtGui.QIcon("icons/create.png"), "Create")
         self.update_action = self.addAction(QtGui.QIcon("icons/update.png"), "Update")

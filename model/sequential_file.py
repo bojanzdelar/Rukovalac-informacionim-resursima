@@ -11,8 +11,10 @@ class SequentialFile(SerialFile):
     def __init__(self, data_name):
         super().__init__(data_name)
 
-        self.type = "serial"
-        
+    @property
+    def type(self):
+        return "sequential"
+
     def read_multiple_data(self, files):
         path = read_config()[self.type]
         data = []

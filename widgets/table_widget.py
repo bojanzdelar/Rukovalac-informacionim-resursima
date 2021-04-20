@@ -2,6 +2,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from model.serial_file import SerialFile
 from model.database import Database
 from widgets.tool_bar import ToolBar
+from widgets.pagination_bar import PaginationBar
 from dialog.filter_dialog import FilterDialog
 from config.config import read_config
 
@@ -38,7 +39,7 @@ class TableWidget(QtWidgets.QWidget):
         layout.addWidget(self.tool_bar, 0, 0)
         layout.addWidget(self.table, 1, 0, 1, 2)
         layout.addWidget(self.current_page, 2, 0, alignment=QtCore.Qt.AlignRight)
-        layout.addWidget(self.page_bar, 2, 1, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.pagination_bar, 2, 1, alignment=QtCore.Qt.AlignLeft)
 
         self.setLayout(layout)
     
@@ -48,10 +49,9 @@ class TableWidget(QtWidgets.QWidget):
         self.tool_bar.edit_filter_action.triggered.connect(self.filter_dialog)
 
     def create_page_bar(self):
-        self.page_bar = ToolBar(self)
-        self.page_bar.add_paging()
-        self.page_bar.left_action.triggered.connect(lambda: self.change_page(-1))
-        self.page_bar.right_action.triggered.connect(lambda: self.change_page(1))
+        self.pagination_bar = PaginationBar(self)
+        self.pagination_bar.left_action.triggered.connect(lambda: self.change_page(-1))
+        self.pagination_bar.right_action.triggered.connect(lambda: self.change_page(1))
 
     def create_table(self):
         self.table = QtWidgets.QTableView()

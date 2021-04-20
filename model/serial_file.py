@@ -21,8 +21,10 @@ class SerialFile(InformationResource):
     def __init__(self, name):
         super().__init__(name)
 
-        self.type = "serial"
-
+    @property
+    def type(self):
+        return "serial"
+        
     def read_data(self):
         path = read_config()[self.type]
         if not os.path.exists(path + self.name):

@@ -14,7 +14,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
         self.main_table_widget = MainTableWidget(TableModel(_type, name))
         self.tab_widget = None
         
-        if isinstance(self._get_main_inf_res, (SequentialFile, Database)) and self._get_main_inf_res.meta["children"]:
+        if isinstance(self._get_main_inf_res(), (SequentialFile, Database)) and self._get_main_inf_res().meta["children"]:
             self.tab_widget = TabWidget(self)
             self.main_table_widget.row_selected.connect(self.generate_tabs)
         
@@ -24,7 +24,8 @@ class WorkspaceWidget(QtWidgets.QWidget):
 
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.addWidget(self.main_table_widget)
-        main_layout.addWidget(self.tab_widget)
+        if self.tab_widget:
+            main_layout.addWidget(self.tab_widget)
         self.setLayout(main_layout)
 
     def _get_main_inf_res(self):
@@ -34,5 +35,5 @@ class WorkspaceWidget(QtWidgets.QWidget):
         if index.row() < 0 or not self.tab_widget:
             return 
         index = self.main_table_widget.proxy_model.mapToSource(index)
-        children = self._get_main_inf_res.get_children(index.row())
+        children = self._get_main_inf_res().get_children(index.row())
         self.tab_widget.generate_tabs(children)

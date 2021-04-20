@@ -7,12 +7,15 @@ from decimal import Decimal
 class Database(InformationResource):
     def __init__(self, table_name=""):
         self.connection, self.csor = Database.connect()
-        self.type = "database"
 
         super().__init__(table_name)
 
     def __del__(self):
         self.disconnect(self.connection, self.csor)
+
+    @property
+    def type(self):
+        return "database"
 
     @staticmethod
     def connect():
