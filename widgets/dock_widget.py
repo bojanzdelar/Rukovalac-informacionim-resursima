@@ -4,7 +4,7 @@ from model.database_explorer_model import DatabaseExplorerModel
 from config.config import read_config
 
 class DockWidget(QtWidgets.QDockWidget):
-    clicked = QtCore.Signal(str)
+    clicked = QtCore.Signal(str, str)
 
     def __init__(self, title, parent):
         super().__init__(title, parent)
@@ -38,10 +38,13 @@ class DockWidget(QtWidgets.QDockWidget):
     def file_clicked(self, index):
         info = self.file_model.fileInfo(index)
         if info.isFile():
-            self.clicked.emit(self.file_model.filePath(index))
+            path = self.file_model.filePath(index)
+            data_type, data_name = path.split("/")[-2::]
+            self.clicked.emit(data_name, data_type)
 
     def table_clicked(self, index):
-        self.clicked.emit(f"database/{self.db_model.get_table_name(index.row())}")
+        table_name = self.db_model.get_table_name(index.row())
+        self.clicked.emit(table_name, "database")
 
     def expand(self):
         index = self.file_model.index(self.file_model.rootPath())

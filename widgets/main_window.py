@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 from widgets.menu_bar import MenuBar
 from widgets.dock_widget import DockWidget
-from widgets.central_widget import CentralWidget
+from widgets.tab_widget import TabWidget
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -14,7 +14,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setMenuBar(MenuBar(self))
         self.menuBar().triggered.connect(self.menu_actions)
 
-        self.setCentralWidget(CentralWidget(self))
+        self.setCentralWidget(TabWidget(self))
 
         self.setStatusBar(QtWidgets.QStatusBar())
 
@@ -27,13 +27,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
         
     def menu_actions(self, action):
-        central_widget = self.centralWidget()
+        tab_widget = self.centralWidget()
         command = action.text()
         if command == "Close all":
-            central_widget.delete_all()
+            tab_widget.clear()
         elif command == "Save all":
-            for i in range(central_widget.count()):
-                central_widget.widget(i).save_table()
+            for i in range(tab_widget.count()):
+                tab_widget.widget(i).save_table()
         elif command == "Exit":
             self.close()
         elif command == "Manual":

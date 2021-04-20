@@ -161,4 +161,4 @@ class MainTableWidget(TableWidget):
         dialog.exec_()
 
     def new_table(self, table_name):
-        self.change_table.emit(self.parent_dir, table_name)
+        self.change_table.emit(table_name, self.parent_dir)

@@ -32,7 +32,7 @@ def get_file_tab_name(file_name, file_organization):
 def get_folder_display(folder_name):
     return read_meta()["folders"][folder_name]
 
-def file_in_meta(file_name, file_organization):
+def is_in_meta(file_name, file_organization):
     for item in read_meta().values():
         if file_organization in item and file_name in item[file_organization]:
             return True
