@@ -1,6 +1,6 @@
 from PySide6 import QtCore
 from model.information_resource import InformationResource
-from meta.meta import get_file_display, file_in_meta, add_file, remove_file
+from meta.meta import get_file_display, is_in_meta, add_file, remove_file
 from config.config import read_config
 from datetime import datetime
 import csv

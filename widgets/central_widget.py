@@ -2,7 +2,7 @@ from PySide6 import QtWidgets
 from .workspace_widget import WorkspaceWidget
 from meta.meta import get_tab_name, is_in_meta
 
-class TabWidget(QtWidgets.QTabWidget):
+class CentralWidget(QtWidgets.QTabWidget):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -48,4 +48,8 @@ class TabWidget(QtWidgets.QTabWidget):
         index = self.get_index(tab_name)
         if index is None:
             return
-        self.removeTab(index)    
+        self.removeTab(index)
+
+    def save_all(self):
+        for i in range(self.count()):
+            self.widget(i).save_table()    

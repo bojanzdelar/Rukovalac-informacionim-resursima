@@ -26,7 +26,7 @@ def get_file_display(file_name, file_organization):
     _, meta = get_file_meta(file_name, file_organization)
     return meta[file_organization][file_name] if meta else ""
 
-def get_file_tab_name(file_name, file_organization):
+def get_tab_name(file_name, file_organization):
     return get_file_display(file_name, file_organization) + " - " + file_organization[0:3]
 
 def get_folder_display(folder_name):

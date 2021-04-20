@@ -1,7 +1,8 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 from widgets.menu_bar import MenuBar
 from widgets.dock_widget import DockWidget
-from widgets.tab_widget import TabWidget
+from widgets.central_widget import CentralWidget
+from widgets.status_bar import StatusBar
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -11,39 +12,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("Rukovalac informacionim resursima")
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))
 
+        self.setCentralWidget(CentralWidget(self))
+
         self.setMenuBar(MenuBar(self))
-        self.menuBar().triggered.connect(self.menu_actions)
-
-        self.setCentralWidget(TabWidget(self))
-
-        self.setStatusBar(QtWidgets.QStatusBar())
-
-        self.timer= QtCore.QTimer()
-        self.timer.timeout.connect(self.show_time)
-        self.timer.start(1000)
+        self.menuBar().close_all.connect(self.centralWidget().clear)
+        self.menuBar().save_all.connect(self.centralWidget().save_all)
+        self.menuBar().exit.connect(self.close)
 
         dock_widget = DockWidget("Informacioni resursi", self)
         dock_widget.clicked.connect(self.centralWidget().add_tab)
         self.addDockWidget(QtCore.Qt.LeftDockWidgetArea, dock_widget)
-        
-    def menu_actions(self, action):
-        tab_widget = self.centralWidget()
-        command = action.text()
-        if command == "Close all":
-            tab_widget.clear()
-        elif command == "Save all":
-            for i in range(tab_widget.count()):
-                tab_widget.widget(i).save_table()
-        elif command == "Exit":
-            self.close()
-        elif command == "Manual":
-            QtWidgets.QMessageBox.information(self, "Manual", "Uputstvu za upotrebu programa Rukovalac informacionim resursima"
-                + " mozete pristupiti klikom <a href='https://infhandler.zdelar.com'>ovde</a>")
-        elif command == "About":
-            QtWidgets.QMessageBox.information(self, "About", "Program Rukovalac informacionim resursima je realizovan" 
-                + " u sklopu projekta iz predmeta Baze podataka. Autor je Bojan Zdelar, ciji je broj indeksa 2019/270983")
 
-    def show_time(self):
-        time = QtCore.QDateTime.currentDateTime()
-        time_display = time.toString('hh:mm:ss, yyyy-MM-dd')
-        self.statusBar().showMessage(time_display)
+        self.setStatusBar(StatusBar(self))

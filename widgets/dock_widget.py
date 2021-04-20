@@ -10,20 +10,18 @@ class DockWidget(QtWidgets.QDockWidget):
         super().__init__(title, parent)
 
         config = read_config()
-
-        self.file_model = FileSystemModel(QtCore.QDir.currentPath() + "/" + config["data"])
+        self.fs_model = FileSystemModel(QtCore.QDir.currentPath() + "/" + config["data"])
         self.file_tree = QtWidgets.QTreeView()
-        self.file_tree.setModel(self.file_model)
-        self.file_tree.setRootIndex(self.file_model.index(QtCore.QDir.currentPath() + "/" + config["data"]))
+        self.file_tree.setModel(self.fs_model)
+        self.file_tree.setRootIndex(self.fs_model.index(QtCore.QDir.currentPath() + "/" + config["data"]))
         self.file_tree.clicked.connect(self.file_clicked)
-        self.file_model.directoryLoaded.connect(self.expand)
-
-        for i in range(1, self.file_model.columnCount()):
+        self.fs_model.directoryLoaded.connect(lambda: self.file_tree.expandAll())
+        for i in range(1, self.fs_model.columnCount()):
             self.file_tree.hideColumn(i)
 
-        self.db_model = DatabaseExplorerModel()
+        self.dbe_model = DatabaseExplorerModel()
         self.db_tree = QtWidgets.QTreeView()
-        self.db_tree.setModel(self.db_model)
+        self.db_tree.setModel(self.dbe_model)
         self.db_tree.clicked.connect(self.table_clicked)
 
         multi_widget = QtWidgets.QWidget()
@@ -32,22 +30,15 @@ class DockWidget(QtWidgets.QDockWidget):
         layout.addWidget(self.db_tree)
         multi_widget.setLayout(layout)
         self.setWidget(multi_widget)
-
         self.setFeatures(QtWidgets.QDockWidget.NoDockWidgetFeatures)
 
     def file_clicked(self, index):
-        info = self.file_model.fileInfo(index)
+        info = self.fs_model.fileInfo(index)
         if info.isFile():
-            path = self.file_model.filePath(index)
+            path = self.fs_model.filePath(index)
             data_type, data_name = path.split("/")[-2::]
             self.clicked.emit(data_name, data_type)
 
     def table_clicked(self, index):
-        table_name = self.db_model.get_table_name(index.row())
+        table_name = self.dbe_model.get_table_name(index.row())
         self.clicked.emit(table_name, "database")
-
-    def expand(self):
-        index = self.file_model.index(self.file_model.rootPath())
-        for i in range(self.file_model.rowCount(index)):
-            child = self.file_model.index(i, 0, index)
-            self.file_tree.expand(child)

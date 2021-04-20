@@ -9,7 +9,7 @@ from dialog.update_dialog import UpdateDialog
 from dialog.navigation_dialog import NavigationDialog
 from dialog.split_dialog import SplitDialog
 from dialog.merge_dialog import MergeDialog
-from meta.meta import get_files, get_file_display, get_file_tab_name, same_file_meta, remove_file
+from meta.meta import get_files, get_file_display, get_tab_name, same_file_meta, remove_file
 from config.config import read_config
 import os
 
