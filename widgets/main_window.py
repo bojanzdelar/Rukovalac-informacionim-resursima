@@ -9,6 +9,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__()
 
         self.resize(1280, 960)
+        self.showMaximized()
         self.setWindowTitle("Rukovalac informacionim resursima")
         self.setWindowIcon(QtGui.QIcon("icons/app.png"))
 

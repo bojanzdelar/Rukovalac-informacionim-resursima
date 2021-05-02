@@ -24,8 +24,8 @@ class CentralWidget(QtWidgets.QTabWidget):
         tab_name = get_tab_name(data_name, data_type)
         if tab_name not in self.tabs and is_in_meta(data_name, data_type):
             workspace_widget = WorkspaceWidget(data_name, data_type, self)
-            workspace_widget.main_table_widget.change_table.connect(self.change_tab)
-            workspace_widget.main_table_widget.close_tab.connect(self.remove_tab)
+            workspace_widget.main_entity_widget.change_table.connect(self.change_tab)
+            workspace_widget.main_entity_widget.close_tab.connect(self.remove_tab)
             self.addTab(workspace_widget, tab_name)
             self.setCurrentIndex(self.currentIndex() + 1)
         else:
@@ -38,8 +38,8 @@ class CentralWidget(QtWidgets.QTabWidget):
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela je vec otvorena")
             return
         workspace_widget = WorkspaceWidget(data_name, data_type, self)
-        workspace_widget.main_table_widget.change_table.connect(self.change_tab)
-        workspace_widget.main_table_widget.close_tab.connect(self.remove_tab)
+        workspace_widget.main_entity_widget.change_table.connect(self.change_tab)
+        workspace_widget.main_entity_widget.close_tab.connect(self.remove_tab)
         current_index = self.currentIndex()
         self.removeTab(current_index)
         self.insertTab(current_index, workspace_widget, tab_name)

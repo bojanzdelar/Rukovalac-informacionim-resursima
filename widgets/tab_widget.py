@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets
 from model.table_model import TableModel
-from widgets.table_widget import TableWidget
+from widgets.entity_widget import EntityWidget
 from meta.meta import get_display
 
 class TabWidget(QtWidgets.QTabWidget):
@@ -16,6 +16,6 @@ class TabWidget(QtWidgets.QTabWidget):
         for inf_res in information_resources:
             model = TableModel(inf_res.type)
             model.information_resource = inf_res
-            tab = TableWidget(model, self)
+            tab = EntityWidget(model, self)
             tab_name = get_display(inf_res.name, inf_res.type)
             self.addTab(tab, tab_name)
