@@ -33,9 +33,9 @@ class SplitDialog(QtWidgets.QDialog):
             input.setMaxLength(attribute["length"])
             operator.addItems(["like", "not like"])
             if attribute["input"] == "characters":
-                input.setValidator(QtGui.QRegExpValidator(".{%s}" % attribute["length"]))
+                input.setValidator(QtGui.QRegularExpressionValidator(".{%s}" % attribute["length"]))
             elif attribute["input"] == "number":
-                input.setValidator(QtGui.QRegExpValidator("[1-9][0-9]*"))
+                input.setValidator(QtGui.QRegularExpressionValidator("[1-9][0-9]*"))
                 operator.addItems(["<", "<=", ">=", ">"])
         elif attribute["input"] == "date":
             input = QtWidgets.QDateEdit(self)

@@ -44,9 +44,9 @@ class Dialog(QtWidgets.QDialog):
                 char_width = QtGui.QFontMetrics(input.font()).averageCharWidth()
                 input.setMaximumWidth(attribute["length"] * char_width + 10)
                 if attribute["input"] == "characters":
-                    input.setValidator(QtGui.QRegExpValidator(".{%s}|" % attribute["length"]))
+                    input.setValidator(QtGui.QRegularExpressionValidator(".{%s}|" % attribute["length"]))
                 elif attribute["input"] == "number":
-                    input.setValidator(QtGui.QRegExpValidator("[1-9][0-9]*"))
+                    input.setValidator(QtGui.QRegularExpressionValidator("[1-9][0-9]*"))
             elif attribute["input"] == "date":
                 input = QtWidgets.QDateEdit(self)
                 input.setDisplayFormat("yyyy-MM-dd")
