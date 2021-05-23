@@ -93,23 +93,18 @@ class SequentialFile(SerialFile):
             file_names = get_files(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
-            child._sort_child()
-            child._filter_child(attributes, values)
+            child.filter_child(attributes, values)
             children.append(child)
 
         return children
 
-    def _filter_child(self, attributes, values):
+    def filter_child(self, attributes, values):
         indexes = self.get_attributes_indexes(attributes)
         for element in reversed(self.data):
             for index, value in zip(indexes, values):
                 if element[index] != value:
                     self.data.remove(element)
                     break
-
-    def _sort_child(self):
-        indexes = self.get_attributes_indexes(self.get_primary_key())
-        self.data.sort(key = operator.itemgetter(*indexes))
 
     def get_primary_key(self):
         primary_key = []
