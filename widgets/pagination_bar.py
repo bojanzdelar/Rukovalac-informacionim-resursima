@@ -9,7 +9,6 @@ class PaginationBar(QtWidgets.QWidget):
         self.text = QtWidgets.QLabel("")
         self.tool_bar = QtWidgets.QToolBar()
                 
-     
         self.page_size = page_size
         self.total_pages = total_pages
         self.page = 0
@@ -21,13 +20,13 @@ class PaginationBar(QtWidgets.QWidget):
         left_action.triggered.connect(lambda: self.set_page(self.page - 1))
         right_action.triggered.connect(lambda: self.set_page(self.page + 1))
 
-
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(self.text, alignment=QtCore.Qt.AlignRight)
         layout.addWidget(self.tool_bar, alignment=QtCore.Qt.AlignLeft)
         self.setLayout(layout)
 
     def set_page(self, page):
+        self.total_pages = self.parent().pages(self.page_size)
         if page < 0 or page > self.total_pages:
             return
         self.page = page

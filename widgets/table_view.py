@@ -1,8 +1,12 @@
 from PySide6 import QtCore, QtWidgets
+from model.serial_file import SerialFile
+from model.sequential_file import SequentialFile
+from model.database import Database
 
 class TableView(QtWidgets.QTableView):
     row_selected = QtCore.Signal(QtCore.QModelIndex)
     set_page = QtCore.Signal(int)
+    change_filter_icon = QtCore.Signal(bool)
 
     def __init__(self, model, parent):
         super().__init__(parent)
@@ -11,6 +15,7 @@ class TableView(QtWidgets.QTableView):
         self.proxy_model = QtCore.QSortFilterProxyModel(self)
         self.proxy_model.setSourceModel(self.model)
         self.filtered = False
+        self.filter_values = [("==", "") for attribute in self.model.information_resource.get_attribute()]
 
         self.setModel(self.proxy_model)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
@@ -22,14 +27,11 @@ class TableView(QtWidgets.QTableView):
         self.clicked.connect(lambda: self.row_selected.emit(self.selectionModel().selectedIndexes()[0]))
 
     def filter(self):
-        filter_action_position = 5 if self.type == "main_entity_widget" else 0 # FIXME FIXME FIXME FIXME FIXME OUCH
-
         if self.filtered:
-            if isinstance(self. information_resource, Database):
+            if isinstance(self.model.information_resource, Database):
                 self.model.layoutAboutToBeChanged.emit()
                 self.model.information_resource.data = self.model.information_resource.read_data()
                 self.model.layoutChanged.emit()
-            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter.png"))
         else:
             if isinstance(self.model.information_resource, SerialFile):
                 self.filter_indexes = self.model.information_resource.filter(self.filter_values)
@@ -40,9 +42,9 @@ class TableView(QtWidgets.QTableView):
                 self.model.layoutAboutToBeChanged.emit()
                 self.model.information_resource.filter(self.filter_values)
                 self.model.layoutChanged.emit()
-            self.tool_bar.actions()[filter_action_position].setIcon(QtGui.QIcon("icons/filter_enabled.png"))
 
         self.filtered = not self.filtered
+        self.change_filter_icon.emit(self.filtered)
         self.set_page.emit(0)
 
     def refilter(self):
@@ -78,6 +80,6 @@ class TableView(QtWidgets.QTableView):
 
         self.row_selected.emit(self.proxy_model.index(-1,-1))
 
-        if index is not None and not page_empty: # FIXME: VEROVATNO NE TREBA NOT PAGE_EMPTY
+        if index is not None and not page_empty:
             self.selectRow(index)
             self.row_selected.emit(self.selectionModel().selectedIndexes()[0])

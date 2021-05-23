@@ -8,7 +8,7 @@ class MergeDialog(QtWidgets.QDialog):
     merged = QtCore.Signal(str, str)
 
     def __init__(self, information_resource, files, parent = None):
-        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 
+        super().__init__(parent) 
 
         self.information_resource = information_resource
         self.files = files
@@ -16,11 +16,7 @@ class MergeDialog(QtWidgets.QDialog):
         self.file_organization = self.information_resource.type
         
         self.setWindowTitle("Merge")
-        self.setWindowIcon(QtGui.QIcon("icons/app.png"))
-        self.setLayout(QtWidgets.QGridLayout())
-        self.generate_layout()
-
-    def generate_layout(self):
+        
         label = QtWidgets.QLabel("File: ", self)
 
         self.file = QtWidgets.QComboBox(self)

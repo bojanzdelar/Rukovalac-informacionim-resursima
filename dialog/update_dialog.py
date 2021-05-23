@@ -1,9 +1,9 @@
 from PySide6 import QtCore
-from dialog.dialog import Dialog
+from dialog.edit_dialog import EditDialog
 from model.sequential_file import SequentialFile
 from model.database import Database
 
-class UpdateDialog(Dialog):
+class UpdateDialog(EditDialog):
     def __init__(self, information_resource, index, parent = None):
         super().__init__(information_resource, parent)
 

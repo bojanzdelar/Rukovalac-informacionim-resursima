@@ -4,16 +4,11 @@ class FilterDialog(QtWidgets.QDialog):
     changed = QtCore.Signal(list)
 
     def __init__(self, information_resource, values, parent=None):
-        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 
+        super().__init__(parent) 
 
         self.attributes = information_resource.get_attribute()
         self.values = values
         self.setWindowTitle("Edit filter")
-        self.setWindowIcon(QtGui.QIcon("icons/app.png"))
-        self.setLayout(self.generate_layout())
-
-    def generate_layout(self):
-        layout = QtWidgets.QGridLayout()
 
         for i, attribute in enumerate(self. attributes):
             label = QtWidgets.QLabel(attribute["display"], self)
@@ -41,15 +36,13 @@ class FilterDialog(QtWidgets.QDialog):
                 operator.addItems(["<", "<=", ">=", ">"])
             operator.setCurrentText(self.values[i][0])
 
-            layout.addWidget(label, i, 0)
-            layout.addWidget(operator, i, 1)
-            layout.addWidget(input, i, 2)
+            self.layout().addWidget(label, i, 0)
+            self.layout().addWidget(operator, i, 1)
+            self.layout().addWidget(input, i, 2)
 
         self.button = QtWidgets.QPushButton("OK")
         self.button.clicked.connect(self.action)
-        layout.addWidget(self.button, i + 1, 2)
-
-        return layout
+        self.layout().addWidget(self.button, i + 1, 2)
         
     def action(self):
         self.values = []

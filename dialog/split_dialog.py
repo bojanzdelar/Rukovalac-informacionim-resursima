@@ -4,15 +4,11 @@ class SplitDialog(QtWidgets.QDialog):
     selected = QtCore.Signal(list)
 
     def __init__(self, information_resource, parent=None):
-        super().__init__(parent, QtCore.Qt.WindowCloseButtonHint) 
+        super().__init__(parent) 
 
         self.attributes = information_resource.get_attribute()
         self.setWindowTitle("Split")
-        self.setWindowIcon(QtGui.QIcon("icons/app.png"))
-        self.setLayout(QtWidgets.QGridLayout())
-        self.generate_layout()
-
-    def generate_layout(self):
+    
         label = QtWidgets.QLabel("Attribute: ", self)
         self.attribute = QtWidgets.QComboBox(self)
         self.attribute.currentIndexChanged.connect(self.change_input)

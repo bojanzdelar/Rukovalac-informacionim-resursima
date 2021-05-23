@@ -23,3 +23,7 @@ class ToolBar(QtWidgets.QToolBar):
         self.addSeparator()
         self.parent_action = self.addAction(QtGui.QIcon("icons/up.png"), "Parent")
         self.child_action = self.addAction(QtGui.QIcon("icons/down.png"), "Child")
+
+    def set_filter_icon(self, filtered):
+        icon_name = "filter_enabled.png" if filtered else "filter.png"
+        self.filter_action.setIcon(QtGui.QIcon(f"icons/{icon_name}"))

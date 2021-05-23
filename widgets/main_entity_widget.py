@@ -18,7 +18,7 @@ class MainEntityWidget(EntityWidget):
     close_tab = QtCore.Signal(str)
     clear_tab_widget = QtCore.Signal()
 
-    def __init__(self, model, parent=None):
+    def __init__(self, model, parent):
         super().__init__(model, parent)
 
         self.tool_bar.addSeparator()
@@ -41,29 +41,24 @@ class MainEntityWidget(EntityWidget):
     def create_row(self):
         self.model.layoutAboutToBeChanged.emit()
         dialog = CreateDialog(self.model.information_resource)
-        dialog.created.connect(self.created)
+        dialog.created.connect(self.refresh)
         dialog.exec_()
         self.model.layoutChanged.emit()
-        self.refilter()
-
-    def created(self):
-        self.model.layoutChanged.emit()
-        self.refilter()
-        self.model.layoutAboutToBeChanged.emit()
+        self.table_view.refilter()
 
     def update_row(self):
-        indexes = self.table.selectionModel().selectedIndexes()
+        indexes = self.table_view.selectionModel().selectedIndexes()
         if not len(indexes):
             return
-        index = self.proxy_model.mapToSource(indexes[0])
+        index = self.table_view.proxy_model.mapToSource(indexes[0])
         self.model.layoutAboutToBeChanged.emit()
         dialog = UpdateDialog(self.model.information_resource, index.row())
         dialog.exec_() 
         self.model.layoutChanged.emit()
-        self.refilter()
+        self.table_view.refilter()
 
     def delete_row(self):
-        indexes = self.table.selectionModel().selectedIndexes()
+        indexes = self.table_view.selectionModel().selectedIndexes()
         if not len(indexes):
             return
 
@@ -72,13 +67,18 @@ class MainEntityWidget(EntityWidget):
         if reply == QtWidgets.QMessageBox.No:
             return
 
-        index = self.proxy_model.mapToSource(indexes[0])
+        index = self.table_view.proxy_model.mapToSource(indexes[0])
         self.model.layoutAboutToBeChanged.emit()
         self.model.information_resource.delete_element(index.row())
         self.model.layoutChanged.emit()
-        self.table.clearSelection()
+        self.table_view.clearSelection()
         self.clear_tab_widget.emit()
-        self.refilter()
+        self.table_view.refilter()
+
+    def refresh(self):
+        self.model.layoutChanged.emit()
+        self.table_view.refilter()
+        self.model.layoutAboutToBeChanged.emit()
 
     def save_table(self):
         self.model.layoutAboutToBeChanged.emit()

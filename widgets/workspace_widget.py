@@ -11,7 +11,7 @@ class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, name, _type, parent):
         super().__init__(parent)
 
-        self.main_entity_widget = MainEntityWidget(TableModel(_type, name))
+        self.main_entity_widget = MainEntityWidget(TableModel(_type, name), self)
         self.tab_widget = None
         
         if isinstance(self.main_entity_widget.model.information_resource, (SequentialFile, Database)) \
