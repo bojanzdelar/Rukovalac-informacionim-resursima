@@ -1,6 +1,5 @@
 import tempfile
 import operator
-import os 
 
 class ExternalMergeSort:
     def __init__(self, path, file_name, split_size, sort_indexes):

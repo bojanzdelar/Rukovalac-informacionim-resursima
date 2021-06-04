@@ -3,9 +3,7 @@ from model.sequential_file import SequentialFile
 from model.database import Database
 from model.table_model import TableModel
 from widgets.main_entity_widget import MainEntityWidget
-from widgets.entity_widget import EntityWidget
 from widgets.tab_widget import TabWidget
-from meta.meta import get_files, get_display
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, name, _type, parent):

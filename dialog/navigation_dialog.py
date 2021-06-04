@@ -1,6 +1,7 @@
 from PySide6 import QtCore, QtWidgets
+from dialog.dialog import Dialog
 
-class NavigationDialog(QtWidgets.QDialog):
+class NavigationDialog(Dialog):
     selected = QtCore.Signal(str)
 
     def __init__(self, tables, parent=None):

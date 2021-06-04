@@ -1,6 +1,5 @@
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtWidgets
 from model.serial_file import SerialFile
-from model.database import Database
 from widgets.table_view import TableView
 from widgets.tool_bar import ToolBar
 from widgets.pagination_bar import PaginationBar

@@ -1,6 +1,5 @@
 from PySide6 import QtCore, QtWidgets
 from model.serial_file import SerialFile
-from model.sequential_file import SequentialFile
 from model.database import Database
 
 class TableView(QtWidgets.QTableView):
@@ -15,7 +14,7 @@ class TableView(QtWidgets.QTableView):
         self.proxy_model = QtCore.QSortFilterProxyModel(self)
         self.proxy_model.setSourceModel(self.model)
         self.filtered = False
-        self.filter_values = [("==", "") for attribute in self.model.information_resource.get_attribute()]
+        self.filter_values = [("==", "") for _ in self.model.information_resource.get_attribute()]
 
         self.setModel(self.proxy_model)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)

@@ -1,9 +1,8 @@
-from PySide6 import QtCore, QtWidgets, QtGui
-from meta.meta import get_display, same_file_meta
-from config.config import read_config
-import os
+from PySide6 import QtCore, QtWidgets
+from dialog.dialog import Dialog
+from meta.meta import get_display
 
-class MergeDialog(QtWidgets.QDialog):
+class MergeDialog(Dialog):
     selected = QtCore.Signal(str)
     merged = QtCore.Signal(str, str)
 
@@ -21,7 +20,7 @@ class MergeDialog(QtWidgets.QDialog):
 
         self.file = QtWidgets.QComboBox(self)
         
-        file_displays = [get_file_display(file, self.file_organization) for file in self.files]
+        file_displays = [get_display(file, self.file_organization) for file in self.files]
         self.file.addItems(file_displays)
 
         button = QtWidgets.QPushButton("OK", self)

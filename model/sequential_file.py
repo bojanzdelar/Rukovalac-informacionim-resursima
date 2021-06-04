@@ -1,11 +1,10 @@
 from PySide6 import QtWidgets
 from model.serial_file import SerialFile
 from model.external_merge_sort import ExternalMergeSort
-from meta.meta import get_files, get_file_meta
+from meta.meta import get_information_resources, get_meta
 from config.config import read_config
 import csv
 import os.path
-import operator
 
 class SequentialFile(SerialFile):
     def __init__(self, data_name):
@@ -90,7 +89,7 @@ class SequentialFile(SerialFile):
             for attr_index in main_attributes_indexes:
                 values.append(self.read_element(index)[attr_index])
 
-            file_names = get_files(file_type, self.type)
+            file_names = get_information_resources(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             child.filter_child(attributes, values)
@@ -129,8 +128,8 @@ class SequentialFile(SerialFile):
 
     def restrict_create(self, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
-        file_type, _ = get_file_meta(self.data_name, self.type)
-        files = get_files(file_type, self.type)
+        file_type, _ = get_meta(self.data_name, self.type)
+        files = get_information_resources(file_type, self.type)
         for data_name in files:
             file = SequentialFile(data_name)
             primary_key_used, _ = file.primary_key_used(new_element)
@@ -142,7 +141,7 @@ class SequentialFile(SerialFile):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
         for file_type, attributes in children.items():
-            file_names = get_files(file_type, self.type)
+            file_names = get_information_resources(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             for i, attribute in zip(indexes, attributes):
@@ -156,7 +155,7 @@ class SequentialFile(SerialFile):
         indexes = self.get_attributes_indexes(self.get_primary_key())
         children = self.meta["children"]
         for file_type, attributes in children.items():
-            file_names = get_files(file_type, self.type)
+            file_names = get_information_resources(file_type, self.type)
             child = SequentialFile(file_names[0])
             child.read_multiple_data(file_names)
             used = True

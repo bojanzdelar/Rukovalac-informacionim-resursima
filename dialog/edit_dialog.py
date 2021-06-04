@@ -2,7 +2,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from dialog.dialog import Dialog
 from model.sequential_file import SequentialFile
 from model.database import Database
-from meta.meta import get_files
+from meta.meta import get_information_resources
 
 class EditDialog(Dialog):
     def __init__(self, information_resource, parent = None):
@@ -26,7 +26,7 @@ class EditDialog(Dialog):
                 input = QtWidgets.QComboBox(self)
                 relation = [(k, v) for k,v in attribute["relation"].items()][0]
                 if isinstance(self.information_resource, SequentialFile):
-                    file_names = get_files(relation[0], "sequential")
+                    file_names = get_information_resources(relation[0], "sequential")
                     seq_file = SequentialFile(file_names[0])
                     seq_file.read_multiple_data(file_names)
                     values = seq_file.column_values(relation[1])

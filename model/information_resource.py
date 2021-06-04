@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from meta.meta import get_file_meta
+from meta.meta import get_meta
 
 class InformationResource(ABC):
     def __init__(self, name):
@@ -13,7 +13,7 @@ class InformationResource(ABC):
         ...
 
     def read_meta(self):
-        return get_file_meta(self.name, self.type)
+        return get_meta(self.name, self.type)
 
     @abstractmethod
     def read_data(self):

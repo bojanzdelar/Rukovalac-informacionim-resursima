@@ -1,6 +1,7 @@
 from PySide6 import QtCore, QtWidgets, QtGui
+from dialog.dialog import Dialog
 
-class FilterDialog(QtWidgets.QDialog):
+class FilterDialog(Dialog):
     changed = QtCore.Signal(list)
 
     def __init__(self, information_resource, values, parent=None):

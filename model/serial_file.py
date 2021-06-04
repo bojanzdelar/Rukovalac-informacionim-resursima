@@ -1,6 +1,5 @@
-from PySide6 import QtCore
 from model.information_resource import InformationResource
-from meta.meta import get_display, is_in_meta, add_file, remove_file
+from meta.meta import add_file, get_display, is_in_meta
 from config.config import read_config
 from datetime import datetime
 import csv
@@ -69,9 +68,9 @@ class SerialFile(InformationResource):
             + self.get_attribute(i)["name"] + operator + text + ".csv")
         file_name_2 = (name[0:-4] + "--not(" 
             + self.get_attribute(i)["name"] + operator + text + ").csv")
-        file_display_1 = (get_file_display(name, self.type) + " -- "
+        file_display_1 = (get_display(name, self.type) + " -- "
             + self.get_attribute(i)["display"] + " " + operator + " " + text)
-        file_display_2 = (get_file_display(name, self.type) + " -- not ("
+        file_display_2 = (get_display(name, self.type) + " -- not ("
             + self.get_attribute(i)["display"] + " " + operator + " " + text + ")")
 
         new_file = open(path + file_name_1, "w")
@@ -115,11 +114,11 @@ class SerialFile(InformationResource):
             new_file_name = other_file_name
         else:
             new_file_name = self.name.split("--")[0] + ".csv"
-            while file_in_meta(new_file_name, self.type):
+            while is_in_meta(new_file_name, self.type):
                 new_file_name = self.name + "--" + str(count) + ".csv"
                 count += 1
 
-        new_file_display = get_file_display(self.name, self.type).split("--")[0].strip() \
+        new_file_display = get_display(self.name, self.type).split("--")[0].strip() \
             + (" -- " + str(count) if count else "")
 
         old_files = [name for name in [self.name, other_file_name] if name != new_file_name]

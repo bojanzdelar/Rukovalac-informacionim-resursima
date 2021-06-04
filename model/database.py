@@ -2,7 +2,6 @@ from PySide6 import QtWidgets
 from model.information_resource import InformationResource
 from config.config import read_config
 import mysql.connector
-from decimal import Decimal
 
 class Database(InformationResource):
     def __init__(self, table_name=""):

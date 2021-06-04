@@ -2,14 +2,13 @@ from PySide6 import QtCore, QtWidgets
 from model.serial_file import SerialFile
 from model.sequential_file import SequentialFile
 from model.database import Database
-from model.table_model import TableModel
 from widgets.entity_widget import EntityWidget
 from dialog.create_dialog import CreateDialog
 from dialog.update_dialog import UpdateDialog
 from dialog.navigation_dialog import NavigationDialog
 from dialog.split_dialog import SplitDialog
 from dialog.merge_dialog import MergeDialog
-from meta.meta import get_files, get_display, get_tab_name, same_file_meta, remove_file
+from meta.meta import get_information_resources, get_display, get_tab_name, same_meta, remove_file
 from config.config import read_config
 import os
 
@@ -91,13 +90,14 @@ class MainEntityWidget(EntityWidget):
         accepted = dialog.exec_()
 
         if accepted:
-            self.close_file(self.file_name, "split")
+            self.close_file(self.model.information_resource.name, "split")
 
     def merge(self):
         file_organization = self.model.information_resource.type
         files = os.listdir(read_config()[file_organization])
         files = [file for file in files \
-            if same_file_meta(self.file_name, file, file_organization) and self.file_name != file]
+            if same_meta(self.model.information_resource.name, file, file_organization)
+                    and self.model.information_resource.name != file]
         if not files:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema tabelu s kojom bi mogla da se spoji")
             return
@@ -109,28 +109,28 @@ class MainEntityWidget(EntityWidget):
 
         if accepted:
             # Other file will be closed when signal gets emitted
-            self.close_file(self.file_name, "merge")
+            self.close_file(self.model.information_resource.name, "merge")
 
     def merge_completed(self, file_name):
         self.merged_file_name = file_name
 
     def close_file(self, file_name, mode):
-        tab_name = get_file_tab_name(file_name, self.parent_dir)
+        tab_name = get_tab_name(file_name, self.model.information_resource.type)
         if mode == "split" or (mode == "merge" and self.model.information_resource.merged_file_name != file_name):
-            remove_file(file_name, self.parent_dir)
+            remove_file(file_name, self.model.information_resource.type)
         self.close_tab.emit(tab_name)
 
     def parent(self):
         parent_types = self.model.information_resource.get_parents()
         parent_files = []
         for type in parent_types:
-            parent_files += get_files(type, self.parent_dir)
+            parent_files += get_information_resources(type, self.model.information_resource.type)
         if not parent_files:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema parent tabele")
             return
         tables = {}
         for parent in parent_files:
-            tables[get_file_display(parent, self.parent_dir)] = parent
+            tables[get_display(parent, self.model.information_resource.type)] = parent
         dialog = NavigationDialog(tables)
         dialog.selected.connect(self.new_table)
         dialog.exec_()
@@ -139,16 +139,16 @@ class MainEntityWidget(EntityWidget):
         children_types = self.model.information_resource.meta["children"]
         children_files = []
         for type in children_types:
-            children_files += get_files(type, self.parent_dir)
+            children_files += get_information_resources(type, self.model.information_resource.type)
         if not children_files:
             QtWidgets.QMessageBox.warning(None, "Greska", "Izabrana tabela nema child tabele")
             return
         tables = {}
         for child in children_files:
-            tables[get_file_display(child, self.parent_dir)] = child
+            tables[get_display(child, self.model.information_resource.type)] = child
         dialog = NavigationDialog(tables)
         dialog.selected.connect(self.new_table)
         dialog.exec_()
 
     def new_table(self, table_name):
-        self.change_table.emit(table_name, self.parent_dir)
+        self.change_table.emit(table_name, self.model.information_resource.type)
