@@ -52,7 +52,9 @@
         "serial": {
             "studenti.csv": "Studenti"
         },
-        "sequential": {},
+        "sequential": {
+            "studenti.csv": "Studenti"
+        },
         "database": {
             "studenti": "Studenti"
         },

@@ -17,7 +17,10 @@ class CentralWidget(QtWidgets.QTabWidget):
         return tabs_list
 
     def get_index(self, tab_name):
-        return self.tabs.index(tab_name)
+        try:
+            return self.tabs.index(tab_name)
+        except ValueError:
+            return None
         
     def add_tab(self, data_name, data_type):
         tab_name = get_tab_name(data_name, data_type)
@@ -52,4 +55,4 @@ class CentralWidget(QtWidgets.QTabWidget):
 
     def save_all(self):
         for i in range(self.count()):
-            self.widget(i).save_table()    
+            self.widget(i).main_entity_widget.save_table()    

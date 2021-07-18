@@ -99,8 +99,8 @@ class SerialFile(InformationResource):
             with open(path + new_file_name, "a", encoding="utf-8") as file:
                     csv.writer(file).writerow(self.read_element(index))
 
-        add_file(file_name_1, file_display_1, self.file_type, self.type)
-        add_file(file_name_2, file_display_2, self.file_type, self.type)
+        add_file(file_name_1, file_display_1, self.content_type, self.type)
+        add_file(file_name_2, file_display_2, self.content_type, self.type)
         os.remove(path + name)
         
     def merge(self, other_file_name):
@@ -131,7 +131,7 @@ class SerialFile(InformationResource):
 
             os.remove(path + name)
 
-        add_file(new_file_name, new_file_display, self.file_type, self.type)
+        add_file(new_file_name, new_file_display, self.content_type, self.type)
         
         self.merged_file_name = new_file_name
         return new_file_name

@@ -4,7 +4,7 @@ from meta.meta import get_meta
 class InformationResource(ABC):
     def __init__(self, name):
         self.name = name
-        _, self.meta = self.read_meta()
+        self.content_type, self.meta = self.read_meta()
         self.data = self.read_data()
 
     @property

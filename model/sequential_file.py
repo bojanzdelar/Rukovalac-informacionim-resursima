@@ -7,8 +7,8 @@ import csv
 import os.path
 
 class SequentialFile(SerialFile):
-    def __init__(self, data_name):
-        super().__init__(data_name)
+    def __init__(self, name):
+        super().__init__(name)
 
     @property
     def type(self):
@@ -17,10 +17,10 @@ class SequentialFile(SerialFile):
     def read_multiple_data(self, files):
         path = read_config()[self.type]
         data = []
-        for data_name in files:
-            if not os.path.exists(path + data_name):
+        for name in files:
+            if not os.path.exists(path + name):
                 continue
-            with open(path + data_name, "r", encoding="utf-8") as file:
+            with open(path + name, "r", encoding="utf-8") as file:
                 data += [row for row in csv.reader(file)]
         self.data = data
 
@@ -30,7 +30,7 @@ class SequentialFile(SerialFile):
 
     def external_merge_sort(self):
         config = read_config()
-        obj = ExternalMergeSort(config[self.type], self.data_name, config["split_size"], 
+        obj = ExternalMergeSort(config[self.type], self.name, config["split_size"], 
             self.get_attributes_indexes(self.get_primary_key()))
         obj.sort()
 
@@ -128,10 +128,10 @@ class SequentialFile(SerialFile):
 
     def restrict_create(self, new_element):
         indexes = self.get_attributes_indexes(self.get_primary_key())
-        file_type, _ = get_meta(self.data_name, self.type)
+        file_type, _ = get_meta(self.name, self.type)
         files = get_information_resources(file_type, self.type)
-        for data_name in files:
-            file = SequentialFile(data_name)
+        for name in files:
+            file = SequentialFile(name)
             primary_key_used, _ = file.primary_key_used(new_element)
             if primary_key_used:
                 return True

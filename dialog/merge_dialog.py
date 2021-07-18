@@ -11,7 +11,7 @@ class MergeDialog(Dialog):
 
         self.information_resource = information_resource
         self.files = files
-        self.file_name = self.information_resource.file_name
+        self.file_name = self.information_resource.name
         self.file_organization = self.information_resource.type
         
         self.setWindowTitle("Merge")
