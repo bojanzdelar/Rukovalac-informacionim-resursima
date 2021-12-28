@@ -1,5 +1,5 @@
 from PySide6 import QtCore
-from dialog.edit_dialog import EditDialog
+from .edit_dialog import EditDialog
 from model.sequential_file import SequentialFile
 from model.database import Database
 

@@ -2,8 +2,8 @@ from PySide6 import QtWidgets
 from model.sequential_file import SequentialFile
 from model.database import Database
 from model.table_model import TableModel
-from widgets.main_entity_widget import MainEntityWidget
-from widgets.tab_widget import TabWidget
+from .main_entity_widget import MainEntityWidget
+from .tab_widget import TabWidget
 
 class WorkspaceWidget(QtWidgets.QWidget):
     def __init__(self, name, _type, parent):

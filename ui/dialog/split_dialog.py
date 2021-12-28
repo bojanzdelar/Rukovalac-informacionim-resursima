@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtWidgets, QtGui
-from dialog.dialog import Dialog
+from .dialog import Dialog
 
 class SplitDialog(Dialog):
     selected = QtCore.Signal(list)

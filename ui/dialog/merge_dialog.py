@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtWidgets
-from dialog.dialog import Dialog
+from .dialog import Dialog
 from meta.meta import get_display
 
 class MergeDialog(Dialog):

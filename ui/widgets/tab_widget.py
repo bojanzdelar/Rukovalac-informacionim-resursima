@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets
 from model.table_model import TableModel
-from widgets.entity_widget import EntityWidget
+from .entity_widget import EntityWidget
 from meta.meta import get_display
 
 class TabWidget(QtWidgets.QTabWidget):

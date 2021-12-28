@@ -1,9 +1,9 @@
 from PySide6 import QtWidgets
 from model.serial_file import SerialFile
-from widgets.table_view import TableView
-from widgets.tool_bar import ToolBar
-from widgets.pagination_bar import PaginationBar
-from dialog.filter_dialog import FilterDialog
+from .table_view import TableView
+from .tool_bar import ToolBar
+from .pagination_bar import PaginationBar
+from ..dialog.filter_dialog import FilterDialog
 from config.config import read_config
 
 class EntityWidget(QtWidgets.QWidget):

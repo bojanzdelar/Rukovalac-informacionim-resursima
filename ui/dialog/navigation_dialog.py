@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtWidgets
-from dialog.dialog import Dialog
+from .dialog import Dialog
 
 class NavigationDialog(Dialog):
     selected = QtCore.Signal(str)

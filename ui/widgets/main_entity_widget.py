@@ -2,12 +2,12 @@ from PySide6 import QtCore, QtWidgets
 from model.serial_file import SerialFile
 from model.sequential_file import SequentialFile
 from model.database import Database
-from widgets.entity_widget import EntityWidget
-from dialog.create_dialog import CreateDialog
-from dialog.update_dialog import UpdateDialog
-from dialog.navigation_dialog import NavigationDialog
-from dialog.split_dialog import SplitDialog
-from dialog.merge_dialog import MergeDialog
+from .entity_widget import EntityWidget
+from ..dialog.create_dialog import CreateDialog
+from ..dialog.update_dialog import UpdateDialog
+from ..dialog.navigation_dialog import NavigationDialog
+from ..dialog.split_dialog import SplitDialog
+from ..dialog.merge_dialog import MergeDialog
 from meta.meta import get_information_resources, get_display, get_tab_name, same_meta, remove_file
 from config.config import read_config
 import os

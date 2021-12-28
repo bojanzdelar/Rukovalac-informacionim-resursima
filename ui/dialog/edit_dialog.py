@@ -1,5 +1,5 @@
 from PySide6 import QtCore, QtGui, QtWidgets
-from dialog.dialog import Dialog
+from .dialog import Dialog
 from model.sequential_file import SequentialFile
 from model.database import Database
 from meta.meta import get_information_resources
